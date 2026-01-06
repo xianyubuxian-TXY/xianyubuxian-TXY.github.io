@@ -1,0 +1,65 @@
+// 分类列表样式优化
+.category-list {
+  // 一级分类 - 大且加粗
+  > .category-list-item {
+    > .category-list-link {
+      font-size: 1.1em;
+      font-weight: 700;
+      color: #333;
+    }
+    
+    // 二级分类
+    > .category-list-child {
+      margin-left: 1.5em;
+      
+      > .category-list-item > .category-list-link {
+        font-size: 0.95em;
+        font-weight: 500;
+        color: #555;
+      }
+      
+      // 三级分类
+      > .category-list-item > .category-list-child {
+        margin-left: 1.5em;
+        
+        .category-list-link {
+          font-size: 0.85em;
+          font-weight: 400;
+          color: #777;
+        }
+      }
+    }
+  }
+}
+
+// 侧边栏分类样式（如果需要）
+.sidebar .category-list-item {
+  .category-list-child {
+    padding-left: 1em;
+    border-left: 2px solid #eee;
+    margin-left: 0.5em;
+  }
+}
+
+// ========== 文章标题 ==========
+// 文章详情页标题
+.post-body h1 {
+  font-size: 1.8em !important;
+  font-weight: 700 !important;
+}
+
+.post-body h2 {
+  font-size: 1.5em !important;
+  font-weight: 700 !important;
+}
+
+.post-body h3 {
+  font-size: 1.3em !important;
+  font-weight: 600 !important;
+}
+
+// 页面主标题（文章顶部的标题）
+.post-header .post-title {
+  font-size: 2.5em !important;
+  font-weight: 700 !important;
+}
