@@ -1,24 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>括号生成</title>
-    <url>/2026/01/06/%E6%8B%AC%E5%8F%B7%E7%94%9F%E6%88%90/</url>
-    <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p><img src="/images/2026.1.6-1-oj.png" alt="题目"></p>
-<h1 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h1><p>1.时间复杂度O(n) ——&gt;“回溯”<br>2.映射： ‘(‘—&gt;1   ‘)’—&gt;-1<br>3.sum表示“和”，sum&gt;&#x3D;0合法，sum&lt;0不合法<br>4.每次增加一个括号</p>
+    <title>10 编译期if语句</title>
+    <url>/2026/01/07/10-%E7%BC%96%E8%AF%91%E6%9C%9Fif%E8%AF%AD%E5%8F%A5/</url>
+    <content><![CDATA[<h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h1><p>1.通过使用语法<strong>if constexpr(…)</strong>，编译器可以计算编译期的条件表达式来<strong>在编译期决定</strong>使用一个if语句<br>的then的部分还是else的部分。<br>2.其余部分的代码将会被丢弃，这意味着它们甚至不会被生成。<br>3.这并不意味着被丢弃的部分完全被忽略，这些部分中的代码也会像没使用的模板一样进行语法检查。<br><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/2026.1.7_1.png"></p>
+<p><strong>特别强调：被忽略的语句也必须符合正确的语法</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">(T t)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">if</span> <span class="title">constexpr</span><span class="params">(std::is_integral_v&lt;T&gt;)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (t &gt; <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="built_in">foo</span>(t‐<span class="number">1</span>);<span class="comment">// OK</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="built_in">undeclared</span>(t); <span class="comment">// 如果未被声明且未被丢弃将导致错误</span></span><br><span class="line">			<span class="built_in">undeclared</span>(); <span class="comment">// 如果未声明将导致错误（即使被丢弃也一样）</span></span><br><span class="line">			<span class="built_in">static_assert</span>(<span class="literal">false</span>, <span class="string">&quot;no integral&quot;</span>); <span class="comment">// 总是会进行断言（即使被丢弃也一样）</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/2026.1.7_2.png"></p>
+<h1 id="2-使用编译期if语句"><a href="#2-使用编译期if语句" class="headerlink" title="2.使用编译期if语句"></a>2.使用编译期if语句</h1><p><strong>1.理论上来说：只要条件表达式是编译期的表达式你就可以像使用运行期if一样使用编译期if</strong><br><strong>2.也可以混合使用编译期和运行期的if</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;limits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">(T val)</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">if</span> <span class="title">constexpr</span> <span class="params">(std::is_integral_v&lt;std::<span class="type">remove_reference_t</span>&lt;T&gt;&gt;)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (val &gt; <span class="number">10</span>) &#123;</span><br><span class="line">            <span class="function"><span class="keyword">if</span> <span class="title">constexpr</span> <span class="params">(std::numeric_limits&lt;<span class="type">char</span>&gt;::is_signed)</span> </span>&#123;</span><br><span class="line">                <span class="comment">// char 是有符号的</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// char 是无符号的</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// val &lt;= 10</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// T 不是整型</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>注意:你不能在函数体之外使用if constexpr。因此，你不能使用它来替换预处理器的条件编译(#if &#x2F; #ifdef)。</strong></p>
+<h2 id="2-1-编译期if的注意事项"><a href="#2-1-编译期if的注意事项" class="headerlink" title="2.1 编译期if的注意事项"></a>2.1 编译期if的注意事项</h2><h3 id="1-编译期if可能影响返回值类型"><a href="#1-编译期if可能影响返回值类型" class="headerlink" title="1.编译期if可能影响返回值类型"></a>1.编译期if可能影响返回值类型</h3><p><strong>下面的代码总能通过编译，但返回值的类型可能会不同：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">foo</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">if</span> <span class="title">constexpr</span><span class="params">(<span class="keyword">sizeof</span>(<span class="type">int</span>)&gt;<span class="number">4</span>)</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">42</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">42u</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
-<li>‘(‘ : sum+1</li>
-<li>‘)’ : sum-1</li>
-<li>判断是否维持sum&gt;&#x3D;0<br>5.最后：“左&#x2F;右括号数”&#x3D;0，且sum&#x3D;0 ——&gt; “合法！”</li>
+<li>如果大于4字节，返回42的返回语句将会生效，因此返回值类型是int。</li>
+<li>否则，返回42u的返回语句将生效，因此返回值类型是unsigned int。</li>
 </ul>
-<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//res:结果集   tmpRes：每次的结果   sum：&quot;和&quot;  leftNum:&#x27;(&#x27;剩余数量  right: &#x27;)&#x27;剩余数量  </span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">(vector&lt;string&gt;&amp; res,string&amp; tmpRes,<span class="type">int</span> sum,<span class="type">int</span> leftNum,<span class="type">int</span> rightNum)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(sum&lt;<span class="number">0</span>) <span class="keyword">return</span>; <span class="comment">//sum&lt;0:说明当前&#x27;)&#x27;数量 大于 &#x27;(&#x27;数量</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(leftNum==<span class="number">0</span> &amp;&amp; rightNum==<span class="number">0</span> &amp;&amp; sum==<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="comment">//最后都为0，则为合法组合</span></span><br><span class="line">        res.<span class="built_in">push_back</span>(tmpRes);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//增加左括号</span></span><br><span class="line">    <span class="keyword">if</span>(leftNum&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        tmpRes.<span class="built_in">push_back</span>(<span class="string">&#x27;(&#x27;</span>);</span><br><span class="line">        <span class="built_in">func</span>(res,tmpRes,sum<span class="number">+1</span>,leftNum<span class="number">-1</span>,rightNum);</span><br><span class="line">        tmpRes.<span class="built_in">pop_back</span>(); <span class="comment">//回溯</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//增加右括号</span></span><br><span class="line">    <span class="keyword">if</span>(rightNum&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        tmpRes.<span class="built_in">push_back</span>(<span class="string">&#x27;)&#x27;</span>);</span><br><span class="line">        <span class="built_in">func</span>(res,tmpRes,sum<span class="number">-1</span>,leftNum,rightNum<span class="number">-1</span>);</span><br><span class="line">        tmpRes.<span class="built_in">pop_back</span>(); <span class="comment">//回溯</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">vector&lt;string&gt; <span class="title">generateParenthesis</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// write code here</span></span><br><span class="line">    vector&lt;string&gt; res;</span><br><span class="line">    <span class="keyword">if</span>(n==<span class="number">0</span>) <span class="keyword">return</span> res;</span><br><span class="line">    string tmpRes;</span><br><span class="line">    <span class="built_in">func</span>(res,tmpRes,<span class="number">0</span>,n,n);</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-即使在then部分返回也要考虑else部分"><a href="#2-即使在then部分返回也要考虑else部分" class="headerlink" title="2.即使在then部分返回也要考虑else部分"></a>2.即使在then部分返回也要考虑else部分</h3><p><strong>运行期if有一个模式不能应用于编译期if</strong></p>
+<ul>
+<li>如果代码在then和else部分都会返回，那么在运行期if中你可以跳过else部分<br><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260107090515331.png"></li>
+</ul>
+<h2 id="2-2其他编译期if的示例"><a href="#2-2其他编译期if的示例" class="headerlink" title="2.2其他编译期if的示例"></a>2.2其他编译期if的示例</h2><h3 id="完美返回泛型值"><a href="#完美返回泛型值" class="headerlink" title="完美返回泛型值"></a>完美返回泛型值</h3><ul>
+<li>先对返回值进行一些处理，再进行完美转发</li>
+<li>因为decltype(auto)不能推导<br>为void（因为void是不完全类型），所以你必须像下面这么写：<br><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260107091404987.png"></li>
+</ul>
 ]]></content>
       <categories>
-        <category>编程题</category>
-        <category>递归/回溯</category>
+        <category>C++17完全指南</category>
+        <category>二、模板特性</category>
       </categories>
       <tags>
-        <tag>oj</tag>
-        <tag>笔试</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -70,6 +82,27 @@
       </tags>
   </entry>
   <entry>
+    <title>括号生成</title>
+    <url>/2026/01/06/%E6%8B%AC%E5%8F%B7%E7%94%9F%E6%88%90/</url>
+    <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p><img src="/images/2026.1.6-1-oj.png" alt="题目"></p>
+<h1 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h1><p>1.时间复杂度O(n) ——&gt;“回溯”<br>2.映射： ‘(‘—&gt;1   ‘)’—&gt;-1<br>3.sum表示“和”，sum&gt;&#x3D;0合法，sum&lt;0不合法<br>4.每次增加一个括号</p>
+<ul>
+<li>‘(‘ : sum+1</li>
+<li>‘)’ : sum-1</li>
+<li>判断是否维持sum&gt;&#x3D;0<br>5.最后：“左&#x2F;右括号数”&#x3D;0，且sum&#x3D;0 ——&gt; “合法！”</li>
+</ul>
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//res:结果集   tmpRes：每次的结果   sum：&quot;和&quot;  leftNum:&#x27;(&#x27;剩余数量  right: &#x27;)&#x27;剩余数量  </span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">(vector&lt;string&gt;&amp; res,string&amp; tmpRes,<span class="type">int</span> sum,<span class="type">int</span> leftNum,<span class="type">int</span> rightNum)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(sum&lt;<span class="number">0</span>) <span class="keyword">return</span>; <span class="comment">//sum&lt;0:说明当前&#x27;)&#x27;数量 大于 &#x27;(&#x27;数量</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(leftNum==<span class="number">0</span> &amp;&amp; rightNum==<span class="number">0</span> &amp;&amp; sum==<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="comment">//最后都为0，则为合法组合</span></span><br><span class="line">        res.<span class="built_in">push_back</span>(tmpRes);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//增加左括号</span></span><br><span class="line">    <span class="keyword">if</span>(leftNum&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        tmpRes.<span class="built_in">push_back</span>(<span class="string">&#x27;(&#x27;</span>);</span><br><span class="line">        <span class="built_in">func</span>(res,tmpRes,sum<span class="number">+1</span>,leftNum<span class="number">-1</span>,rightNum);</span><br><span class="line">        tmpRes.<span class="built_in">pop_back</span>(); <span class="comment">//回溯</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//增加右括号</span></span><br><span class="line">    <span class="keyword">if</span>(rightNum&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        tmpRes.<span class="built_in">push_back</span>(<span class="string">&#x27;)&#x27;</span>);</span><br><span class="line">        <span class="built_in">func</span>(res,tmpRes,sum<span class="number">-1</span>,leftNum,rightNum<span class="number">-1</span>);</span><br><span class="line">        tmpRes.<span class="built_in">pop_back</span>(); <span class="comment">//回溯</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">vector&lt;string&gt; <span class="title">generateParenthesis</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// write code here</span></span><br><span class="line">    vector&lt;string&gt; res;</span><br><span class="line">    <span class="keyword">if</span>(n==<span class="number">0</span>) <span class="keyword">return</span> res;</span><br><span class="line">    string tmpRes;</span><br><span class="line">    <span class="built_in">func</span>(res,tmpRes,<span class="number">0</span>,n,n);</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>编程题</category>
+        <category>递归/回溯</category>
+      </categories>
+      <tags>
+        <tag>oj</tag>
+        <tag>笔试</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>矩阵最长递增路径(重点)</title>
     <url>/2026/01/06/%E7%9F%A9%E9%98%B5%E6%9C%80%E9%95%BF%E9%80%92%E5%A2%9E%E8%B7%AF%E5%BE%84/</url>
     <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p><img src="/images/2026.1.6-2-oj.png" alt="题目"></p>
@@ -85,6 +118,91 @@
       <tags>
         <tag>oj</tag>
         <tag>笔试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>模板编程</title>
+    <url>/2026/01/07/%E6%A8%A1%E6%9D%BF%E7%BC%96%E7%A8%8B/</url>
+    <content><![CDATA[<h1 id="1-编译期if语句"><a href="#1-编译期if语句" class="headerlink" title="1.编译期if语句"></a>1.编译期if语句</h1><p>通过使用语法<strong>if constexpr(…)</strong>，编译器可以计算编译期的条件表达式来<strong>在编译期决定</strong>使用一个if语句<br>的then的部分还是else的部分。<br>[10 编译期if语句]</p>
+<hr>
+<h1 id="2-类型萃取（Type-Traits）-工具"><a href="#2-类型萃取（Type-Traits）-工具" class="headerlink" title="2.类型萃取（Type Traits） 工具"></a>2.类型萃取（Type Traits） 工具</h1><h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h2><p><strong>(1)头文件： #include&lt;type_traits&gt;</strong><br><strong>(2)功能：提供的编译期类型判断 &#x2F; 转换工具，核心作用是在模板编程中获取或修改类型的属性，实现编译期决策。</strong></p>
+<h2 id="2-类型判断类（判断类型属性）"><a href="#2-类型判断类（判断类型属性）" class="headerlink" title="2.类型判断类（判断类型属性）"></a>2.类型判断类（判断类型属性）</h2><ul>
+<li>这类萃取工具以 is_xxx 命名，C++17 后提供 is_xxx_v 便捷别名（等价于 is_xxx<T>::value），返回编译期布尔常量。<br><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260107100035470.png"></li>
+</ul>
+<h2 id="3-std-conditional-t-：编译期条件类型选择工具"><a href="#3-std-conditional-t-：编译期条件类型选择工具" class="headerlink" title="3.std::conditional_t&lt;Condition, T, F&gt; ：编译期条件类型选择工具"></a>3.std::conditional_t&lt;Condition, T, F&gt; ：编译期条件类型选择工具</h2><h3 id="1-核心作用"><a href="#1-核心作用" class="headerlink" title="1.核心作用"></a>1.核心作用</h3><ul>
+<li>根据一个<strong>编译期布尔常量</strong>，在两种类型（T 和 F）中选择其一</li>
+<li>整个选择过程完全发生在编译阶段，不会产生任何运行时开销。</li>
+<li>如果 Condition 为 true → 最终类型是 T</li>
+<li>如果 Condition 为 false → 最终类型是 F</li>
+</ul>
+<h3 id="2-核心要求"><a href="#2-核心要求" class="headerlink" title="2.核心要求"></a>2.核心要求</h3><ul>
+<li>Condition 必须是编译期可确定的布尔值<ul>
+<li>true&#x2F;false 字面量</li>
+<li>constexpr 常量</li>
+<li>static_assert</li>
+<li>is_same_v、is_integral_v…</li>
+<li>等类型萃取的结果，不能是运行时才能确定的变量。</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-std-invoke-result-t-：编译期推导Callable-Args…-的返回类型"><a href="#4-std-invoke-result-t-：编译期推导Callable-Args…-的返回类型" class="headerlink" title="4.std::invoke_result_t&lt;Callable, Args…&gt; ：编译期推导Callable(Args…) 的返回类型"></a>4.std::invoke_result_t&lt;Callable, Args…&gt; ：编译期推导Callable(Args…) 的返回类型</h2><h3 id="1-核心作用：-编译期推导调用返回类型"><a href="#1-核心作用：-编译期推导调用返回类型" class="headerlink" title="1.核心作用： 编译期推导调用返回类型"></a>1.核心作用： 编译期推导调用返回类型</h3><ul>
+<li>在编译期推导出「用 Args… 类型的参数调用 Callable 类型的可调用对象」后，得到的返回值类型。</li>
+</ul>
+<h3 id="2-核心特性：-支持所有-“可调用对象”"><a href="#2-核心特性：-支持所有-“可调用对象”" class="headerlink" title="2.核心特性： 支持所有 “可调用对象”"></a>2.核心特性： 支持所有 “可调用对象”</h3><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260107101254205.png"></p>
+<hr>
+<h1 id="3-使用示例："><a href="#3-使用示例：" class="headerlink" title="3.使用示例："></a>3.使用示例：</h1><h2 id="1-连接池模板示例（部分代码）"><a href="#1-连接池模板示例（部分代码）" class="headerlink" title="1.连接池模板示例（部分代码）"></a>1.连接池模板示例（部分代码）</h2><p><strong>1.知识点：</strong></p>
+<ul>
+<li>if constexpr</li>
+<li>std::is_same_v</li>
+<li>std::conditional_t</li>
+</ul>
+<p><strong>2.功能概述</strong></p>
+<ul>
+<li>实现一个“连接池模板”，用于创建mysql、redis连接池</li>
+<li>mysql和redis都有各自的“配置”(通过文件加载)，连接池需要获取对应的配置来进行初始化</li>
+<li>为获取对应的配置 ——&gt;“连接池模板”需在编译期根据T的实际类型(MySQLConnection &#x2F; RedisConnection)，获取对应“配置”(MySQLConfig &#x2F; RedisConfig)</li>
+<li>获取对应配置后，就可以获取对应的pool_size确定连接池大小，并将“配置”传给“创建连接回调函数”进行连接的创建<br><strong>注：个人能力有限，示例代码可能并不是很完美实用，仅作演示</strong></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//mysql配置结构体</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">MySQLConfig</span>&#123;</span><br><span class="line">	<span class="type">int</span> pool_size=<span class="number">10</span>;</span><br><span class="line">	...</span><br><span class="line">	<span class="function"><span class="type">int</span> <span class="title">GetPoolSize</span><span class="params">()</span> <span class="type">const</span></span>&#123; <span class="keyword">return</span> pool_size;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//redis配置结构体</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">RedisConfig</span>&#123;</span><br><span class="line">	<span class="type">int</span> pool_size=<span class="number">5</span>;</span><br><span class="line">	...</span><br><span class="line">	<span class="function"><span class="type">int</span> <span class="title">GetPoolSize</span><span class="params">()</span> <span class="type">const</span></span>&#123; <span class="keyword">return</span> pool_size;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//全局配置结构体</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">GlobalConfig</span>&#123;</span><br><span class="line">	MySQLConfig mysql;</span><br><span class="line">	RedisConfig redis;</span><br><span class="line">	...</span><br><span class="line">&#125;; </span><br><span class="line"></span><br><span class="line"><span class="comment">/*-----------------------泛型连接池模板类部分代码-----------------*/</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MySQLConnection</span>;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RedisConnection</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TemplateConnectionPool</span>&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">using</span> ConnectionPtr=std::unique_ptr&lt;T&gt;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//通过嵌套std::conditional_t在编译期确定“配置类型”</span></span><br><span class="line">    <span class="keyword">using</span> Config =  std::<span class="type">conditional_t</span>&lt;std::is_same_v&lt;T, MySQLConnection&gt;,MySQLConfig,</span><br><span class="line">                    std::<span class="type">conditional_t</span>&lt;std::is_same_v&lt;T, RedisConnection&gt;,RedisConfig,</span><br><span class="line">                    <span class="type">void</span>&gt;&gt;;</span><br><span class="line">    <span class="keyword">using</span> ConfigPtr=std::shared_ptr&lt;<span class="type">const</span> Config&gt;;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">TemplateConnectionPool</span>(std::shared_ptr&lt;GlobalConfig&gt; global_config,std::function&lt;<span class="built_in">ConnectionPtr</span>(<span class="type">const</span> Config&amp;)&gt;func)</span><br><span class="line">    :<span class="built_in">createConnFunc_</span>(std::<span class="built_in">move</span>(func))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(!global_config)&#123;</span><br><span class="line">            <span class="keyword">throw</span> std::<span class="built_in">invalid_argument</span>(<span class="string">&quot;config is nullptr&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">ExtractSubConfig</span>(global_config); <span class="comment">// 提取子配置</span></span><br><span class="line">        <span class="built_in">InitPool</span>();	<span class="comment">//初始化连接池</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="comment">// 提取子配置（封装分支逻辑，便于后续扩展）</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">ExtractSubConfig</span><span class="params">(<span class="type">const</span> std::shared_ptr&lt;GlobalConfig&gt;global_config)</span></span>&#123;</span><br><span class="line">    	<span class="comment">// 编译期判断：如果是MySQL连接类型，提取mysql子配置</span></span><br><span class="line">        <span class="function"><span class="keyword">if</span> <span class="title">constexpr</span><span class="params">(std::is_same_v&lt;T,MySQLConnection&gt;)</span></span>&#123;</span><br><span class="line">            config_=std::<span class="built_in">make_shared</span>&lt;<span class="type">const</span> Config&gt;(global_config-&gt;mysql);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 编译期判断：如果是Redis连接类型，提取redis子配置</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> <span class="built_in">constexpr</span>(std::is_same_v&lt;T,RedisConnection&gt;)&#123;</span><br><span class="line">            config_=std::<span class="built_in">make_shared</span>&lt;<span class="type">const</span> Config&gt;(global_config-&gt;redis);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 编译期兜底：非支持类型直接触发编译错误</span></span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">// static_assert(false)会强制编译失败，提示不支持的连接类型</span></span><br><span class="line">        	<span class="comment">// 注：std::is_void_v&lt;T&gt;仅作为占位，核心是触发编译报错</span></span><br><span class="line">            <span class="built_in">static_assert</span>(std::is_void_v&lt;T&gt;, <span class="string">&quot;Unsupported connection type, no matching sub-config&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">InitPool</span><span class="params">()</span></span>&#123;</span><br><span class="line">    	<span class="comment">//获取池大小</span></span><br><span class="line">        <span class="type">int</span> poolSize=config_-&gt;<span class="built_in">GetPoolSize</span>();</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;poolSize;++i)&#123;</span><br><span class="line">        	<span class="comment">//将config_传入“回调函数”创建连接</span></span><br><span class="line">            <span class="keyword">auto</span> conn=std::<span class="built_in">move</span>(<span class="built_in">createConnFunc_</span>(*config_));</span><br><span class="line">            <span class="keyword">if</span>(!conn)&#123;</span><br><span class="line">                <span class="keyword">throw</span> std::<span class="built_in">runtime_error</span>(<span class="string">&quot;failed to create connection&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            pool_.<span class="built_in">push_back</span>(std::<span class="built_in">move</span>(conn));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	std::deque&lt;ConnectionPtr&gt; pool_;	<span class="comment">//连接池</span></span><br><span class="line">	ConfigPtr config_;					<span class="comment">//配置</span></span><br><span class="line">	<span class="comment">//创建连接回调函数</span></span><br><span class="line">    std::function&lt;ConnectionPtr(<span class="type">const</span> Config&amp;)&gt; createConnFunc_;</span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发笔记</category>
+        <category>泛型模板编程</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第4章 观测工具</title>
+    <url>/2026/01/06/%E7%AC%AC4%E7%AB%A0-%E8%A7%82%E6%B5%8B%E5%B7%A5%E5%85%B7/</url>
+    <content><![CDATA[<h1 id="工具类型"><a href="#工具类型" class="headerlink" title="工具类型"></a>工具类型</h1><p><strong>概述：性能观测工具可以按照“系统级别”和“进程级别”来分类，多数的工具要么基于“计数器”要么基于“跟踪”</strong><br><img src="/images/2026.1.6-1.png" alt="图片"></p>
+<ul>
+<li>有些工具不只适用于一个象限，例如，top(1)还有一个系统级别的视图，DTrace也有进程级别的能力。</li>
+</ul>
+<h2 id="计数器"><a href="#计数器" class="headerlink" title="计数器"></a>计数器</h2><p>1.内核维护了各种统计数据，称为“计数器”，用于对事件计数。<br>2.计数器的使用可以认为是“零开销”的，因为它们默认是开启的，而且始终由内核维护。<br><img src="/images/2026.1.6-2.png" alt="图片1"><img src="/images/2026.1.6-3.png" alt="图片2"></p>
+<p><strong>一般来说，上述这些工具是从&#x2F;proc文件系统里读取统计信息的</strong></p>
+<h2 id="跟踪"><a href="#跟踪" class="headerlink" title="跟踪"></a>跟踪</h2><p>1.跟踪收集每一个时间的数据以供分析。<br>2.跟踪框架一般默认是不启用的，因为跟踪捕获数据会有CPU开销，另外还需要不小的存储空间来存放数据。<br>3.这些开销会拖慢所跟踪的对象，在解释测量时间的时候需要加以考虑。<br>4.日志，包括系统日志，可以认为是一种默认开启的低频跟踪。<br><img src="/images/2026.1.6-4.png" alt="图片"><img src="/images/2026.1.6-5.png" alt="图片"></p>
+<h2 id="剖析"><a href="#剖析" class="headerlink" title="剖析"></a>剖析</h2><p>1.剖析（profiling）通过对目标收集采样或快照来归纳目标特征</p>
+<ul>
+<li>如对于CPU的使用率，对程序计数器采样，或跟踪来找到消耗CPU周期的代码路径。这些样本采集对于所有的CPU都是按福鼎频率进行的</li>
+</ul>
+<p>2.剖析也能基于非计时的硬件时间</p>
+<ul>
+<li>如CPU硬件缓存未命中或者总线活动</li>
+<li>可以显示出哪行代码路径负责任，这类信息尤其可以帮助开发人员针对系统资源的使用来优化自己的代码</li>
+</ul>
+<p><img src="/images/2026.1.6-6.png" alt="图片"></p>
+<h2 id="监视（sar）"><a href="#监视（sar）" class="headerlink" title="监视（sar）"></a>监视（sar）</h2><p>1.最广泛用于监视单一操作系统的工具是star(1)。<br>2.sar(1)是基于计数器的，在预定的时间（通过cron）执行以记录系统计数器的状态<br>3.sar(1)工具支持用命令行来查看这些数据<br><img src="/images/2026.1.6-7.png" alt="图片"></p>
+<hr>
+<h1 id="观测来源"><a href="#观测来源" class="headerlink" title="观测来源"></a>观测来源</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>1.本节介绍给观测工具提供统计数据的各种接口和框架<br>2.系统性能统计的主要来源是：&#x2F;proc、&#x2F;sys、&#x2F;kstat<br><img src="/images/2026.1.6-8.png" alt="图片"></p>
+<h2 id="proc"><a href="#proc" class="headerlink" title="&#x2F;proc"></a>&#x2F;proc</h2><h4 id="概述-1"><a href="#概述-1" class="headerlink" title="概述"></a>概述</h4><p>1.这是一个提供内核统计信息的文件系统接口<br>2.其中<strong>以进程ID命名的目录代表的就是哪个进程</strong><br>3.这些目录下的众多文件包含了进程的信息和统计数据，由内核结构映射而来<br>4.&#x2F;proc是多态创建的，不需要任何存储设备（在内存中运行）。<br>5.多数文件是只读的，为观测工具提供统计数据；一部分文件是可写的，用于控制进程和内核的行为<br><img src="/images/2026.1.6-9.png" alt="图片"></p>
+]]></content>
+      <categories>
+        <category>《性能之巅》</category>
+        <category>第4章 观测工具</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -181,39 +299,6 @@
       <categories>
         <category>《流畅的python》</category>
         <category>第2章 丰富的序列</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>第4章 观测工具</title>
-    <url>/2026/01/06/%E7%AC%AC4%E7%AB%A0-%E8%A7%82%E6%B5%8B%E5%B7%A5%E5%85%B7/</url>
-    <content><![CDATA[<h1 id="工具类型"><a href="#工具类型" class="headerlink" title="工具类型"></a>工具类型</h1><p><strong>概述：性能观测工具可以按照“系统级别”和“进程级别”来分类，多数的工具要么基于“计数器”要么基于“跟踪”</strong><br><img src="/images/2026.1.6-1.png" alt="图片"></p>
-<ul>
-<li>有些工具不只适用于一个象限，例如，top(1)还有一个系统级别的视图，DTrace也有进程级别的能力。</li>
-</ul>
-<h2 id="计数器"><a href="#计数器" class="headerlink" title="计数器"></a>计数器</h2><p>1.内核维护了各种统计数据，称为“计数器”，用于对事件计数。<br>2.计数器的使用可以认为是“零开销”的，因为它们默认是开启的，而且始终由内核维护。<br><img src="/images/2026.1.6-2.png" alt="图片1"><img src="/images/2026.1.6-3.png" alt="图片2"></p>
-<p><strong>一般来说，上述这些工具是从&#x2F;proc文件系统里读取统计信息的</strong></p>
-<h2 id="跟踪"><a href="#跟踪" class="headerlink" title="跟踪"></a>跟踪</h2><p>1.跟踪收集每一个时间的数据以供分析。<br>2.跟踪框架一般默认是不启用的，因为跟踪捕获数据会有CPU开销，另外还需要不小的存储空间来存放数据。<br>3.这些开销会拖慢所跟踪的对象，在解释测量时间的时候需要加以考虑。<br>4.日志，包括系统日志，可以认为是一种默认开启的低频跟踪。<br><img src="/images/2026.1.6-4.png" alt="图片"><img src="/images/2026.1.6-5.png" alt="图片"></p>
-<h2 id="剖析"><a href="#剖析" class="headerlink" title="剖析"></a>剖析</h2><p>1.剖析（profiling）通过对目标收集采样或快照来归纳目标特征</p>
-<ul>
-<li>如对于CPU的使用率，对程序计数器采样，或跟踪来找到消耗CPU周期的代码路径。这些样本采集对于所有的CPU都是按福鼎频率进行的</li>
-</ul>
-<p>2.剖析也能基于非计时的硬件时间</p>
-<ul>
-<li>如CPU硬件缓存未命中或者总线活动</li>
-<li>可以显示出哪行代码路径负责任，这类信息尤其可以帮助开发人员针对系统资源的使用来优化自己的代码</li>
-</ul>
-<p><img src="/images/2026.1.6-6.png" alt="图片"></p>
-<h2 id="监视（sar）"><a href="#监视（sar）" class="headerlink" title="监视（sar）"></a>监视（sar）</h2><p>1.最广泛用于监视单一操作系统的工具是star(1)。<br>2.sar(1)是基于计数器的，在预定的时间（通过cron）执行以记录系统计数器的状态<br>3.sar(1)工具支持用命令行来查看这些数据<br><img src="/images/2026.1.6-7.png" alt="图片"></p>
-<hr>
-<h1 id="观测来源"><a href="#观测来源" class="headerlink" title="观测来源"></a>观测来源</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>1.本节介绍给观测工具提供统计数据的各种接口和框架<br>2.系统性能统计的主要来源是：&#x2F;proc、&#x2F;sys、&#x2F;kstat<br><img src="/images/2026.1.6-8.png" alt="图片"></p>
-<h2 id="proc"><a href="#proc" class="headerlink" title="&#x2F;proc"></a>&#x2F;proc</h2><h4 id="概述-1"><a href="#概述-1" class="headerlink" title="概述"></a>概述</h4><p>1.这是一个提供内核统计信息的文件系统接口<br>2.其中<strong>以进程ID命名的目录代表的就是哪个进程</strong><br>3.这些目录下的众多文件包含了进程的信息和统计数据，由内核结构映射而来<br>4.&#x2F;proc是多态创建的，不需要任何存储设备（在内存中运行）。<br>5.多数文件是只读的，为观测工具提供统计数据；一部分文件是可写的，用于控制进程和内核的行为<br><img src="/images/2026.1.6-9.png" alt="图片"></p>
-]]></content>
-      <categories>
-        <category>《性能之巅》</category>
-        <category>第4章 观测工具</category>
       </categories>
       <tags>
         <tag>笔记</tag>
