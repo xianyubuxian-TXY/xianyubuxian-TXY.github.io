@@ -1422,7 +1422,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #ff229a;
+    background: #ccff62;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -3087,4 +3087,18 @@ header.header {
 .post-header .post-title {
   font-size: 2.5em !important;
   font-weight: 700 !important;
+}
+.post-body a {
+  color: #0078e7 !important;
+  font-weight: bold;
+  text-decoration: none;
+}
+.post-body a:hover {
+  color: #0056b3 !important;
+  text-decoration: underline;
+}
+.post-toc a {
+  color: inherit !important;
+  font-weight: normal !important;
+  text-decoration: none !important;
 }
