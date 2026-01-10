@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"xianyubuxian-txy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="1.概述 1.std::variant 可以认为是c++中类型安全的 union 2.variant所占的内存大小等于所有可能的底层类型中最大的再加上一个记录当前选项的固定内存开销。不 会分配堆内存。 3.和std::optional、std::any一样，variant对象是值语义 ——&gt; 拷贝被实现为深拷贝 4.拷贝std::variant的开销要比拷贝当前选项的开销稍微大一点，因为varia">
+<meta property="og:type" content="article">
+<meta property="og:title" content="16.std::variant&lt;&gt;">
+<meta property="og:url" content="https://xianyubuxian-txy.github.io/2026/01/08/C++/%E3%80%8AC++17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/16-std-variant/index.html">
+<meta property="og:site_name" content="Xianyu">
+<meta property="og:description" content="1.概述 1.std::variant 可以认为是c++中类型安全的 union 2.variant所占的内存大小等于所有可能的底层类型中最大的再加上一个记录当前选项的固定内存开销。不 会分配堆内存。 3.和std::optional、std::any一样，variant对象是值语义 ——&gt; 拷贝被实现为深拷贝 4.拷贝std::variant的开销要比拷贝当前选项的开销稍微大一点，因为varia">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260108110315903.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260108110558319.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260108110959759.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260108111102983.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260108111233871.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260108141739842.png">
+<meta property="article:published_time" content="2026-01-08T02:42:12.000Z">
+<meta property="article:modified_time" content="2026-01-09T12:33:24.206Z">
+<meta property="article:author" content="咸鱼">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260108110315903.png">
+
+
+<link rel="canonical" href="https://xianyubuxian-txy.github.io/2026/01/08/C++/%E3%80%8AC++17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/16-std-variant/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://xianyubuxian-txy.github.io/2026/01/08/C++/%E3%80%8AC++17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/16-std-variant/","path":"2026/01/08/C++/《C++17完全指南》/16-std-variant/","title":"16.std::variant\u003c>"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>16.std::variant<> | Xianyu</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+<link rel="dns-prefetch" href="https://waline-beta-black.vercel.app">
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Xianyu</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%A6%82%E8%BF%B0"><span class="nav-text">1.概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%B8%B8%E7%94%A8API"><span class="nav-text">2.常用API</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-%E5%A4%B4%E6%96%87%E4%BB%B6"><span class="nav-text">0.头文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%9E%84%E9%80%A0%E4%B8%8E%E8%B5%8B%E5%80%BC"><span class="nav-text">1.构造与赋值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%8F%96%E5%80%BC%E8%AE%BF%E9%97%AE-API"><span class="nav-text">2.取值访问 API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%8A%B6%E6%80%81%E6%9F%A5%E8%AF%A2-API"><span class="nav-text">3.状态查询 API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E4%BF%AE%E6%94%B9%E4%B8%8E%E4%BA%A4%E6%8D%A2-API"><span class="nav-text">4.修改与交换 API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E7%BC%96%E8%AF%91%E6%9C%9F%E8%BE%85%E5%8A%A9-API"><span class="nav-text">5.编译期辅助 API</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-std-variant%E4%B8%AD%E7%9A%84%E7%B1%BB%E5%9E%8B%E8%A6%81%E6%B1%82"><span class="nav-text">3.std::variant中的类型要求</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%9F%BA%E6%9C%AC%E8%A6%81%E6%B1%82"><span class="nav-text">1.基本要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%AF%B9%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A6%81%E6%B1%82"><span class="nav-text">2.对自定义类型的要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%94%A8-std-monostate-%E8%A1%A8%E7%A4%BA%E2%80%9D%E6%97%A0%E5%80%BC%E2%80%9D"><span class="nav-text">3.用 std::monostate 表示”无值”</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-std-visit-%E5%A4%9A%E7%B1%BB%E5%9E%8B%E5%88%86%E6%94%AF%E5%A4%84%E7%90%86%E8%AF%A6%E8%A7%A3"><span class="nav-text">4.std::visit 多类型分支处理详解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86"><span class="nav-text">1.核心原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B%EF%BC%88%E6%8C%89%E5%9C%BA%E6%99%AF%E5%88%86%E7%B1%BB%EF%BC%89"><span class="nav-text">2.使用示例（按场景分类）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF1%EF%BC%9A%E5%8D%95-variant-%E5%A4%9A%E7%B1%BB%E5%9E%8B%E5%88%86%E6%94%AF%EF%BC%88%E5%9F%BA%E7%A1%80%E5%9C%BA%E6%99%AF%EF%BC%89"><span class="nav-text">场景1：单 variant 多类型分支（基础场景）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF2%EF%BC%9A%E5%A4%9A-variant-%E7%BB%84%E5%90%88%E5%88%86%E6%94%AF%EF%BC%88%E8%BF%9B%E9%98%B6%E5%9C%BA%E6%99%AF%EF%BC%89"><span class="nav-text">场景2：多 variant 组合分支（进阶场景）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-std-visit-%E5%85%B3%E9%94%AE%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-text">3.std::visit 关键注意事项</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="咸鱼"
+      src="/images/xianyu.jpg">
+  <p class="site-author-name" itemprop="name">咸鱼</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xianyubuxian-TXY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xianyubuxian-TXY" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xianyubuxian-txy.github.io/2026/01/08/C++/%E3%80%8AC++17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/16-std-variant/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xianyu.jpg">
+      <meta itemprop="name" content="咸鱼">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Xianyu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="16.std::variant&lt;&gt; | Xianyu">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          16.std::variant<>
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-01-08 10:42:12" itemprop="dateCreated datePublished" datetime="2026-01-08T10:42:12+08:00">2026-01-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-01-09 20:33:24" itemprop="dateModified" datetime="2026-01-09T20:33:24+08:00">2026-01-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/%E3%80%8AC-17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《C++17完全指南》</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/%E3%80%8AC-17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/%E4%B8%89%E3%80%81%E6%96%B0%E7%9A%84%E6%A0%87%E5%87%86%E5%BA%93%E7%BB%84%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">三、新的标准库组件</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/%E3%80%8AC-17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/%E4%B8%89%E3%80%81%E6%96%B0%E7%9A%84%E6%A0%87%E5%87%86%E5%BA%93%E7%BB%84%E4%BB%B6/16-std-variant/" itemprop="url" rel="index"><span itemprop="name">16.std::variant<></span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Waline：</span>
+  
+    <a title="waline" href="/2026/01/08/C++/%E3%80%8AC++17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/16-std-variant/#waline" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" data-path="/2026/01/08/C++/%E3%80%8AC++17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/16-std-variant/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h1><p>1.std::variant&lt;&gt; 可以认为是c++中类型安全的 union<br>2.variant所占的内存大小等于所有可能的底层类型中<strong>最大的</strong>再加上一个记录当前选项的固定内存开销。不<br>会分配堆内存。<br>3.和std::optional&lt;&gt;、std::any一样，variant对象是值语义 ——&gt; 拷贝被实现为<strong>深拷贝</strong><br>4.拷贝std::variant&lt;&gt;的开销要比拷贝当前选项的<strong>开销稍微大一点</strong>，因为variant必须找出要拷贝哪个值。<br>5.variant也支持move语义。</p>
+<hr>
+<h1 id="2-常用API"><a href="#2-常用API" class="headerlink" title="2.常用API"></a>2.常用API</h1><h2 id="0-头文件"><a href="#0-头文件" class="headerlink" title="0.头文件"></a>0.头文件</h2><p><strong>#include&lt;variant&gt;</strong></p>
+<p><strong>注意</strong>：两个不同选项的类型也有可能相同，这在多个类型相同的选项分别代表不同含义的时候很有用</p>
+<ul>
+<li>例如：有两个选项类型都是字符串，分别代表数据库中不同列的名称，你可以知道当前的值代表哪一个列）</li>
+</ul>
+<h2 id="1-构造与赋值"><a href="#1-构造与赋值" class="headerlink" title="1.构造与赋值"></a>1.构造与赋值</h2><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260108110315903.png"></p>
+<h2 id="2-取值访问-API"><a href="#2-取值访问-API" class="headerlink" title="2.取值访问 API"></a>2.取值访问 API</h2><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260108110558319.png"></p>
+<h2 id="3-状态查询-API"><a href="#3-状态查询-API" class="headerlink" title="3.状态查询 API"></a>3.状态查询 API</h2><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260108110959759.png"></p>
+<h2 id="4-修改与交换-API"><a href="#4-修改与交换-API" class="headerlink" title="4.修改与交换 API"></a>4.修改与交换 API</h2><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260108111102983.png"></p>
+<h2 id="5-编译期辅助-API"><a href="#5-编译期辅助-API" class="headerlink" title="5.编译期辅助 API"></a>5.编译期辅助 API</h2><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260108111233871.png"></p>
+<hr>
+<h1 id="3-std-variant中的类型要求"><a href="#3-std-variant中的类型要求" class="headerlink" title="3.std::variant中的类型要求"></a>3.std::variant中的类型要求</h1><p><strong>std::variant 可以包含几乎任何类型，包括 std::optional、自定义类、容器等。</strong></p>
+<h2 id="1-基本要求"><a href="#1-基本要求" class="headerlink" title="1.基本要求"></a>1.基本要求</h2><ul>
+<li><strong>可析构</strong>（Destructible）</li>
+<li><strong>不能是引用类型</strong>（int&amp; ❌）</li>
+<li><strong>不能是数组类型</strong>（int[10] ❌）</li>
+<li><strong>不能是</strong> void</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ✅ 全部合法</span></span><br><span class="line">std::variant&lt;<span class="type">int</span>, <span class="type">double</span>, std::string&gt; v1;                    <span class="comment">// 基础类型 + string</span></span><br><span class="line">std::variant&lt;<span class="type">int</span>, std::optional&lt;<span class="type">int</span>&gt;&gt; v2;                     <span class="comment">// 包含 optional</span></span><br><span class="line">std::variant&lt;std::vector&lt;<span class="type">int</span>&gt;, std::map&lt;<span class="type">int</span>, <span class="type">int</span>&gt;&gt; v3;        <span class="comment">// 包含容器</span></span><br><span class="line">std::variant&lt;std::monostate, <span class="type">int</span>, std::string&gt; v4;            <span class="comment">// monostate 用于表示&quot;空&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 自定义类型</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">MyClass</span> &#123;</span><br><span class="line">    <span class="type">int</span> x;</span><br><span class="line">    std::string name;</span><br><span class="line">&#125;;</span><br><span class="line">std::variant&lt;<span class="type">int</span>, MyClass, std::optional&lt;MyClass&gt;&gt; v5;        <span class="comment">// ✅ 自定义类型也可以</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 嵌套 variant</span></span><br><span class="line">std::variant&lt;<span class="type">int</span>, std::variant&lt;<span class="type">double</span>, std::string&gt;&gt; v6;      <span class="comment">// ✅ 套娃也行</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ❌ 这些是非法的</span></span><br><span class="line">std::variant&lt;<span class="type">int</span>&amp;, <span class="type">double</span>&gt; bad1;           <span class="comment">// 引用类型不行</span></span><br><span class="line">std::variant&lt;<span class="type">int</span>[10], <span class="type">double</span>&gt; bad2;        <span class="comment">// C 数组不行</span></span><br><span class="line">std::variant&lt;<span class="type">void</span>, <span class="type">int</span>&gt; bad3;              <span class="comment">// void 不行</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="2-对自定义类型的要求"><a href="#2-对自定义类型的要求" class="headerlink" title="2.对自定义类型的要求"></a>2.对自定义类型的要求</h2><ul>
+<li><strong>最低要求：可析构</strong></li>
+<li><strong>其它要求</strong><br><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260108141739842.png"></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;variant&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ✅ 完整实用的类</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Good</span> &#123;</span><br><span class="line">    <span class="type">int</span> x;</span><br><span class="line">    <span class="built_in">Good</span>() = <span class="keyword">default</span>;						<span class="comment">//默认构造函数		</span></span><br><span class="line">    <span class="built_in">Good</span>(<span class="type">int</span> val) : <span class="built_in">x</span>(val) &#123;&#125;</span><br><span class="line">    <span class="built_in">Good</span>(<span class="type">const</span> Good&amp;) = <span class="keyword">default</span>;         	<span class="comment">// 拷贝构造</span></span><br><span class="line">    <span class="built_in">Good</span>(Good&amp;&amp;) = <span class="keyword">default</span>;              	<span class="comment">// 移动构造</span></span><br><span class="line">    Good&amp; <span class="keyword">operator</span>=(<span class="type">const</span> Good&amp;) = <span class="keyword">default</span>;</span><br><span class="line">    Good&amp; <span class="keyword">operator</span>=(Good&amp;&amp;) = <span class="keyword">default</span>;</span><br><span class="line">    ~<span class="built_in">Good</span>() = <span class="keyword">default</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ⚠️ 没有默认构造函数</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">NoDefault</span> &#123;</span><br><span class="line">    <span class="type">int</span> x;</span><br><span class="line">    <span class="built_in">NoDefault</span>(<span class="type">int</span> val) : <span class="built_in">x</span>(val) &#123;&#125;       <span class="comment">// 只有带参构造</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 用法</span></span><br><span class="line">std::variant&lt;Good, <span class="type">int</span>&gt; v1;              <span class="comment">// ✅ Good 可以默认构造</span></span><br><span class="line">std::variant&lt;NoDefault, <span class="type">int</span>&gt; v2;         <span class="comment">// ❌ 编译错误！NoDefault 不能默认构造</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 解决方案：用 monostate 或把有默认构造的类型放前面</span></span><br><span class="line">std::variant&lt;std::monostate, NoDefault&gt; v3;  <span class="comment">// ✅</span></span><br><span class="line">std::variant&lt;<span class="type">int</span>, NoDefault&gt; v4;             <span class="comment">// ✅ int 在前面，可以默认构造</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-用-std-monostate-表示”无值”"><a href="#3-用-std-monostate-表示”无值”" class="headerlink" title="3.用 std::monostate 表示”无值”"></a>3.用 std::monostate 表示”无值”</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 如果 variant 的第一个类型没有默认构造函数，需要用 monostate</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">NoDefault</span> &#123;</span><br><span class="line">    <span class="built_in">NoDefault</span>(<span class="type">int</span> x) : <span class="built_in">val</span>(x) &#123;&#125;</span><br><span class="line">    <span class="type">int</span> val;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// std::variant&lt;NoDefault, int&gt; v;  // ❌ 编译错误，NoDefault 没有默认构造</span></span><br><span class="line">std::variant&lt;std::monostate, NoDefault, <span class="type">int</span>&gt; v;  <span class="comment">// ✅ monostate 可以默认构造</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="4-std-visit-多类型分支处理详解"><a href="#4-std-visit-多类型分支处理详解" class="headerlink" title="4.std::visit 多类型分支处理详解"></a>4.std::visit 多类型分支处理详解</h1><h2 id="1-核心原理"><a href="#1-核心原理" class="headerlink" title="1.核心原理"></a>1.核心原理</h2><ul>
+<li><strong>访问器（visitor）</strong>：可是 lambda 表达式、函数对象，要求能接收 variant 所有可能存储的类型作为参数；</li>
+<li><strong>匹配规则</strong>：std::visit 会在编译期检查访问器是否支持 variant 的所有类型，运行时自动根据 variant实际存储类型调用对应重载的函数&#x2F;分支；</li>
+<li><strong>优势</strong>：类型安全（编译期校验）、无分支冗余（<strong>无需手动判断 index()</strong> 或 holds_alternative）。</li>
+</ul>
+<h2 id="2-使用示例（按场景分类）"><a href="#2-使用示例（按场景分类）" class="headerlink" title="2.使用示例（按场景分类）"></a>2.使用示例（按场景分类）</h2><h3 id="场景1：单-variant-多类型分支（基础场景）"><a href="#场景1：单-variant-多类型分支（基础场景）" class="headerlink" title="场景1：单 variant 多类型分支（基础场景）"></a>场景1：单 variant 多类型分支（基础场景）</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;variant&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::variant&lt;<span class="type">int</span>, std::string, <span class="type">double</span>&gt; var;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 1. 定义访问器（lambda 表达式，用 constexpr if 实现分支）</span></span><br><span class="line">    <span class="keyword">auto</span> type_visitor = [](<span class="keyword">auto</span>&amp;&amp; val) &#123;</span><br><span class="line">        <span class="comment">// 用 decay_t 获取val的原始类型（排除引用、右值引用）</span></span><br><span class="line">        <span class="keyword">using</span> T = std::<span class="type">decay_t</span>&lt;<span class="keyword">decltype</span>(val)&gt;;</span><br><span class="line">        <span class="function"><span class="keyword">if</span> <span class="title">constexpr</span> <span class="params">(std::is_same_v&lt;T, <span class="type">int</span>&gt;)</span> </span>&#123;</span><br><span class="line">            std::cout &lt;&lt; <span class="string">&quot;当前类型：int，值：&quot;</span> &lt;&lt; val &lt;&lt; <span class="string">&quot;，执行int专属逻辑（加10）：&quot;</span> &lt;&lt; val + <span class="number">10</span> &lt;&lt; std::endl;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> <span class="built_in">constexpr</span> (std::is_same_v&lt;T, std::string&gt;) &#123;</span><br><span class="line">            std::cout &lt;&lt; <span class="string">&quot;当前类型：string，值：&quot;</span> &lt;&lt; val &lt;&lt; <span class="string">&quot;，执行string专属逻辑（拼接后缀）：&quot;</span> &lt;&lt; val + <span class="string">&quot;_suffix&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> <span class="built_in">constexpr</span> (std::is_same_v&lt;T, <span class="type">double</span>&gt;) &#123;</span><br><span class="line">            std::cout &lt;&lt; <span class="string">&quot;当前类型：double，值：&quot;</span> &lt;&lt; val &lt;&lt; <span class="string">&quot;，执行double专属逻辑（乘2）：&quot;</span> &lt;&lt; val * <span class="number">2</span> &lt;&lt; std::endl;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 切换 variant 存储类型，测试访问器</span></span><br><span class="line">    var = <span class="number">100</span>;          <span class="comment">// 存储 int</span></span><br><span class="line">    std::<span class="built_in">visit</span>(type_visitor, var); <span class="comment">// 输出：当前类型：int，值：100，执行int专属逻辑（加10）：110</span></span><br><span class="line"></span><br><span class="line">    var = <span class="string">&quot;hello variant&quot;</span>; <span class="comment">// 存储 string</span></span><br><span class="line">    std::<span class="built_in">visit</span>(type_visitor, var); <span class="comment">// 输出：当前类型：string，值：hello variant，执行string专属逻辑（拼接后缀）：hello variant_suffix</span></span><br><span class="line"></span><br><span class="line">    var = <span class="number">3.14</span>;         <span class="comment">// 存储 double</span></span><br><span class="line">    std::<span class="built_in">visit</span>(type_visitor, var); <span class="comment">// 输出：当前类型：double，值：3.14，执行double专属逻辑（乘2）：6.28</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>用 <strong>constexpr if</strong>实现编译期分支判断，避免运行时开销；</li>
+<li>用 <strong>std::decay_t</strong> 处理 val 的引用属性，确保类型匹配准确；</li>
+<li>若访问器遗漏 variant 支持的某类类型，编译期会直接报错（类型安全保障）。</li>
+</ul>
+<h3 id="场景2：多-variant-组合分支（进阶场景）"><a href="#场景2：多-variant-组合分支（进阶场景）" class="headerlink" title="场景2：多 variant 组合分支（进阶场景）"></a>场景2：多 variant 组合分支（进阶场景）</h3><p><strong>适用于需要同时处理多个 variant 的场景，std::visit 会匹配所有 variant 的类型组合，执行对应逻辑。</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;variant&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 定义两个 variant（可存储不同类型列表）</span></span><br><span class="line">    std::variant&lt;<span class="type">int</span>, std::string&gt; var1;</span><br><span class="line">    std::variant&lt;<span class="type">double</span>, std::string&gt; var2;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 定义访问器（处理 var1 和 var2 的所有类型组合）</span></span><br><span class="line">    <span class="keyword">auto</span> combo_visitor = [](<span class="keyword">auto</span>&amp;&amp; v1, <span class="keyword">auto</span>&amp;&amp; v2) &#123;</span><br><span class="line">        <span class="keyword">using</span> T1 = std::<span class="type">decay_t</span>&lt;<span class="keyword">decltype</span>(v1)&gt;;</span><br><span class="line">        <span class="keyword">using</span> T2 = std::<span class="type">decay_t</span>&lt;<span class="keyword">decltype</span>(v2)&gt;;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 组合分支1：var1=int，var2=double</span></span><br><span class="line">        <span class="function"><span class="keyword">if</span> <span class="title">constexpr</span> <span class="params">(std::is_same_v&lt;T1, <span class="type">int</span>&gt; &amp;&amp; std::is_same_v&lt;T2, <span class="type">double</span>&gt;)</span> </span>&#123;</span><br><span class="line">            std::cout &lt;&lt; <span class="string">&quot;组合类型：int + double，执行求和：&quot;</span> &lt;&lt; v1 + v2 &lt;&lt; std::endl;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 组合分支2：var1=int，var2=string</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> <span class="built_in">constexpr</span> (std::is_same_v&lt;T1, <span class="type">int</span>&gt; &amp;&amp; std::is_same_v&lt;T2, std::string&gt;) &#123;</span><br><span class="line">            std::cout &lt;&lt; <span class="string">&quot;组合类型：int + string，执行拼接：&quot;</span> &lt;&lt; std::<span class="built_in">to_string</span>(v1) + <span class="string">&quot;_&quot;</span> + v2 &lt;&lt; std::endl;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 组合分支3：var1=string，var2=double</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> <span class="built_in">constexpr</span> (std::is_same_v&lt;T1, std::string&gt; &amp;&amp; std::is_same_v&lt;T2, <span class="type">double</span>&gt;) &#123;</span><br><span class="line">            std::cout &lt;&lt; <span class="string">&quot;组合类型：string + double，执行拼接：&quot;</span> &lt;&lt; v1 + <span class="string">&quot;_&quot;</span> + std::<span class="built_in">to_string</span>(v2) &lt;&lt; std::endl;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 组合分支4：var1=string，var2=string</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> <span class="built_in">constexpr</span> (std::is_same_v&lt;T1, std::string&gt; &amp;&amp; std::is_same_v&lt;T2, std::string&gt;) &#123;</span><br><span class="line">            std::cout &lt;&lt; <span class="string">&quot;组合类型：string + string，执行拼接：&quot;</span> &lt;&lt; v1 + v2 &lt;&lt; std::endl;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 测试不同类型组合</span></span><br><span class="line">    var1 = <span class="number">10</span>; var2 = <span class="number">3.14</span>;</span><br><span class="line">    std::<span class="built_in">visit</span>(combo_visitor, var1, var2); <span class="comment">// 输出：组合类型：int + double，执行求和：13.14</span></span><br><span class="line"></span><br><span class="line">    var1 = <span class="number">20</span>; var2 = <span class="string">&quot;test&quot;</span>;</span><br><span class="line">    std::<span class="built_in">visit</span>(combo_visitor, var1, var2); <span class="comment">// 输出：组合类型：int + string，执行拼接：20_test</span></span><br><span class="line"></span><br><span class="line">    var1 = <span class="string">&quot;hello&quot;</span>; var2 = <span class="number">6.28</span>;</span><br><span class="line">    std::<span class="built_in">visit</span>(combo_visitor, var1, var2); <span class="comment">// 输出：组合类型：string + double，执行拼接：hello_6.28xxxx（精度取决于实现）</span></span><br><span class="line"></span><br><span class="line">    var1 = <span class="string">&quot;hello&quot;</span>; var2 = <span class="string">&quot;world&quot;</span>;</span><br><span class="line">    std::<span class="built_in">visit</span>(combo_visitor, var1, var2); <span class="comment">// 输出：组合类型：string + string，执行拼接：helloworld</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>std::visit 支持传入多个 variant 参数（逗号分隔），访问器需接收对应数量的参数；</li>
+<li>需覆盖所有可能的类型组合，否则编译报错；<strong>若部分组合无需处理，可添加默认分支（else）</strong>。</li>
+</ul>
+<h2 id="3-std-visit-关键注意事项"><a href="#3-std-visit-关键注意事项" class="headerlink" title="3.std::visit 关键注意事项"></a>3.std::visit 关键注意事项</h2><p><strong>1.类型安全校验</strong>:访问器必须支持 variant 所有模板类型，否则编译失败（避免遗漏类型处理）；<br><strong>2.避免窄化转换</strong>:若 variant 存储的类型可隐式转换（如 int 和 long），需明确区分，避免分支匹配歧义；<br><strong>3.右值引用处理</strong>:若需修改 variant 中的值，访问器参数可声明为非 const 引用（如 auto&amp; val）；若需转移所有权，可声明为右值引用（auto&amp;&amp; val）；<br><strong>4.返回值支持</strong>:访问器可返回值，所有分支的返回值类型需一致（或可隐式转换为同一类型）</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 访问器返回值示例</span></span><br><span class="line"><span class="keyword">auto</span> return_visitor = [](<span class="keyword">auto</span>&amp;&amp; val) -&gt; <span class="type">int</span> &#123;</span><br><span class="line">    <span class="keyword">using</span> T = std::<span class="type">decay_t</span>&lt;<span class="keyword">decltype</span>(val)&gt;;</span><br><span class="line">    <span class="function"><span class="keyword">if</span> <span class="title">constexpr</span> <span class="params">(std::is_same_v&lt;T, <span class="type">int</span>&gt;)</span> <span class="keyword">return</span> val</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> <span class="built_in">constexpr</span> (std::is_same_v&lt;T, std::string&gt;) <span class="keyword">return</span> val.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> <span class="built_in">constexpr</span> (std::is_same_v&lt;T, <span class="type">double</span>&gt;) <span class="keyword">return</span> <span class="built_in">static_cast</span>&lt;<span class="type">int</span>&gt;(val);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">std::variant&lt;<span class="type">int</span>, std::string, <span class="type">double</span>&gt; var = <span class="string">&quot;return test&quot;</span>;</span><br><span class="line"><span class="type">int</span> result = std::<span class="built_in">visit</span>(return_visitor, var);</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;访问器返回值：&quot;</span> &lt;&lt; result &lt;&lt; std::endl; <span class="comment">// 输出：10（字符串长度）</span></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="咸鱼 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="咸鱼 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>咸鱼
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://xianyubuxian-txy.github.io/2026/01/08/C++/%E3%80%8AC++17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/16-std-variant/" title="16.std::variant&lt;&gt;">https://xianyubuxian-txy.github.io/2026/01/08/C++/《C++17完全指南》/16-std-variant/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/01/08/C++/%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/%E2%80%98%E5%8F%98%E9%95%BF%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8%E2%80%99%E7%9A%84%E5%A4%9A%E7%A7%8D%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F/" rel="prev" title="‘变长参数列表’的多种实现方式">
+                  <i class="fa fa-angle-left"></i> ‘变长参数列表’的多种实现方式
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/01/08/C++/%E6%A0%87%E5%87%86%E5%BA%93/type-traits-%E2%80%9C%E6%A0%87%E5%87%86%E8%90%83%E5%8F%96%E5%BA%93%E2%80%9D/" rel="next" title="&lt;type_traits&gt; “标准萃取库”">
+                  <type_traits> “标准萃取库” <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="waline"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">咸鱼</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">31k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">1:44</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/xianyubuxian-TXY" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<script class="next-config" data-name="waline" type="application/json">{"lang":"zh-cn","enable":true,"serverURL":"https://waline-beta-black.vercel.app","cssUrl":"https://unpkg.com/@waline/client@v2/dist/waline.css","commentCount":true,"pageview":false,"placeholder":"请文明评论呀","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"visitor":true,"comment_count":true,"requiredFields":[],"libUrl":"//unpkg.com/@waline/client@v2/dist/waline.js","el":"#waline","comment":true,"path":"/2026/01/08/C++/%E3%80%8AC++17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/16-std-variant/"}</script>
+<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css">
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.waline.el).then(() =>
+    NexT.utils.getScript(CONFIG.waline.libUrl, { condition: window.Waline })
+  ).then(() => 
+    Waline.init(Object.assign({}, CONFIG.waline,{ el: document.querySelector(CONFIG.waline.el) }))
+  );
+});
+</script>
+
+</body>
+</html>

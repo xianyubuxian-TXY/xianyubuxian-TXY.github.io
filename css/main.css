@@ -1422,7 +1422,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #ccff62;
+    background: #03af94;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -2302,6 +2302,24 @@ pre code {
 .post-block:last-of-type .post-eof {
   display: none;
 }
+.post-copyright ul {
+  list-style: none;
+  overflow: hidden;
+  padding: 0.5em 1em;
+  position: relative;
+  background: var(--card-bg-color);
+  border-left: 3px solid #ff2a2a;
+  margin: 1em 0 0;
+}
+.post-copyright ul::after {
+  content: '\f25e';
+  font-family: 'Font Awesome 7 Brands';
+  font-size: 200px;
+  opacity: 0.1;
+  position: absolute;
+  right: -50px;
+  top: -150px;
+}
 .post-tags {
   margin-top: 40px;
   text-align: center;
@@ -3073,20 +3091,44 @@ header.header {
   margin-left: 0.5em;
 }
 .post-body h1 {
-  font-size: 1.8em !important;
+  font-size: 2em !important;
   font-weight: 700 !important;
 }
 .post-body h2 {
-  font-size: 1.5em !important;
+  font-size: 1.75em !important;
   font-weight: 700 !important;
 }
 .post-body h3 {
-  font-size: 1.3em !important;
-  font-weight: 600 !important;
+  font-size: 1.5em !important;
+  font-weight: 700 !important;
+}
+.post-body h4 {
+  font-size: 1.25em !important;
+  font-weight: 700 !important;
+}
+.post-body h5 {
+  font-size: 1.15em !important;
+  font-weight: 700 !important;
+}
+.post-body h6 {
+  font-size: 1.05em !important;
+  font-weight: 700 !important;
 }
 .post-header .post-title {
-  font-size: 2.5em !important;
+  font-size: 3em !important;
   font-weight: 700 !important;
+}
+/* 设置正文字体大小 */
+.post-body {
+  font-size: 16px; /* 可以根据需要调整这个值 */
+  line-height: 1.8; /* 行高 */
+}
+.post-body p {
+  font-size: 1em; /* 16px，与基础大小一致 */
+}
+/* 代码块稍微小一点 */
+.post-body code {
+  font-size: 0.9em; /* 14.4px */
 }
 .post-body a {
   color: #0078e7 !important;
