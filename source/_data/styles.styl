@@ -44,22 +44,75 @@
 // ========== 文章标题 ==========
 // 文章详情页标题
 .post-body h1 {
-  font-size: 1.8em !important;
+  font-size: 2.0em !important;
   font-weight: 700 !important;
 }
 
 .post-body h2 {
-  font-size: 1.5em !important;
+  font-size: 1.75em !important;
   font-weight: 700 !important;
 }
 
 .post-body h3 {
-  font-size: 1.3em !important;
-  font-weight: 600 !important;
+  font-size: 1.5em !important;
+  font-weight: 700 !important;
+}
+
+.post-body h4 {
+  font-size: 1.25em !important;
+  font-weight: 700 !important;
+}
+
+.post-body h5 {
+  font-size: 1.15em !important;
+  font-weight: 700 !important;
+}
+
+.post-body h6 {
+  font-size: 1.05em !important;
+  font-weight: 700 !important;
 }
 
 // 页面主标题（文章顶部的标题）
 .post-header .post-title {
-  font-size: 2.5em !important;
+  font-size: 3.0em !important;
   font-weight: 700 !important;
+}
+
+//========= 文章正文 =======
+/* 设置正文字体大小 */
+.post-body {
+  font-size: 16px;  /* 可以根据需要调整这个值 */
+  line-height: 1.8;        /* 行高 */
+}
+
+.post-body p {
+  font-size: 1em;          /* 16px，与基础大小一致 */
+}
+
+//============ 代码块 =======
+/* 代码块稍微小一点 */
+.post-body code {
+  font-size: 0.9em;        /* 14.4px */
+}
+
+//========= 超链接样式 ========
+// 仅文章正文内的超链接：加粗+蓝色+去掉默认下划线（可选）
+.post-body a {
+  color: #0078e7 !important;  // 链接蓝色（可替换为#165DFF、#4096ff等）
+  font-weight: bold;          // 加粗显示
+  text-decoration: none;      // 可选：去掉正文链接的默认下划线
+}
+
+// 可选：正文链接鼠标悬停效果（提升交互）
+.post-body a:hover {
+  color: #0056b3 !important;  // 悬停时变深蓝
+  text-decoration: underline; // 悬停时显示下划线
+}
+
+// 强制保留侧边栏目录链接的原有样式（防止被覆盖）
+.post-toc a {
+  color: inherit !important;  // 继承主题默认颜色
+  font-weight: normal !important; // 取消加粗
+  text-decoration: none !important; // 继承默认下划线样式
 }
