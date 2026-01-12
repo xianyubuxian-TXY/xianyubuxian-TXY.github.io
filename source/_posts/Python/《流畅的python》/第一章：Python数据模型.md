@@ -9,10 +9,7 @@ categories:
 	- 第1章 Python数据模型
 ---
 
-# 三、特殊方法概述
-**之所以把这放在最开始，是为了方便熟悉以后查找特殊方法**
-![](https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260109155341846.png)![](https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260109155359478.png)
-
+**特殊方法快速查表**：[三、特殊方法概述](#三、特殊方法概述)
 
 # 一、概述
 ## 1.特殊方法（"魔术方法"）
@@ -123,3 +120,6 @@ categories:
 的使用情况。**
 ![](https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260109154613470.png)
 ![](https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260109154741486.png)
+
+# 三、特殊方法汇总表格
+![](https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260109155341846.png)![](https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260109155359478.png)
