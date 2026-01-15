@@ -1422,7 +1422,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #ff21ff;
+    background: #3c2dff;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -3115,7 +3115,7 @@ header.header {
   font-weight: 700 !important;
 }
 .post-header .post-title {
-  font-size: 3em !important;
+  font-size: 1.8em !important;
   font-weight: 700 !important;
 }
 /* 设置正文字体大小 */

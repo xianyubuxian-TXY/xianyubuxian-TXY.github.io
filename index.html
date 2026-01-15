@@ -168,18 +168,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-count">40</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -204,6 +204,1022 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://xianyubuxian-txy.github.io/2026/01/15/C++/C++%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%BA%93/gtest%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xianyu.jpg">
+      <meta itemprop="name" content="咸鱼">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Xianyu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Xianyu">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/01/15/C++/C++%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%BA%93/gtest%E7%9A%84%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">gtest的使用</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-01-15 10:12:44 / 修改时间：10:18:28" itemprop="dateCreated datePublished" datetime="2026-01-15T10:12:44+08:00">2026-01-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/C-%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">C++后端开发库</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/C-%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%BA%93/gtest/" itemprop="url" rel="index"><span itemprop="name">gtest</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Waline：</span>
+  
+    <a title="waline" href="/2026/01/15/C++/C++%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%BA%93/gtest%E7%9A%84%E4%BD%BF%E7%94%A8/#waline" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" data-path="/2026/01/15/C++/C++%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%BA%93/gtest%E7%9A%84%E4%BD%BF%E7%94%A8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>131</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          1.常用命令
+1.在命令行指定运行要运行的测试用例
+ * 通过 –gtest_filter 参数指定要运行的测试
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+
+
+./bin/tests/config_test --gtest_filter="测试套件名.测试用例名"
+
+# 例1：运行单个测试用例
+# 运行 ConfigTest 套件中的 InvalidYamlFormat 测试
+./bin/tests/config_test --gtest_filter=ConfigTest.InvalidYamlFormat
+
+# 例2：运行多个测试用例（使用冒号分隔）
+# 运行多个指定的
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2026/01/15/C++/C++%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%BA%93/gtest%E7%9A%84%E4%BD%BF%E7%94%A8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://xianyubuxian-txy.github.io/2026/01/13/Linux/Linux%E7%B3%BB%E7%BB%9F%E5%B7%A5%E5%85%B7/sysctl%E4%B8%8Esystemctl/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xianyu.jpg">
+      <meta itemprop="name" content="咸鱼">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Xianyu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Xianyu">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/01/13/Linux/Linux%E7%B3%BB%E7%BB%9F%E5%B7%A5%E5%85%B7/sysctl%E4%B8%8Esystemctl/" class="post-title-link" itemprop="url">sysctl 与 systemctl</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-01-13 10:48:42 / 修改时间：11:38:06" itemprop="dateCreated datePublished" datetime="2026-01-13T10:48:42+08:00">2026-01-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/Linux%E7%B3%BB%E7%BB%9F%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">Linux系统工具</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/Linux%E7%B3%BB%E7%BB%9F%E5%B7%A5%E5%85%B7/sysctl-%E4%B8%8E-systemctl/" itemprop="url" rel="index"><span itemprop="name">sysctl 与 systemctl</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Waline：</span>
+  
+    <a title="waline" href="/2026/01/13/Linux/Linux%E7%B3%BB%E7%BB%9F%E5%B7%A5%E5%85%B7/sysctl%E4%B8%8Esystemctl/#waline" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" data-path="/2026/01/13/Linux/Linux%E7%B3%BB%E7%BB%9F%E5%B7%A5%E5%85%B7/sysctl%E4%B8%8Esystemctl/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>115</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          1.sysctl 与 systemctl
+sysctl 和 systemctl 是 Linux 系统中功能完全不同的两个工具，核心区别在于管理对象和作用场景
+
+
+作用层面：
+
+ * sysctl 作用于 内核层： * 修改的是内核运行时的参数，影响整个系统的底层行为（比如网络协议栈、内存管理）。
+   
+   
+ * systemctl 作用于 用户层/服务层： * 管理的是用户态的服务进程，不涉及内核参数的调整。
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2026/01/13/Linux/Linux%E7%B3%BB%E7%BB%9F%E5%B7%A5%E5%85%B7/sysctl%E4%B8%8Esystemctl/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://xianyubuxian-txy.github.io/2026/01/13/Linux/TCP_IP%E7%9B%B8%E5%85%B3/TCP%20KeepAlive%20%E5%BF%83%E8%B7%B3%E6%9C%BA%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xianyu.jpg">
+      <meta itemprop="name" content="咸鱼">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Xianyu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Xianyu">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/01/13/Linux/TCP_IP%E7%9B%B8%E5%85%B3/TCP%20KeepAlive%20%E5%BF%83%E8%B7%B3%E6%9C%BA%E5%88%B6/" class="post-title-link" itemprop="url">TCP KeepAlive 心跳机制</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-01-13 10:16:24 / 修改时间：11:51:27" itemprop="dateCreated datePublished" datetime="2026-01-13T10:16:24+08:00">2026-01-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/TCP-IP%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">TCP_IP相关</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/TCP-IP%E7%9B%B8%E5%85%B3/TCP-KeepAlive-%E5%BF%83%E8%B7%B3%E6%9C%BA%E5%88%B6/" itemprop="url" rel="index"><span itemprop="name">TCP KeepAlive 心跳机制</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Waline：</span>
+  
+    <a title="waline" href="/2026/01/13/Linux/TCP_IP%E7%9B%B8%E5%85%B3/TCP%20KeepAlive%20%E5%BF%83%E8%B7%B3%E6%9C%BA%E5%88%B6/#waline" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" data-path="/2026/01/13/Linux/TCP_IP%E7%9B%B8%E5%85%B3/TCP%20KeepAlive%20%E5%BF%83%E8%B7%B3%E6%9C%BA%E5%88%B6/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          1.机制原理
+TCP KeepAlive 是 操作系统内核层面 的连接保活机制，用于检测长时间空闲的 TCP 连接是否仍然有效。
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+
+
+┌─────────────────────────────────────────────────────────────────┐
+│                    TCP KeepAlive 工作原理                        │
+├────────────────────────────────────────────────────────
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2026/01/13/Linux/TCP_IP%E7%9B%B8%E5%85%B3/TCP%20KeepAlive%20%E5%BF%83%E8%B7%B3%E6%9C%BA%E5%88%B6/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://xianyubuxian-txy.github.io/2026/01/12/C++/C++%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%BA%93/redis-plus-plus%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xianyu.jpg">
+      <meta itemprop="name" content="咸鱼">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Xianyu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Xianyu">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/01/12/C++/C++%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%BA%93/redis-plus-plus%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/" class="post-title-link" itemprop="url">redis-plus-plus使用教程</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-01-12 22:15:28" itemprop="dateCreated datePublished" datetime="2026-01-12T22:15:28+08:00">2026-01-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-01-14 23:05:37" itemprop="dateModified" datetime="2026-01-14T23:05:37+08:00">2026-01-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/C-%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">C++后端开发库</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/C-%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%BA%93/redis-plus-plus/" itemprop="url" rel="index"><span itemprop="name">redis-plus-plus</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Waline：</span>
+  
+    <a title="waline" href="/2026/01/12/C++/C++%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%BA%93/redis-plus-plus%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/#waline" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" data-path="/2026/01/12/C++/C++%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%BA%93/redis-plus-plus%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>19k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1:04</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          附录1：Redis++ 核心场景
+附录2：Redis++ 重要机制
+附录3：Redis++ 安装教程
+
+一、Redis++概述
+1.Redis++ 适配模式介绍
+Redis++ 支持多种部署模式的适配，不同模式对应不同的生产场景需求，核心模式如下：
+
+ * 单机模式： * 适配小型应用、开发/测试环境，直接连接单个Redis节点，部署简单但无高可用保障。
+    * 生产环境仅推荐用于非核心业务，需配合数据备份策略使用。​
+   
+   
+ * 主从模式： * 适配读多写少的生产场景
+    * 包含一个主节点（写入）和多个从节点（读取）
+    * Redis++可通过配置指定读请求路由到从
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2026/01/12/C++/C++%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%BA%93/redis-plus-plus%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://xianyubuxian-txy.github.io/2026/01/12/Markdown/Markdown%E7%9B%B8%E5%85%B3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xianyu.jpg">
+      <meta itemprop="name" content="咸鱼">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Xianyu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Xianyu">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/01/12/Markdown/Markdown%E7%9B%B8%E5%85%B3/" class="post-title-link" itemprop="url">Markdown语法笔记</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-01-12 17:36:47" itemprop="dateCreated datePublished" datetime="2026-01-12T17:36:47+08:00">2026-01-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-01-13 11:53:41" itemprop="dateModified" datetime="2026-01-13T11:53:41+08:00">2026-01-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Markdown/" itemprop="url" rel="index"><span itemprop="name">Markdown</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Markdown/Markdown%E8%AF%AD%E6%B3%95%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">Markdown语法笔记</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Waline：</span>
+  
+    <a title="waline" href="/2026/01/12/Markdown/Markdown%E7%9B%B8%E5%85%B3/#waline" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" data-path="/2026/01/12/Markdown/Markdown%E7%9B%B8%E5%85%B3/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>197</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          1.常用语法
+（1）创建章内链接
+<1> 定义锚点
+1
+2
+
+
+<a id="describtion"></a>
+# 标题1
+
+
+<2> 生成链接
+1
+
+
+[文字描述](#describtion)
+
+
+（2）章外链接（引用其它文章）
+<1>绝对路径链接
+[显示文字](链接URL路径)
+
+缺点：
+- 这种方式链接的是生成后的 URL 路径，如果你移动了源文件位置或修改了文件名/日期，链接就会失效。
+
+<2>Hexo 内置标签（推荐，不会失效）
+{% post_link "文字描述" '文章名' %}
+
+2.常用表情包（可直接复制使用）
+😊😂😫😄 大笑🤮 吐饭😩 疲惫😊 微笑😂 笑
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2026/01/12/Markdown/Markdown%E7%9B%B8%E5%85%B3/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://xianyubuxian-txy.github.io/2026/01/12/Linux/Linux%E7%9A%84%E4%BD%BF%E7%94%A8/Linux%E8%AE%BE%E7%BD%AEVPN%E4%BB%A3%E7%90%86%EF%BC%88%E8%A7%A3%E5%86%B3github%E8%BF%9E%E6%8E%A5%E9%97%AE%E9%A2%98%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xianyu.jpg">
+      <meta itemprop="name" content="咸鱼">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Xianyu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Xianyu">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/01/12/Linux/Linux%E7%9A%84%E4%BD%BF%E7%94%A8/Linux%E8%AE%BE%E7%BD%AEVPN%E4%BB%A3%E7%90%86%EF%BC%88%E8%A7%A3%E5%86%B3github%E8%BF%9E%E6%8E%A5%E9%97%AE%E9%A2%98%EF%BC%89/" class="post-title-link" itemprop="url">Linux设置VPN代理（解决github连接问题）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-01-12 16:50:52" itemprop="dateCreated datePublished" datetime="2026-01-12T16:50:52+08:00">2026-01-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-01-13 10:49:50" itemprop="dateModified" datetime="2026-01-13T10:49:50+08:00">2026-01-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/Linux%E7%9A%84%E4%BD%BF%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">Linux的使用</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/Linux%E7%9A%84%E4%BD%BF%E7%94%A8/Linux%E8%AE%BE%E7%BD%AEVPN%E4%BB%A3%E7%90%86%EF%BC%88%E8%A7%A3%E5%86%B3github%E8%BF%9E%E6%8E%A5%E9%97%AE%E9%A2%98%EF%BC%89/" itemprop="url" rel="index"><span itemprop="name">Linux设置VPN代理（解决github连接问题）</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Waline：</span>
+  
+    <a title="waline" href="/2026/01/12/Linux/Linux%E7%9A%84%E4%BD%BF%E7%94%A8/Linux%E8%AE%BE%E7%BD%AEVPN%E4%BB%A3%E7%90%86%EF%BC%88%E8%A7%A3%E5%86%B3github%E8%BF%9E%E6%8E%A5%E9%97%AE%E9%A2%98%EF%BC%89/#waline" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" data-path="/2026/01/12/Linux/Linux%E7%9A%84%E4%BD%BF%E7%94%A8/Linux%E8%AE%BE%E7%BD%AEVPN%E4%BB%A3%E7%90%86%EF%BC%88%E8%A7%A3%E5%86%B3github%E8%BF%9E%E6%8E%A5%E9%97%AE%E9%A2%98%EF%BC%89/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>193</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          1.前提要求：宿主机上需要有VPN
+2.设置临时代理步骤
+（1）（虚拟机）通过 ifconfig 命令查看虚拟机的IP，确定局域网网关，如下：
+
+
+ * 网关为：192.168.36.1 （即“最后一位”为 1）
+
+（2）（宿主机）打开VPN连接，并开启“允许局域网连接”，如下：
+
+
+（3）（虚拟机）设置“临时代理”，并进行测试，如下：
+ * 以上面我的网关 192.168.36.1为例
+
+1
+2
+3
+4
+5
+6
+
+
+# 假设代理端口是 7890（通常都是）
+export http_proxy=http://192.168.36.1:7890
+export https_proxy=http:/
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2026/01/12/Linux/Linux%E7%9A%84%E4%BD%BF%E7%94%A8/Linux%E8%AE%BE%E7%BD%AEVPN%E4%BB%A3%E7%90%86%EF%BC%88%E8%A7%A3%E5%86%B3github%E8%BF%9E%E6%8E%A5%E9%97%AE%E9%A2%98%EF%BC%89/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://xianyubuxian-txy.github.io/2026/01/12/C++/C++%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%BA%93/sqlpp11-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xianyu.jpg">
+      <meta itemprop="name" content="咸鱼">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Xianyu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Xianyu">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/01/12/C++/C++%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%BA%93/sqlpp11-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">sqlpp11的安装</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-01-12 11:24:32" itemprop="dateCreated datePublished" datetime="2026-01-12T11:24:32+08:00">2026-01-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-01-13 10:15:00" itemprop="dateModified" datetime="2026-01-13T10:15:00+08:00">2026-01-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/C-%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">C++后端开发库</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/C-%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%BA%93/sqlpp11%EF%BC%88%E5%B7%B2%E4%B8%8D%E5%87%86%E5%A4%87%E4%BD%BF%E7%94%A8%EF%BC%89/" itemprop="url" rel="index"><span itemprop="name">sqlpp11（已不准备使用）</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Waline：</span>
+  
+    <a title="waline" href="/2026/01/12/C++/C++%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%BA%93/sqlpp11-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#waline" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" data-path="/2026/01/12/C++/C++%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%BA%93/sqlpp11-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          提要（请看完再决定是否继续看）
+ 1. 安装时间： 2026年1月12日 （注意：如果你安装时间较晚，下述方法可能已不再适用）
+ 2. 安装后版本： 0.65 + 11 commits（相较于0.65 有11 个额外的 commit ）——>（可切换为0.65）
+
+ * 注：也许你安装后并不是这个版本，已经升级
+
+ 3. 注意：也许由于版本不同等问题，安装后进行的“测试代码”不再适用，语法可能也不再适用，请自己斟酌！
+
+个人抱怨
+1.在网上没找到很完整的教程，中间尝试了不同的安装方式（vcpkg等），不同安装版本，总是出问题，安装都花了一天（也许是我个人能力太低😞），真的很无奈。
+2.如果在
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2026/01/12/C++/C++%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%BA%93/sqlpp11-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -314,7 +1330,7 @@
 （3）关键特性
 
 
-补充：“不可变性”
+补充：”不可变性”
  * 所有数字类型都是不可变对象（修改会生成新对象）
 
 1
@@ -623,7 +1639,7 @@ print(f"修改前 a 的值：{a}，内存地址：{i
           特殊方法快速查表：三、特殊方法概述
 
 一、概述
-1.特殊方法（“魔术方法”）
+1.特殊方法（”魔术方法”）
  * 特征：名称前后两端都有双下划线。如：
    
     * 在 obj[key] 句法背后提供支持的是特殊方法 getitem
@@ -660,1086 +1676,8 @@ print(f"修改前 a 的值：{a}，内存地址：{i
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://xianyubuxian-txy.github.io/2026/01/09/%E7%BC%96%E7%A8%8B%E9%A2%98/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E5%AD%97%E7%AC%A6%E4%B8%B2/1.%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97(%E4%B8%80)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/xianyu.jpg">
-      <meta itemprop="name" content="咸鱼">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Xianyu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Xianyu">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/01/09/%E7%BC%96%E7%A8%8B%E9%A2%98/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E5%AD%97%E7%AC%A6%E4%B8%B2/1.%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97(%E4%B8%80)/" class="post-title-link" itemprop="url">1.最长公共子序列(一)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2026-01-09 00:06:43 / 修改时间：09:42:03" itemprop="dateCreated datePublished" datetime="2026-01-09T00:06:43+08:00">2026-01-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%BC%96%E7%A8%8B%E9%A2%98/" itemprop="url" rel="index"><span itemprop="name">编程题</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%BC%96%E7%A8%8B%E9%A2%98/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" itemprop="url" rel="index"><span itemprop="name">动态规划</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%BC%96%E7%A8%8B%E9%A2%98/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E5%AD%97%E7%AC%A6%E4%B8%B2/" itemprop="url" rel="index"><span itemprop="name">字符串</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-    <span class="post-meta-item-icon">
-      <i class="far fa-comment"></i>
-    </span>
-    <span class="post-meta-item-text">Waline：</span>
-  
-    <a title="waline" href="/2026/01/09/%E7%BC%96%E7%A8%8B%E9%A2%98/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E5%AD%97%E7%AC%A6%E4%B8%B2/1.%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97(%E4%B8%80)/#waline" itemprop="discussionUrl">
-      <span class="post-comments-count waline-comment-count" data-path="/2026/01/09/%E7%BC%96%E7%A8%8B%E9%A2%98/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E5%AD%97%E7%AC%A6%E4%B8%B2/1.%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97(%E4%B8%80)/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>752</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          1.题目
-
-
-2.代码实现
-1.普通版
-时间复杂度和空间复杂度：O(m×n)
-
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-
-
-int LCS(string s1, string s2) {
-    // write code here
-    int m = s1.size();
-    int n = s2.size();
-    if (m == 0 || n == 0) return 0;
-    
-    // 只存储长度的DP表
-    vector<vector<int>> dp(m + 1, vector<int>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2026/01/09/%E7%BC%96%E7%A8%8B%E9%A2%98/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E5%AD%97%E7%AC%A6%E4%B8%B2/1.%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97(%E4%B8%80)/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://xianyubuxian-txy.github.io/2026/01/08/%E7%BC%96%E7%A8%8B%E9%A2%98/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E5%AD%97%E7%AC%A6%E4%B8%B2/2.%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97(%E4%BA%8C)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/xianyu.jpg">
-      <meta itemprop="name" content="咸鱼">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Xianyu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Xianyu">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/01/08/%E7%BC%96%E7%A8%8B%E9%A2%98/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E5%AD%97%E7%AC%A6%E4%B8%B2/2.%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97(%E4%BA%8C)/" class="post-title-link" itemprop="url">2.最长公共子序列(二)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2026-01-08 23:36:51" itemprop="dateCreated datePublished" datetime="2026-01-08T23:36:51+08:00">2026-01-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-01-09 00:19:16" itemprop="dateModified" datetime="2026-01-09T00:19:16+08:00">2026-01-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%BC%96%E7%A8%8B%E9%A2%98/" itemprop="url" rel="index"><span itemprop="name">编程题</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%BC%96%E7%A8%8B%E9%A2%98/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-%E5%AD%97%E7%AC%A6%E4%B8%B2/" itemprop="url" rel="index"><span itemprop="name">动态规划 - 字符串</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-    <span class="post-meta-item-icon">
-      <i class="far fa-comment"></i>
-    </span>
-    <span class="post-meta-item-text">Waline：</span>
-  
-    <a title="waline" href="/2026/01/08/%E7%BC%96%E7%A8%8B%E9%A2%98/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E5%AD%97%E7%AC%A6%E4%B8%B2/2.%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97(%E4%BA%8C)/#waline" itemprop="discussionUrl">
-      <span class="post-comments-count waline-comment-count" data-path="/2026/01/08/%E7%BC%96%E7%A8%8B%E9%A2%98/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E5%AD%97%E7%AC%A6%E4%B8%B2/2.%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97(%E4%BA%8C)/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>184</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          1.题目
-
-
-2.代码实现
-涉及技巧：回溯构建结果
-
-1.二维数组dp实现
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-
-
-string LCS(string s1, string s2) {
-    // write code here
-    int m = s1.size();
-    int n = s2.size();
-    if (m == 0 || n == 0) return "-1";
-    
-    
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2026/01/08/%E7%BC%96%E7%A8%8B%E9%A2%98/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E5%AD%97%E7%AC%A6%E4%B8%B2/2.%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97(%E4%BA%8C)/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://xianyubuxian-txy.github.io/2026/01/08/%E7%BC%96%E7%A8%8B%E9%A2%98/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E5%AD%97%E7%AC%A6%E4%B8%B2/0.%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E2%80%94%E5%AD%97%E7%AC%A6%E4%B8%B2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/xianyu.jpg">
-      <meta itemprop="name" content="咸鱼">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Xianyu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Xianyu">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/01/08/%E7%BC%96%E7%A8%8B%E9%A2%98/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E5%AD%97%E7%AC%A6%E4%B8%B2/0.%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E2%80%94%E5%AD%97%E7%AC%A6%E4%B8%B2/" class="post-title-link" itemprop="url">0.总结</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2026-01-08 22:53:01" itemprop="dateCreated datePublished" datetime="2026-01-08T22:53:01+08:00">2026-01-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-01-09 00:16:59" itemprop="dateModified" datetime="2026-01-09T00:16:59+08:00">2026-01-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%BC%96%E7%A8%8B%E9%A2%98/" itemprop="url" rel="index"><span itemprop="name">编程题</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%BC%96%E7%A8%8B%E9%A2%98/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" itemprop="url" rel="index"><span itemprop="name">动态规划</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%BC%96%E7%A8%8B%E9%A2%98/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E5%AD%97%E7%AC%A6%E4%B8%B2/" itemprop="url" rel="index"><span itemprop="name">字符串</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-    <span class="post-meta-item-icon">
-      <i class="far fa-comment"></i>
-    </span>
-    <span class="post-meta-item-text">Waline：</span>
-  
-    <a title="waline" href="/2026/01/08/%E7%BC%96%E7%A8%8B%E9%A2%98/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E5%AD%97%E7%AC%A6%E4%B8%B2/0.%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E2%80%94%E5%AD%97%E7%AC%A6%E4%B8%B2/#waline" itemprop="discussionUrl">
-      <span class="post-comments-count waline-comment-count" data-path="/2026/01/08/%E7%BC%96%E7%A8%8B%E9%A2%98/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E5%AD%97%E7%AC%A6%E4%B8%B2/0.%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E2%80%94%E5%AD%97%E7%AC%A6%E4%B8%B2/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>724</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          一、核心思考方向
-1.状态定义：dp数组含义
-1.单字符串：
-
- * dp[i] * 表示s的前i个字符的某种性质
-    * 表示以第i个字符结尾的某种性质
-   
-   
- * dp[i][j] * 表示s[i…j]子串的某种性质
-   
-   
- * dp[i][j][k] * 带有额外限制条件的字符串问题
-      2.双字符串：
-   
-   
- * dp[i][j] * 表示s1的前i个字符与s2的前j个字符的最优解
-   
-   
- * dp[i][j][k] * 带有额外限制条件的字符串问题
-   
-   
- * dp[i][j][k][t] * s1[i…j] 与 s2[k
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2026/01/08/%E7%BC%96%E7%A8%8B%E9%A2%98/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E5%AD%97%E7%AC%A6%E4%B8%B2/0.%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E2%80%94%E5%AD%97%E7%AC%A6%E4%B8%B2/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://xianyubuxian-txy.github.io/2026/01/08/C++/%E6%A0%87%E5%87%86%E5%BA%93/type-traits-%E2%80%9C%E6%A0%87%E5%87%86%E8%90%83%E5%8F%96%E5%BA%93%E2%80%9D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/xianyu.jpg">
-      <meta itemprop="name" content="咸鱼">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Xianyu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Xianyu">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/01/08/C++/%E6%A0%87%E5%87%86%E5%BA%93/type-traits-%E2%80%9C%E6%A0%87%E5%87%86%E8%90%83%E5%8F%96%E5%BA%93%E2%80%9D/" class="post-title-link" itemprop="url"><type_traits> “标准萃取库”</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2026-01-08 15:02:14" itemprop="dateCreated datePublished" datetime="2026-01-08T15:02:14+08:00">2026-01-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-01-09 20:32:44" itemprop="dateModified" datetime="2026-01-09T20:32:44+08:00">2026-01-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/%E6%A0%87%E5%87%86%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">标准库</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/%E6%A0%87%E5%87%86%E5%BA%93/type-traits-%E2%80%9C%E6%A0%87%E5%87%86%E8%90%83%E5%8F%96%E5%BA%93%E2%80%9D/" itemprop="url" rel="index"><span itemprop="name">< type_traits > “标准萃取库”</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-    <span class="post-meta-item-icon">
-      <i class="far fa-comment"></i>
-    </span>
-    <span class="post-meta-item-text">Waline：</span>
-  
-    <a title="waline" href="/2026/01/08/C++/%E6%A0%87%E5%87%86%E5%BA%93/type-traits-%E2%80%9C%E6%A0%87%E5%87%86%E8%90%83%E5%8F%96%E5%BA%93%E2%80%9D/#waline" itemprop="discussionUrl">
-      <span class="post-comments-count waline-comment-count" data-path="/2026/01/08/C++/%E6%A0%87%E5%87%86%E5%BA%93/type-traits-%E2%80%9C%E6%A0%87%E5%87%86%E8%90%83%E5%8F%96%E5%BA%93%E2%80%9D/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.5k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>8 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          1.介绍
-1.<type_traits> 是 C++11 起引入的类型萃取核心头文件，提供编译期 查询/修改类型属性的工具，在泛型编程中高频使用
-2. _v 后缀（C++17）：替代 ::value，返回布尔常量
-3. _t 后缀（C++14）：替代 ::type，返回修改后的类型
-
-关键：编译期
-
-2.关键API
-以下工具均来自<type_traits>头文件，是高性能开发（如泛型优化、内存管理、零开销抽象）的核心类型操作工具，兼具编译期无开销、类型安全的特性。
-
-
-使用示例
-1.std::is_same_v<T1, T2>（泛型函数分支优化）
-核心功能：编译期区分int和double类型，
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2026/01/08/C++/%E6%A0%87%E5%87%86%E5%BA%93/type-traits-%E2%80%9C%E6%A0%87%E5%87%86%E8%90%83%E5%8F%96%E5%BA%93%E2%80%9D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://xianyubuxian-txy.github.io/2026/01/08/C++/%E3%80%8AC++17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/16-std-variant/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/xianyu.jpg">
-      <meta itemprop="name" content="咸鱼">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Xianyu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Xianyu">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/01/08/C++/%E3%80%8AC++17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/16-std-variant/" class="post-title-link" itemprop="url">16.std::variant<></a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2026-01-08 10:42:12" itemprop="dateCreated datePublished" datetime="2026-01-08T10:42:12+08:00">2026-01-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-01-09 20:33:24" itemprop="dateModified" datetime="2026-01-09T20:33:24+08:00">2026-01-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/%E3%80%8AC-17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《C++17完全指南》</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/%E3%80%8AC-17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/%E4%B8%89%E3%80%81%E6%96%B0%E7%9A%84%E6%A0%87%E5%87%86%E5%BA%93%E7%BB%84%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">三、新的标准库组件</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/%E3%80%8AC-17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/%E4%B8%89%E3%80%81%E6%96%B0%E7%9A%84%E6%A0%87%E5%87%86%E5%BA%93%E7%BB%84%E4%BB%B6/16-std-variant/" itemprop="url" rel="index"><span itemprop="name">16.std::variant<></span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-    <span class="post-meta-item-icon">
-      <i class="far fa-comment"></i>
-    </span>
-    <span class="post-meta-item-text">Waline：</span>
-  
-    <a title="waline" href="/2026/01/08/C++/%E3%80%8AC++17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/16-std-variant/#waline" itemprop="discussionUrl">
-      <span class="post-comments-count waline-comment-count" data-path="/2026/01/08/C++/%E3%80%8AC++17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/16-std-variant/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.8k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>6 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          1.概述
-1.std::variant<> 可以认为是c++中类型安全的 union
-2.variant所占的内存大小等于所有可能的底层类型中最大的再加上一个记录当前选项的固定内存开销。不
-会分配堆内存。
-3.和std::optional<>、std::any一样，variant对象是值语义 ——> 拷贝被实现为深拷贝
-4.拷贝std::variant<>的开销要比拷贝当前选项的开销稍微大一点，因为variant必须找出要拷贝哪个值。
-5.variant也支持move语义。
-
-
-
-
-2.常用API
-0.头文件
-#include<variant>
-
-注意：两个不同选项的类型也有可能相同，这在多个
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2026/01/08/C++/%E3%80%8AC++17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/16-std-variant/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://xianyubuxian-txy.github.io/2026/01/08/C++/%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/%E2%80%98%E5%8F%98%E9%95%BF%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8%E2%80%99%E7%9A%84%E5%A4%9A%E7%A7%8D%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/xianyu.jpg">
-      <meta itemprop="name" content="咸鱼">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Xianyu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Xianyu">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/01/08/C++/%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/%E2%80%98%E5%8F%98%E9%95%BF%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8%E2%80%99%E7%9A%84%E5%A4%9A%E7%A7%8D%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F/" class="post-title-link" itemprop="url">‘变长参数列表’的多种实现方式</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2026-01-08 09:19:07" itemprop="dateCreated datePublished" datetime="2026-01-08T09:19:07+08:00">2026-01-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-01-09 20:34:12" itemprop="dateModified" datetime="2026-01-09T20:34:12+08:00">2026-01-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">开发笔记</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/%E5%8A%9F%E8%83%BD%E7%82%B9/" itemprop="url" rel="index"><span itemprop="name">功能点</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/%E5%8A%9F%E8%83%BD%E7%82%B9/%E2%80%98%E5%8F%98%E9%95%BF%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8%E2%80%99%E7%9A%84%E5%A4%9A%E7%A7%8D%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">‘变长参数列表’的多种实现方式</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-    <span class="post-meta-item-icon">
-      <i class="far fa-comment"></i>
-    </span>
-    <span class="post-meta-item-text">Waline：</span>
-  
-    <a title="waline" href="/2026/01/08/C++/%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/%E2%80%98%E5%8F%98%E9%95%BF%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8%E2%80%99%E7%9A%84%E5%A4%9A%E7%A7%8D%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F/#waline" itemprop="discussionUrl">
-      <span class="post-comments-count waline-comment-count" data-path="/2026/01/08/C++/%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/%E2%80%98%E5%8F%98%E9%95%BF%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8%E2%80%99%E7%9A%84%E5%A4%9A%E7%A7%8D%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>835</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          1.实现方式
- * 参数类型有限 / 不修改参数 / 想实现简单 → std::initializer_list + std::variant；
- * 参数类型多样 → 变参模板 typename… Args（如日志系统、线程池）；
- * 需存储 / 修改参数 → std::vector + std::variant；
-
-1.std::initializer_list + std::variant
-(1)std::initializer_list介绍
-<1>概述
- * std::initializer_list 是 C++11 引入的轻量级模板类（头文件 <initializer_list>）
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2026/01/08/C++/%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/%E2%80%98%E5%8F%98%E9%95%BF%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8%E2%80%99%E7%9A%84%E5%A4%9A%E7%A7%8D%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://xianyubuxian-txy.github.io/2026/01/07/C++/%E3%80%8AC++17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/15-std-optional/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/xianyu.jpg">
-      <meta itemprop="name" content="咸鱼">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Xianyu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Xianyu">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/01/07/C++/%E3%80%8AC++17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/15-std-optional/" class="post-title-link" itemprop="url">15.std::optional<></a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2026-01-07 19:04:20" itemprop="dateCreated datePublished" datetime="2026-01-07T19:04:20+08:00">2026-01-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-01-09 20:25:32" itemprop="dateModified" datetime="2026-01-09T20:25:32+08:00">2026-01-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/%E3%80%8AC-17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《C++17完全指南》</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/%E3%80%8AC-17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/%E4%B8%89%E3%80%81%E6%96%B0%E7%9A%84%E6%A0%87%E5%87%86%E5%BA%93%E7%BB%84%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">三、新的标准库组件</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/%E3%80%8AC-17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/%E4%B8%89%E3%80%81%E6%96%B0%E7%9A%84%E6%A0%87%E5%87%86%E5%BA%93%E7%BB%84%E4%BB%B6/15-std-optional/" itemprop="url" rel="index"><span itemprop="name">15.std::optional<></span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-    <span class="post-meta-item-icon">
-      <i class="far fa-comment"></i>
-    </span>
-    <span class="post-meta-item-text">Waline：</span>
-  
-    <a title="waline" href="/2026/01/07/C++/%E3%80%8AC++17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/15-std-optional/#waline" itemprop="discussionUrl">
-      <span class="post-comments-count waline-comment-count" data-path="/2026/01/07/C++/%E3%80%8AC++17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/15-std-optional/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>794</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          1.概述
- * 1.std::optional<>模拟了一个可以为空的任意类型的实例,可以被用作成员、参数、返回值等
- * 2.拷贝一个无内含值的std::optional<>的开销很小
- * 3.但拷贝有内含值的std::optional<>的开销约等于拷贝内含值的开销
- * 4.std::optional<>对象也支持move语义
-
-2.常用API
-0.头文件
-#include<optional>
-
-1.创建/初始化
-
-
-2.取值相关
-
-
-3.状态判断
-
-
-4.修改/重置
-
-
-5.其它常用API
-
-
-注意：普通类型可以隐式转换为 std::optional,std::optional 不能
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2026/01/07/C++/%E3%80%8AC++17%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%E3%80%8B/15-std-optional/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>
@@ -1762,14 +1700,14 @@ string LCS(string s1, string s2) {
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">80k</span>
+    <span title="站点总字数">103k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">4:26</span>
+    <span title="站点阅读时长">5:42</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

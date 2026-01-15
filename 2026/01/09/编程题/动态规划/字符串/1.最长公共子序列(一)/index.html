@@ -164,7 +164,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">1.题目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">2.代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%99%AE%E9%80%9A%E7%89%88"><span class="nav-text">1.普通版</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%A9%BA%E9%97%B4%E4%BC%98%E5%8C%96%E7%89%88%EF%BC%88%E6%BB%9A%E5%8A%A8%E6%95%B0%E7%BB%84%EF%BC%89"><span class="nav-text">2.空间优化版（滚动数组）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90%EF%BC%9A"><span class="nav-text">原理解析：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%85%88%E7%9C%8B%E2%80%9C%E6%99%AE%E9%80%9A%E7%89%88%E6%9C%AC%E2%80%9D"><span class="nav-text">1.先看“普通版本”</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%86%8D%E7%9C%8B%E2%80%9C%E6%BB%9A%E5%8A%A8%E6%95%B0%E7%BB%84%E2%80%9D%E7%89%88%E6%9C%AC"><span class="nav-text">2.再看“滚动数组”版本</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E9%A2%98%E7%9B%AE"><span class="nav-text">1.题目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-text">2.代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%99%AE%E9%80%9A%E7%89%88"><span class="nav-text">1.普通版</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%A9%BA%E9%97%B4%E4%BC%98%E5%8C%96%E7%89%88%EF%BC%88%E6%BB%9A%E5%8A%A8%E6%95%B0%E7%BB%84%EF%BC%89"><span class="nav-text">2.空间优化版（滚动数组）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90%EF%BC%9A"><span class="nav-text">原理解析：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%85%88%E7%9C%8B%E2%80%9C%E6%99%AE%E9%80%9A%E7%89%88%E6%9C%AC%E2%80%9D"><span class="nav-text">1.先看“普通版本”</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%86%8D%E7%9C%8B%E2%80%9C%E6%BB%9A%E5%8A%A8%E6%95%B0%E7%BB%84%E2%80%9D%E7%89%88%E6%9C%AC"><span class="nav-text">2.再看“滚动数组”版本</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -179,18 +179,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-count">40</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -313,40 +313,30 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h1>1.题目</h1>
-<p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260109001047053.png" alt=""></p>
-<h1>2.代码实现</h1>
-<h2 id="1-普通版">1.普通版</h2>
-<p><strong>时间复杂度和空间复杂度：O(m×n)</strong></p>
+    <div class="post-body" itemprop="articleBody"><h1 id="1-题目"><a href="#1-题目" class="headerlink" title="1.题目"></a>1.题目</h1><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260109001047053.png"></p>
+<h1 id="2-代码实现"><a href="#2-代码实现" class="headerlink" title="2.代码实现"></a>2.代码实现</h1><h2 id="1-普通版"><a href="#1-普通版" class="headerlink" title="1.普通版"></a>1.普通版</h2><p><strong>时间复杂度和空间复杂度：O(m×n)</strong></p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">LCS</span><span class="params">(string s1, string s2)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// write code here</span></span><br><span class="line">    <span class="type">int</span> m = s<span class="number">1.</span><span class="built_in">size</span>();</span><br><span class="line">    <span class="type">int</span> n = s<span class="number">2.</span><span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">if</span> (m == <span class="number">0</span> || n == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 只存储长度的DP表</span></span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">dp</span>(m + <span class="number">1</span>, <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(n + <span class="number">1</span>, <span class="number">0</span>));</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 填充DP表</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= m; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt;= n; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (s1[i - <span class="number">1</span>] == s2[j - <span class="number">1</span>]) &#123;</span><br><span class="line">                dp[i][j] = dp[i - <span class="number">1</span>][j - <span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                dp[i][j] = <span class="built_in">max</span>(dp[i - <span class="number">1</span>][j], dp[i][j - <span class="number">1</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[m][n];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="2-空间优化版（滚动数组）">2.空间优化版（滚动数组）</h2>
-<p><strong>时间复杂度和空间复杂度：O(m×n)时间 和 O(n)空间）</strong></p>
+
+<h2 id="2-空间优化版（滚动数组）"><a href="#2-空间优化版（滚动数组）" class="headerlink" title="2.空间优化版（滚动数组）"></a>2.空间优化版（滚动数组）</h2><p><strong>时间复杂度和空间复杂度：O(m×n)时间 和 O(n)空间）</strong></p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">LCS</span><span class="params">(string s1, string s2)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> m = s<span class="number">1.</span><span class="built_in">size</span>();</span><br><span class="line">    <span class="type">int</span> n = s<span class="number">2.</span><span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">if</span> (m == <span class="number">0</span> || n == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 使用一维数组</span></span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">dp</span><span class="params">(n + <span class="number">1</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= m; i++) &#123;</span><br><span class="line">        <span class="type">int</span> prev = <span class="number">0</span>;  <span class="comment">// 存储上一轮的dp[j-1]，即左上角元素</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt;= n; j++) &#123;</span><br><span class="line">            <span class="type">int</span> temp = dp[j];  <span class="comment">// 暂存当前dp[j]，下一轮将成为新的左上角元素</span></span><br><span class="line">            <span class="keyword">if</span> (s1[i - <span class="number">1</span>] == s2[j - <span class="number">1</span>]) &#123;</span><br><span class="line">                dp[j] = prev + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                dp[j] = <span class="built_in">max</span>(dp[j], dp[j - <span class="number">1</span>]); <span class="comment">// dp[j]此时保存的是dp[i-1][j]，dp[j-1]已更新为dp[i][j-1]</span></span><br><span class="line">            &#125;</span><br><span class="line">            prev = temp;  <span class="comment">// 更新左上角元素</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> dp[n];</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="原理解析：">原理解析：</h3>
-<h4 id="1-先看“普通版本”">1.先看“普通版本”</h4>
-<p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/7ded7ab8ec9bb8f8d473272ae01f5aa3.jpg" alt=""></p>
+<h3 id="原理解析："><a href="#原理解析：" class="headerlink" title="原理解析："></a>原理解析：</h3><h4 id="1-先看“普通版本”"><a href="#1-先看“普通版本”" class="headerlink" title="1.先看“普通版本”"></a>1.先看“普通版本”</h4><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/7ded7ab8ec9bb8f8d473272ae01f5aa3.jpg"></p>
 <ul>
 <li>dp[i][j]是我们当前需要求的，由“普通版”可知，它与dp[i-1][j-1]、dp[i][j-1]、dp[i-1][j]有关</li>
 <li>由图可知：dp[i-1][j-1]、dp[i][j-1]、dp[i-1][j]分别位于dp[i][j]的“左上角”、“上方”、“左方”</li>
-<li>显然：在求第i行dp[i,j]时，只需用到dp[i-1][j-1]、dp[i][j-1]、dp[i-1][j] ——&gt;即“上一行的值”+“dp[i][j-1]”的值 ——&gt;dp为一维数组即可
-<ul>
+<li>显然：在求第i行dp[i,j]时，只需用到dp[i-1][j-1]、dp[i][j-1]、dp[i-1][j] ——&gt;即“上一行的值”+“dp[i][j-1]”的值 ——&gt;dp为一维数组即可<ul>
 <li>为什么上一行的值都需要存储？ 因为要求取第i行每一列</li>
 </ul>
 </li>
 </ul>
-<h3 id="2-再看“滚动数组”版本">2.再看“滚动数组”版本</h3>
-<p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/9965aa62cf907c149bfafaf73fdf7a58.jpg" alt=""><br>
-<strong>为与1中dp区分，这里用DP代替dp</strong></p>
+<h3 id="2-再看“滚动数组”版本"><a href="#2-再看“滚动数组”版本" class="headerlink" title="2.再看“滚动数组”版本"></a>2.再看“滚动数组”版本</h3><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/9965aa62cf907c149bfafaf73fdf7a58.jpg"><br><strong>为与1中dp区分，这里用DP代替dp</strong></p>
 <ul>
 <li>我们已知：用一维数组DP[j]存储上一行的值（这种说法并不准确，见下文）</li>
-<li>由图+代码实现： prev存储“左上角元素”
-<ul>
-<li>当j=1时：没有“左上角元素”，设置为0即可（或者说有(i,0),表示空串,DP[0]=0）</li>
-<li>当j!=1时：显然我们已经可获取dp[i-1][j-1]（pre存储）、dp[i][j-1]（DP[j]存储）,那dp[i-1][j]呢？</li>
+<li>由图+代码实现： prev存储“左上角元素”<ul>
+<li>当j&#x3D;1时：没有“左上角元素”，设置为0即可（或者说有(i,0),表示空串,DP[0]&#x3D;0）</li>
+<li>当j!&#x3D;1时：显然我们已经可获取dp[i-1][j-1]（pre存储）、dp[i][j-1]（DP[j]存储）,那dp[i-1][j]呢？</li>
 </ul>
 </li>
-<li>当我们在求dp[i][j]时，显然dp[i][j-1]我们已经求取了，我们会将DP[j-1]更新为dp[i][j-1]（见代码）——&gt;故此时DP[j-1]=dp[i-1][j] （准确说DP[j-k]都更新了！）——&gt;我想这也是<strong>滚动数组</strong>的由来
-<ul>
+<li>当我们在求dp[i][j]时，显然dp[i][j-1]我们已经求取了，我们会将DP[j-1]更新为dp[i][j-1]（见代码）——&gt;故此时DP[j-1]&#x3D;dp[i-1][j] （准确说DP[j-k]都更新了！）——&gt;我想这也是<strong>滚动数组</strong>的由来<ul>
 <li>这里也解释了DP[j]存储上一行的值“并不准确”：应该说DP在每一轮开始时，存储了上一行的值</li>
 </ul>
 </li>
@@ -445,14 +435,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">80k</span>
+    <span title="站点总字数">103k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">4:26</span>
+    <span title="站点阅读时长">5:42</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
