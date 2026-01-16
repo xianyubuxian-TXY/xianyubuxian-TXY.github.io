@@ -18,14 +18,14 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"xianyubuxian-txy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"xianyubuxian-txy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":"flat"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="1.常用命令 1.在命令行指定运行要运行的测试用例  * 通过 –gtest_filter 参数指定要运行的测试  1 2 3 4 5 6 7 8 9 10 11 12 13   .&#x2F;bin&#x2F;tests&#x2F;config_test --gtest_filter&#x3D;&quot;测试套件名.测试用例名&quot;  # 例1：运行单个测试用例 # 运行 ConfigTest 套件中的 InvalidYamlFormat 测试">
+    <meta name="description" content="1.常用命令 1.在命令行指定运行要运行的测试用例  * 通过 --gtest_filter 参数指定要运行的测试  1 2 3 4 5 6 7 8 9 10 11 12 13   .&#x2F;bin&#x2F;tests&#x2F;config_test --gtest_filter&#x3D;&quot;测试套件名.测试用例名&quot;  # 例1：运行单个测试用例 # 运行 ConfigTest 套件中的 InvalidYamlFormat 测试">
 <meta property="og:type" content="article">
 <meta property="og:title" content="gtest的使用">
 <meta property="og:url" content="https://xianyubuxian-txy.github.io/2026/01/15/C++/C++%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%BA%93/gtest%E7%9A%84%E4%BD%BF%E7%94%A8/index.html">
 <meta property="og:site_name" content="Xianyu">
-<meta property="og:description" content="1.常用命令 1.在命令行指定运行要运行的测试用例  * 通过 –gtest_filter 参数指定要运行的测试  1 2 3 4 5 6 7 8 9 10 11 12 13   .&#x2F;bin&#x2F;tests&#x2F;config_test --gtest_filter&#x3D;&quot;测试套件名.测试用例名&quot;  # 例1：运行单个测试用例 # 运行 ConfigTest 套件中的 InvalidYamlFormat 测试">
+<meta property="og:description" content="1.常用命令 1.在命令行指定运行要运行的测试用例  * 通过 --gtest_filter 参数指定要运行的测试  1 2 3 4 5 6 7 8 9 10 11 12 13   .&#x2F;bin&#x2F;tests&#x2F;config_test --gtest_filter&#x3D;&quot;测试套件名.测试用例名&quot;  # 例1：运行单个测试用例 # 运行 ConfigTest 套件中的 InvalidYamlFormat 测试">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-01-15T02:12:44.000Z">
 <meta property="article:modified_time" content="2026-01-15T02:18:28.728Z">
@@ -159,7 +159,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-text">1.常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E5%9C%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%8C%87%E5%AE%9A%E8%BF%90%E8%A1%8C%E8%A6%81%E8%BF%90%E8%A1%8C%E7%9A%84%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B"><span class="nav-text">1.在命令行指定运行要运行的测试用例</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">1.常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E5%9C%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%8C%87%E5%AE%9A%E8%BF%90%E8%A1%8C%E8%A6%81%E8%BF%90%E8%A1%8C%E7%9A%84%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B"><span class="nav-text">1.在命令行指定运行要运行的测试用例</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -174,13 +174,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-count">43</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -308,8 +308,10 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h1 id="1-常用命令"><a href="#1-常用命令" class="headerlink" title="1.常用命令"></a>1.常用命令</h1><h5 id="1-在命令行指定运行要运行的测试用例"><a href="#1-在命令行指定运行要运行的测试用例" class="headerlink" title="1.在命令行指定运行要运行的测试用例"></a>1.在命令行指定运行要运行的测试用例</h5><ul>
-<li>通过 –gtest_filter 参数指定要运行的测试</li>
+    <div class="post-body" itemprop="articleBody"><h1>1.常用命令</h1>
+<h5 id="1-在命令行指定运行要运行的测试用例">1.在命令行指定运行要运行的测试用例</h5>
+<ul>
+<li>通过 --gtest_filter 参数指定要运行的测试</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">./bin/tests/config_test --gtest_filter=<span class="string">&quot;测试套件名.测试用例名&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 例1：运行单个测试用例</span></span><br><span class="line"><span class="comment"># 运行 ConfigTest 套件中的 InvalidYamlFormat 测试</span></span><br><span class="line">./bin/tests/config_test --gtest_filter=ConfigTest.InvalidYamlFormat</span><br><span class="line"></span><br><span class="line"><span class="comment"># 例2：运行多个测试用例（使用冒号分隔）</span></span><br><span class="line"><span class="comment"># 运行多个指定的测试</span></span><br><span class="line">./bin/tests/config_test --gtest_filter=ConfigTest.InvalidYamlFormat:ConfigTest.ValidConfig</span><br><span class="line"></span><br><span class="line"><span class="comment"># 例3：运行整个测试套件</span></span><br><span class="line"><span class="comment"># 运行 ConfigTest 套件中的所有测试</span></span><br><span class="line">./bin/tests/config_test --gtest_filter=ConfigTest.*</span><br></pre></td></tr></table></figure>
 
@@ -368,6 +370,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2026/01/15/C++/C++%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%BA%93/CMakeLists%E7%AC%94%E8%AE%B0/" rel="next" title="CMakeLists笔记">
+                  CMakeLists笔记 <i class="fa fa-angle-right"></i>
+                </a>
             </div>
           </div>
     </footer>
@@ -400,14 +405,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">103k</span>
+    <span title="站点总字数">122k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">5:42</span>
+    <span title="站点阅读时长">6:45</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

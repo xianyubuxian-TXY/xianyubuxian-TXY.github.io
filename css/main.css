@@ -1422,7 +1422,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #3c2dff;
+    background: #3d05ab;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -3143,4 +3143,16 @@ header.header {
   color: inherit !important;
   font-weight: normal !important;
   text-decoration: none !important;
+}
+.highlight pre,
+.highlight code,
+pre[class*="language-"],
+code[class*="language-"] {
+  tab-size: 4;
+  -moz-tab-size: 4;
+  white-space: pre;
+}
+code,
+pre {
+  font-family: Consolas, Monaco, 'Courier New', monospace;
 }
