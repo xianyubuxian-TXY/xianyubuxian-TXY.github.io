@@ -179,13 +179,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-count">40</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-count">55</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -319,24 +319,18 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h2 id="1-前提要求：宿主机上需要有VPN">1.前提要求：宿主机上需要有VPN</h2>
-<h2 id="2-设置临时代理步骤">2.设置临时代理步骤</h2>
-<h4 id="（1）（虚拟机）通过-ifconfig-命令查看虚拟机的IP，确定局域网网关，如下：">（1）（虚拟机）通过 ifconfig 命令查看虚拟机的IP，确定局域网网关，如下：</h4>
-<p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260112165452726.png" alt=""></p>
+    <div class="post-body" itemprop="articleBody"><h2 id="1-前提要求：宿主机上需要有VPN"><a href="#1-前提要求：宿主机上需要有VPN" class="headerlink" title="1.前提要求：宿主机上需要有VPN"></a>1.前提要求：宿主机上需要有VPN</h2><h2 id="2-设置临时代理步骤"><a href="#2-设置临时代理步骤" class="headerlink" title="2.设置临时代理步骤"></a>2.设置临时代理步骤</h2><h4 id="（1）（虚拟机）通过-ifconfig-命令查看虚拟机的IP，确定局域网网关，如下："><a href="#（1）（虚拟机）通过-ifconfig-命令查看虚拟机的IP，确定局域网网关，如下：" class="headerlink" title="（1）（虚拟机）通过 ifconfig 命令查看虚拟机的IP，确定局域网网关，如下："></a>（1）（虚拟机）通过 ifconfig 命令查看虚拟机的IP，确定局域网网关，如下：</h4><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260112165452726.png"></p>
 <ul>
 <li><strong>网关为：192.168.36.1 （即“最后一位”为 1）</strong></li>
 </ul>
-<h4 id="（2）（宿主机）打开VPN连接，并开启“允许局域网连接”，如下：">（2）（宿主机）打开VPN连接，并开启“允许局域网连接”，如下：</h4>
-<p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260112165739343.png" alt=""></p>
-<h4 id="（3）（虚拟机）设置“临时代理”，并进行测试，如下：">（3）（虚拟机）设置“临时代理”，并进行测试，如下：</h4>
-<ul>
+<h4 id="（2）（宿主机）打开VPN连接，并开启“允许局域网连接”，如下："><a href="#（2）（宿主机）打开VPN连接，并开启“允许局域网连接”，如下：" class="headerlink" title="（2）（宿主机）打开VPN连接，并开启“允许局域网连接”，如下："></a>（2）（宿主机）打开VPN连接，并开启“允许局域网连接”，如下：</h4><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260112165739343.png"></p>
+<h4 id="（3）（虚拟机）设置“临时代理”，并进行测试，如下："><a href="#（3）（虚拟机）设置“临时代理”，并进行测试，如下：" class="headerlink" title="（3）（虚拟机）设置“临时代理”，并进行测试，如下："></a>（3）（虚拟机）设置“临时代理”，并进行测试，如下：</h4><ul>
 <li>以上面我的网关 192.168.36.1为例</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 假设代理端口是 7890（通常都是）</span></span><br><span class="line"><span class="built_in">export</span> http_proxy=http://192.168.36.1:7890</span><br><span class="line"><span class="built_in">export</span> https_proxy=http://192.168.36.1:7890</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试</span></span><br><span class="line">curl -I https://github.com</span><br></pre></td></tr></table></figure>
-<p><strong>补充</strong>：Clash for Windows 查看代理端口<br>
-<img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260112170039920.png" alt=""></p>
-<h3 id="3-备选方案">3.备选方案</h3>
-<p>如果配置后还是不行，可以：<strong>使用SSH 克隆（绕过 HTTPS）</strong></p>
+
+<p><strong>补充</strong>：Clash for Windows 查看代理端口<br><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260112170039920.png"></p>
+<h3 id="3-备选方案"><a href="#3-备选方案" class="headerlink" title="3.备选方案"></a>3.备选方案</h3><p>如果配置后还是不行，可以：<strong>使用SSH 克隆（绕过 HTTPS）</strong></p>
 <ul>
 <li>需要先配置 SSH key</li>
 </ul>
@@ -432,14 +426,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">122k</span>
+    <span title="站点总字数">177k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">6:45</span>
+    <span title="站点阅读时长">9:49</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
