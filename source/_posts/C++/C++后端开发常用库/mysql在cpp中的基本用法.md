@@ -1,13 +1,13 @@
 ---
-title: 1.mysql在cpp中的基本用法
+title: MySQL_C的使用
 date: 2026-01-07 14:21:29
 tags:
 	- 笔记
 categories:
     - C++
-    - 开发笔记
+    - C++后端开发库
     - mysql
-    - 1.mysql在cpp中的基本用法
+    - MySQL_C的使用
 ---
 
 # 1.MySQL C 常用API

@@ -117,3 +117,20 @@
   text-decoration: none !important; // 继承默认下划线样式
 }
 
+
+//=========== 代码块相关 =============
+
+// 修复代码块缩进
+.highlight pre,
+.highlight code,
+pre[class*="language-"],
+code[class*="language-"] {
+  tab-size: 4;
+  -moz-tab-size: 4;
+  white-space: pre;
+}
+
+// 确保代码字体等宽
+code, pre {
+  font-family: Consolas, Monaco, 'Courier New', monospace;
+}
