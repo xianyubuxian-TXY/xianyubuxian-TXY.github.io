@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"xianyubuxian-txy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":"flat"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="1.介绍 [[noreturn]] 是 C++11 引入的标准属性，它表明函数在执行完毕后不会返回到调用者。  1 2 3   [[noreturn]] void terminate_program() {     std::exit(1); }   2.“不返回”的含义  * “不返回”不是指返回 void，而是指控制流永远不会回到调用点。      （1）示例 不使用[[noreturn]]">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[[noreturn]]属性">
+<meta property="og:url" content="https://xianyubuxian-txy.github.io/2026/01/26/C++/C++%E7%89%B9%E6%80%A7/C++11%E7%89%B9%E6%80%A7/noreturn-%E5%B1%9E%E6%80%A7/index.html">
+<meta property="og:site_name" content="Xianyu">
+<meta property="og:description" content="1.介绍 [[noreturn]] 是 C++11 引入的标准属性，它表明函数在执行完毕后不会返回到调用者。  1 2 3   [[noreturn]] void terminate_program() {     std::exit(1); }   2.“不返回”的含义  * “不返回”不是指返回 void，而是指控制流永远不会回到调用点。      （1）示例 不使用[[noreturn]]">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260126202028378.png">
+<meta property="article:published_time" content="2026-01-26T12:04:20.000Z">
+<meta property="article:modified_time" content="2026-01-26T13:14:26.070Z">
+<meta property="article:author" content="咸鱼">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260126202028378.png">
+
+
+<link rel="canonical" href="https://xianyubuxian-txy.github.io/2026/01/26/C++/C++%E7%89%B9%E6%80%A7/C++11%E7%89%B9%E6%80%A7/noreturn-%E5%B1%9E%E6%80%A7/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://xianyubuxian-txy.github.io/2026/01/26/C++/C++%E7%89%B9%E6%80%A7/C++11%E7%89%B9%E6%80%A7/noreturn-%E5%B1%9E%E6%80%A7/","path":"2026/01/26/C++/C++特性/C++11特性/noreturn-属性/","title":"[[noreturn]]属性"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>[[noreturn]]属性 | Xianyu</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+<link rel="dns-prefetch" href="https://waline-beta-black.vercel.app">
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Xianyu</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E4%BB%8B%E7%BB%8D"><span class="nav-text">1.介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E2%80%9C%E4%B8%8D%E8%BF%94%E5%9B%9E%E2%80%9D%E7%9A%84%E5%90%AB%E4%B9%89"><span class="nav-text">2.“不返回”的含义</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E7%A4%BA%E4%BE%8B"><span class="nav-text">（1）示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E4%BD%BF%E7%94%A8-noreturn"><span class="nav-text">&lt;1&gt;不使用[[noreturn]]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-noreturn"><span class="nav-text">&lt;2&gt;使用[[noreturn]]</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E6%A0%87%E5%87%86%E5%BA%93%E4%B8%AD%E7%9A%84-noreturn-%E5%87%BD%E6%95%B0"><span class="nav-text">（2）标准库中的 [[noreturn]] 函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E7%94%A8%E9%80%94"><span class="nav-text">3.用途</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E6%B6%88%E9%99%A4%E7%BC%96%E8%AF%91%E5%99%A8%E8%AD%A6%E5%91%8A"><span class="nav-text">（1）消除编译器警告</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%98%E5%8C%96"><span class="nav-text">（2）编译器优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E5%9C%BA%E6%99%AF%E7%A4%BA%E4%BE%8B"><span class="nav-text">&lt;1&gt;优化场景示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8%E7%9A%84%E4%BC%98%E5%8C%96"><span class="nav-text">&lt;2&gt;编译器的优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%EF%BC%89%E6%B6%88%E9%99%A4%E2%80%9D%E6%97%A0%E6%B3%95%E5%88%B0%E8%BE%BE%E2%80%9D%E7%9A%84%E4%BB%A3%E7%A0%81%E8%B7%AF%E5%BE%84%E5%88%86%E6%9E%90"><span class="nav-text">1）消除”无法到达”的代码路径分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%EF%BC%89%E6%B1%87%E7%BC%96%E5%B1%82%E9%9D%A2%E7%9A%84%E4%BC%98%E5%8C%96"><span class="nav-text">2）汇编层面的优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%EF%BC%89%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%98%E5%8C%96%E5%88%97%E8%A1%A8"><span class="nav-text">3）编译器优化列表</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E4%BC%A0%E8%BE%BE%E7%A8%8B%E5%BA%8F%E5%91%98%E6%84%8F%E5%9B%BE%EF%BC%8C%E6%8F%90%E9%AB%98%E4%BB%A3%E7%A0%81%E5%8F%AF%E8%AF%BB%E6%80%A7"><span class="nav-text">（3）传达程序员意图，提高代码可读性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-noreturn-%E5%AE%9E%E9%99%85%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-text">4.[[noreturn]] 实际使用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E6%8A%9B%E5%87%BA%E5%BC%82%E5%B8%B8%E7%9A%84%E5%B7%A5%E5%8E%82%E5%87%BD%E6%95%B0"><span class="nav-text">（1）抛出异常的工厂函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%9F%E4%B8%80%E5%BC%82%E5%B8%B8%E7%B1%BB%E5%9E%8B%E5%92%8C%E6%A0%BC%E5%BC%8F"><span class="nav-text">&lt;1&gt;统一异常类型和格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9C%80%E8%A6%81%E9%99%84%E5%8A%A0%E6%93%8D%E4%BD%9C%EF%BC%88%E6%97%A5%E5%BF%97%E3%80%81%E6%8C%87%E6%A0%87%E7%AD%89%EF%BC%89"><span class="nav-text">&lt;2&gt;需要附加操作（日志、指标等）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E6%9E%84%E9%80%A0%E9%80%BB%E8%BE%91%E5%A4%8D%E6%9D%82%E6%97%B6"><span class="nav-text">&lt;3&gt;异常构造逻辑复杂时</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E6%9C%8D%E5%8A%A1%E4%B8%BB%E5%BE%AA%E7%8E%AF"><span class="nav-text">（2）服务主循环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E9%94%99%E8%AF%AF%E6%97%A5%E5%BF%97-%E7%A8%8B%E5%BA%8F%E7%BB%88%E6%AD%A2"><span class="nav-text">（3）错误日志 + 程序终止</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-text">5.注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%87%BD%E6%95%B0%E5%BF%85%E9%A1%BB%E7%9C%9F%E7%9A%84%E4%B8%8D%E8%BF%94%E5%9B%9E"><span class="nav-text">（1）函数必须真的不返回</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E6%89%80%E6%9C%89%E5%88%86%E6%94%AF%E9%83%BD%E5%BF%85%E9%A1%BB%E4%B8%8D%E8%BF%94%E5%9B%9E"><span class="nav-text">（2）所有分支都必须不返回</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E5%A3%B0%E6%98%8E%E5%92%8C%E5%AE%9A%E4%B9%89%E9%83%BD%E8%A6%81%E5%8A%A0"><span class="nav-text">（3）声明和定义都要加</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="咸鱼"
+      src="/images/xianyu.jpg">
+  <p class="site-author-name" itemprop="name">咸鱼</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xianyubuxian-TXY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xianyubuxian-TXY" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xianyubuxian-txy.github.io/2026/01/26/C++/C++%E7%89%B9%E6%80%A7/C++11%E7%89%B9%E6%80%A7/noreturn-%E5%B1%9E%E6%80%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xianyu.jpg">
+      <meta itemprop="name" content="咸鱼">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Xianyu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="[[noreturn]]属性 | Xianyu">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [[noreturn]]属性
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-01-26 20:04:20 / 修改时间：21:14:26" itemprop="dateCreated datePublished" datetime="2026-01-26T20:04:20+08:00">2026-01-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/C-%E7%89%B9%E6%80%A7/" itemprop="url" rel="index"><span itemprop="name">C++特性</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/C-%E7%89%B9%E6%80%A7/C-11%E7%89%B9%E6%80%A7/" itemprop="url" rel="index"><span itemprop="name">C++11特性</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/C-%E7%89%B9%E6%80%A7/C-11%E7%89%B9%E6%80%A7/noreturn-%E5%B1%9E%E6%80%A7/" itemprop="url" rel="index"><span itemprop="name">[[noreturn]]属性</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Waline：</span>
+  
+    <a title="waline" href="/2026/01/26/C++/C++%E7%89%B9%E6%80%A7/C++11%E7%89%B9%E6%80%A7/noreturn-%E5%B1%9E%E6%80%A7/#waline" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" data-path="/2026/01/26/C++/C++%E7%89%B9%E6%80%A7/C++11%E7%89%B9%E6%80%A7/noreturn-%E5%B1%9E%E6%80%A7/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1.介绍"></a>1.介绍</h1><p><code>[[noreturn]]</code> 是 C++11 引入的标准属性，它表明函数在执行完毕后<strong>不会返回到调用者</strong>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[[noreturn]] <span class="function"><span class="type">void</span> <span class="title">terminate_program</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-“不返回”的含义"><a href="#2-“不返回”的含义" class="headerlink" title="2.“不返回”的含义"></a>2.“不返回”的含义</h1><ul>
+<li>“不返回”不是指返回 void，而是指<strong>控制流永远不会回到调用点。</strong><br><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260126202028378.png"></li>
+</ul>
+<h2 id="（1）示例"><a href="#（1）示例" class="headerlink" title="（1）示例"></a>（1）示例</h2><h3 id="不使用-noreturn"><a href="#不使用-noreturn" class="headerlink" title="&lt;1&gt;不使用[[noreturn]]"></a>&lt;1&gt;不使用[[noreturn]]</h3><ul>
+<li>这段代码可能看着有些怪，主要是为了方便演示“不返回”的含义</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 没有 [[noreturn]] 时</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">error_exit</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* msg)</span> </span>&#123;</span><br><span class="line">    std::cerr &lt;&lt; msg &lt;&lt; std::endl;</span><br><span class="line">    std::<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">success</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* msg)</span></span>&#123;</span><br><span class="line">    std::cout&lt;&lt; msg &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">calculate</span><span class="params">(<span class="type">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(x &gt;= <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">success</span>(<span class="string">&quot;valid value&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(x &gt;= <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> x * <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (x &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">error_exit</span>(<span class="string">&quot;invalid value&quot;</span>);</span><br><span class="line">        <span class="comment">// ⚠️ 警告：控制流可能到达非 void 函数末尾而不返回值</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// ⚠️ 编译器警告：控制流可能到达非 void 函数末尾而不返回值</span></span><br><span class="line"><span class="comment">// 编译器不知道 error_exit 不会返回，认为 if 分支没有 return</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong><code>x&gt;0</code>时</strong>：<ul>
+<li>会先执行success函数，执行完后，会<strong>返回到calculate函数中</strong>，然后执行<code>return x*2</code></li>
+</ul>
+</li>
+<li><strong><code>x&lt;0</code>时</strong>：<ul>
+<li>会执行error_exit函数，内部会执行std::exit函数，程序会直接终止，也就<strong>不会返回到calculate函数中</strong></li>
+<li>但编译其在编译calculate函数时，并不知道error_exit不会返回到calculate中，认为该情况下没有返回值，会<strong>发出警告</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="使用-noreturn"><a href="#使用-noreturn" class="headerlink" title="&lt;2&gt;使用[[noreturn]]"></a>&lt;2&gt;使用[[noreturn]]</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[[noreturn]] <span class="function"><span class="type">void</span> <span class="title">error_exit</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* msg)</span> </span>&#123;</span><br><span class="line">    std::cerr &lt;&lt; msg &lt;&lt; std::endl;</span><br><span class="line">    std::<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">success</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* msg)</span></span>&#123;</span><br><span class="line">    std::cout&lt;&lt; msg &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">calculate</span><span class="params">(<span class="type">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(x &gt;= <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">success</span>(<span class="string">&quot;valid value&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(x &gt;= <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> x * <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (x &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">error_exit</span>(<span class="string">&quot;invalid value&quot;</span>);</span><br><span class="line">        <span class="comment">// ✅ 无警告：编译器知道这里不会返回</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="（2）标准库中的-noreturn-函数"><a href="#（2）标准库中的-noreturn-函数" class="headerlink" title="（2）标准库中的 [[noreturn]] 函数"></a>（2）标准库中的 [[noreturn]] 函数</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这些标准库函数都是 [[noreturn]]</span></span><br><span class="line">std::<span class="built_in">abort</span>();</span><br><span class="line">std::<span class="built_in">exit</span>(<span class="type">int</span>);</span><br><span class="line">std::<span class="built_in">quick_exit</span>(<span class="type">int</span>);</span><br><span class="line">std::<span class="built_in">terminate</span>();</span><br><span class="line">std::<span class="built_in">rethrow_exception</span>(std::exception_ptr);</span><br><span class="line">std::<span class="built_in">unreachable</span>();     <span class="comment">// C++23 新增 ⭐</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="3-用途"><a href="#3-用途" class="headerlink" title="3.用途"></a>3.用途</h1><h2 id="（1）消除编译器警告"><a href="#（1）消除编译器警告" class="headerlink" title="（1）消除编译器警告"></a>（1）消除编译器警告</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ThrowError</span><span class="params">(<span class="type">const</span> std::string&amp; msg)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> std::<span class="built_in">runtime_error</span>(msg);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">GetValue</span><span class="params">(<span class="type">bool</span> condition)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (condition) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">42</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">ThrowError</span>(<span class="string">&quot;condition is false&quot;</span>);  <span class="comment">// 没有 [[noreturn]]，编译器会警告&quot;不是所有路径都有返回值&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ✅ 正确使用：函数抛出异常，永不返回</span></span><br><span class="line">[[noreturn]] <span class="function"><span class="type">void</span> <span class="title">ThrowError</span><span class="params">(<span class="type">const</span> std::string&amp; msg)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> std::<span class="built_in">runtime_error</span>(msg);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">GetValue</span><span class="params">(<span class="type">bool</span> condition)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (condition) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">42</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">ThrowError</span>(<span class="string">&quot;condition is false&quot;</span>);  <span class="comment">// ✅ 无警告：编译器知道这里不会返回</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="（2）编译器优化"><a href="#（2）编译器优化" class="headerlink" title="（2）编译器优化"></a>（2）编译器优化</h2><h3 id="优化场景示例"><a href="#优化场景示例" class="headerlink" title="&lt;1&gt;优化场景示例"></a>&lt;1&gt;优化场景示例</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">GetUserAge</span><span class="params">(<span class="type">int</span> user_id)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> user = <span class="built_in">FindUser</span>(user_id);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (!user) &#123;</span><br><span class="line">        <span class="built_in">ThrowMySQLException</span>(<span class="number">1001</span>, <span class="string">&quot;User not found&quot;</span>);  <span class="comment">// [[noreturn]]</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> user-&gt;age;  <span class="comment">// ← 编译器如何处理这里？</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="编译器的优化"><a href="#编译器的优化" class="headerlink" title="&lt;2&gt;编译器的优化"></a>&lt;2&gt;编译器的优化</h3><h4 id="1）消除”无法到达”的代码路径分析"><a href="#1）消除”无法到达”的代码路径分析" class="headerlink" title="1）消除”无法到达”的代码路径分析"></a>1）消除”无法到达”的代码路径分析</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">没有 [[noreturn]] 时，编译器的理解：</span><br><span class="line">┌─────────────────────────────────────────────────────────────┐</span><br><span class="line">│                                                             │</span><br><span class="line">│   <span class="keyword">if</span> (!user) &#123;                                              │</span><br><span class="line">│       <span class="built_in">ThrowMySQLException</span>(...);                             │</span><br><span class="line">│       <span class="comment">// 编译器认为：函数可能返回，需要继续执行              │</span></span><br><span class="line">│       <span class="comment">// 所以会生成&quot;函数返回后的处理代码&quot;                    │</span></span><br><span class="line">│   &#125;                                                         │</span><br><span class="line">│   <span class="keyword">return</span> user-&gt;age;  <span class="comment">// 需要检查所有路径是否都有返回值       │</span></span><br><span class="line">│                                                             │</span><br><span class="line">└─────────────────────────────────────────────────────────────┘</span><br><span class="line"></span><br><span class="line">有 [[noreturn]] 时，编译器的理解：</span><br><span class="line">┌─────────────────────────────────────────────────────────────┐</span><br><span class="line">│                                                             │</span><br><span class="line">│   <span class="keyword">if</span> (!user) &#123;                                              │</span><br><span class="line">│       <span class="built_in">ThrowMySQLException</span>(...);                             │</span><br><span class="line">│       <span class="comment">// 编译器知道：这里永远不会返回                        │</span></span><br><span class="line">│       <span class="comment">// 不需要生成后续代码，直接跳过                        │</span></span><br><span class="line">│   &#125;                                                         │</span><br><span class="line">│   <span class="keyword">return</span> user-&gt;age;  <span class="comment">// 编译器知道：到这里时 user 一定有效   │</span></span><br><span class="line">│                                                             │</span><br><span class="line">└─────────────────────────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<h4 id="2）汇编层面的优化"><a href="#2）汇编层面的优化" class="headerlink" title="2）汇编层面的优化"></a>2）汇编层面的优化</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 源码</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">Process</span><span class="params">(<span class="type">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (x &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">FatalError</span>(<span class="string">&quot;negative value&quot;</span>);  <span class="comment">// [[noreturn]]</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> x * <span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">; 没有 [[noreturn]] 的汇编（伪代码）</span><br><span class="line">Process:</span><br><span class="line">    cmp     edi, 0</span><br><span class="line">    jl      .negative_branch</span><br><span class="line">    ; 正常路径</span><br><span class="line">    lea     eax, [rdi + rdi]</span><br><span class="line">    ret</span><br><span class="line">.negative_branch:</span><br><span class="line">    call    FatalError</span><br><span class="line">    ; ❌ 编译器可能生成：处理 FatalError 返回后的代码</span><br><span class="line">    ; 例如：跳回主流程、清理栈帧等</span><br><span class="line">    jmp     .after_if          ; 多余的跳转指令</span><br><span class="line">.after_if:</span><br><span class="line">    lea     eax, [rdi + rdi]</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line">; 有 [[noreturn]] 的汇编（伪代码）</span><br><span class="line">Process:</span><br><span class="line">    cmp     edi, 0</span><br><span class="line">    jl      .negative_branch</span><br><span class="line">    lea     eax, [rdi + rdi]   ; ✅ 直接计算，不需要跳转</span><br><span class="line">    ret</span><br><span class="line">.negative_branch:</span><br><span class="line">    call    FatalError</span><br><span class="line">    ; ✅ 不生成任何后续代码，因为知道不会返回</span><br><span class="line">    ; 甚至可能用 jmp 代替 call（尾调用优化）</span><br></pre></td></tr></table></figure>
+
+<h4 id="3）编译器优化列表"><a href="#3）编译器优化列表" class="headerlink" title="3）编译器优化列表"></a>3）编译器优化列表</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────────────────────────────────────────────────────┐</span><br><span class="line">│                    编译器优化列表                            │</span><br><span class="line">├─────────────────────────────────────────────────────────────┤</span><br><span class="line">│                                                             │</span><br><span class="line">│  <span class="number">1</span>️⃣ 删除死代码（Dead Code Elimination）                     │</span><br><span class="line">│     • [[noreturn]] 函数调用后的代码直接删除                 │</span><br><span class="line">│                                                             │</span><br><span class="line">│  <span class="number">2</span>️⃣ 简化控制流（Control Flow Simplification）              │</span><br><span class="line">│     • 不需要生成<span class="string">&quot;函数返回后跳转回来&quot;</span>的指令                  │</span><br><span class="line">│     • 减少分支跳转                                          │</span><br><span class="line">│                                                             │</span><br><span class="line">│  <span class="number">3</span>️⃣ 寄存器分配优化                                         │</span><br><span class="line">│     • 不需要在 [[noreturn]] 调用前保存寄存器                │</span><br><span class="line">│     • 因为不会返回，不需要恢复现场                          │</span><br><span class="line">│                                                             │</span><br><span class="line">│  <span class="number">4</span>️⃣ 栈帧优化                                               │</span><br><span class="line">│     • 某些情况下可以使用尾调用优化（tail call）             │</span><br><span class="line">│     • 直接 jmp 而不是 call                                  │</span><br><span class="line">│                                                             │</span><br><span class="line">│  <span class="number">5</span>️⃣ 消除警告 + 类型推断                                    │</span><br><span class="line">│     • 编译器知道某些变量在特定路径后<span class="string">&quot;一定有效&quot;</span>              │</span><br><span class="line">│                                                             │</span><br><span class="line">└─────────────────────────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<h2 id="（3）传达程序员意图，提高代码可读性"><a href="#（3）传达程序员意图，提高代码可读性" class="headerlink" title="（3）传达程序员意图，提高代码可读性"></a>（3）传达程序员意图，提高代码可读性</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 一眼就能看出这个函数的行为</span></span><br><span class="line">[[noreturn]] <span class="function"><span class="type">void</span> <span class="title">fatal</span><span class="params">(<span class="type">const</span> std::string&amp; msg)</span></span>;</span><br><span class="line">[[noreturn]] <span class="function"><span class="type">void</span> <span class="title">throw_not_implemented</span><span class="params">()</span></span>;</span><br><span class="line">[[noreturn]] <span class="function"><span class="type">void</span> <span class="title">infinite_loop</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-noreturn-实际使用场景"><a href="#4-noreturn-实际使用场景" class="headerlink" title="4.[[noreturn]] 实际使用场景"></a>4.[[noreturn]] 实际使用场景</h1><h2 id="（1）抛出异常的工厂函数"><a href="#（1）抛出异常的工厂函数" class="headerlink" title="（1）抛出异常的工厂函数"></a>（1）抛出异常的工厂函数</h2><h3 id="统一异常类型和格式"><a href="#统一异常类型和格式" class="headerlink" title="&lt;1&gt;统一异常类型和格式"></a>&lt;1&gt;统一异常类型和格式</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ✅ 推荐：整个项目统一异常风格</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ErrorThrower</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    [[noreturn]] <span class="function"><span class="type">static</span> <span class="type">void</span> <span class="title">invalid_argument</span><span class="params">(<span class="type">const</span> std::string&amp; param, <span class="type">const</span> std::string&amp; reason)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> std::<span class="built_in">invalid_argument</span>(<span class="string">&quot;Invalid argument &#x27;&quot;</span> + param + <span class="string">&quot;&#x27;: &quot;</span> + reason);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    [[noreturn]] <span class="function"><span class="type">static</span> <span class="type">void</span> <span class="title">out_of_range</span><span class="params">(<span class="type">size_t</span> index, <span class="type">size_t</span> size)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> std::<span class="built_in">out_of_range</span>(</span><br><span class="line">            <span class="string">&quot;Index &quot;</span> + std::<span class="built_in">to_string</span>(index) + </span><br><span class="line">            <span class="string">&quot; &gt;= size &quot;</span> + std::<span class="built_in">to_string</span>(size));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    [[noreturn]] <span class="function"><span class="type">static</span> <span class="type">void</span> <span class="title">not_implemented</span><span class="params">(<span class="type">const</span> std::string&amp; feature)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> std::<span class="built_in">logic_error</span>(<span class="string">&quot;Not implemented: &quot;</span> + feature);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="需要附加操作（日志、指标等）"><a href="#需要附加操作（日志、指标等）" class="headerlink" title="&lt;2&gt;需要附加操作（日志、指标等）"></a>&lt;2&gt;需要附加操作（日志、指标等）</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ✅ 推荐：抛异常前做额外工作</span></span><br><span class="line">[[noreturn]] <span class="function"><span class="type">void</span> <span class="title">throw_with_logging</span><span class="params">(<span class="type">const</span> std::exception&amp; e)</span> </span>&#123;</span><br><span class="line">    Logger::<span class="built_in">error</span>(<span class="string">&quot;Exception: &#123;&#125;&quot;</span>, e.<span class="built_in">what</span>());</span><br><span class="line">    Metrics::<span class="built_in">increment</span>(<span class="string">&quot;exception_count&quot;</span>);</span><br><span class="line">    <span class="keyword">throw</span>;  <span class="comment">// 重新抛出</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="异常构造逻辑复杂时"><a href="#异常构造逻辑复杂时" class="headerlink" title="&lt;3&gt;异常构造逻辑复杂时"></a>&lt;3&gt;异常构造逻辑复杂时</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ✅ 推荐：复杂的异常信息构造</span></span><br><span class="line">[[noreturn]] <span class="function"><span class="type">void</span> <span class="title">throw_parse_error</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> std::string&amp; filename, </span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">int</span> line, </span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">int</span> column,</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> std::string&amp; expected,</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> std::string&amp; got)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::ostringstream oss;</span><br><span class="line">    oss &lt;&lt; filename &lt;&lt; <span class="string">&quot;:&quot;</span> &lt;&lt; line &lt;&lt; <span class="string">&quot;:&quot;</span> &lt;&lt; column </span><br><span class="line">        &lt;&lt; <span class="string">&quot; Parse error: expected &#x27;&quot;</span> &lt;&lt; expected </span><br><span class="line">        &lt;&lt; <span class="string">&quot;&#x27;, got &#x27;&quot;</span> &lt;&lt; got &lt;&lt; <span class="string">&quot;&#x27;&quot;</span>;</span><br><span class="line">    <span class="keyword">throw</span> <span class="built_in">ParseException</span>(oss.<span class="built_in">str</span>());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用处简洁</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">parse</span><span class="params">(<span class="type">const</span> Token&amp; tok)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (tok.type != TokenType::Number) &#123;</span><br><span class="line">        <span class="built_in">throw_parse_error</span>(file_, line_, col_, <span class="string">&quot;number&quot;</span>, tok.value);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="（2）服务主循环"><a href="#（2）服务主循环" class="headerlink" title="（2）服务主循环"></a>（2）服务主循环</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Server</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    [[noreturn]] <span class="function"><span class="type">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">            <span class="keyword">auto</span> conn = <span class="built_in">accept_connection</span>();</span><br><span class="line">            <span class="built_in">handle_request</span>(conn);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 永远不会到这里</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Server server;</span><br><span class="line">    server.<span class="built_in">run</span>();</span><br><span class="line">    <span class="comment">// ✅ 编译器知道 run() 不会返回</span></span><br><span class="line">    <span class="comment">// 后面的代码不会被执行</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="（3）错误日志-程序终止"><a href="#（3）错误日志-程序终止" class="headerlink" title="（3）错误日志 + 程序终止"></a>（3）错误日志 + 程序终止</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum class</span> <span class="title class_">ErrorCode</span> &#123; OutOfMemory, FileNotFound, NetworkError &#125;;</span><br><span class="line"></span><br><span class="line">[[noreturn]] <span class="function"><span class="type">void</span> <span class="title">fatal_error</span><span class="params">(ErrorCode code, <span class="type">const</span> std::string&amp; detail)</span> </span>&#123;</span><br><span class="line">    std::cerr &lt;&lt; <span class="string">&quot;Fatal error [&quot;</span> &lt;&lt; <span class="built_in">static_cast</span>&lt;<span class="type">int</span>&gt;(code) &lt;&lt; <span class="string">&quot;]: &quot;</span> </span><br><span class="line">              &lt;&lt; detail &lt;&lt; std::endl;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 可以在这里：写日志文件、发送告警、dump 堆栈等</span></span><br><span class="line">    std::<span class="built_in">exit</span>(<span class="built_in">static_cast</span>&lt;<span class="type">int</span>&gt;(code));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用</span></span><br><span class="line"><span class="function"><span class="type">void</span>* <span class="title">allocate</span><span class="params">(<span class="type">size_t</span> size)</span> </span>&#123;</span><br><span class="line">    <span class="type">void</span>* ptr = <span class="built_in">malloc</span>(size);</span><br><span class="line">    <span class="keyword">if</span> (!ptr) &#123;</span><br><span class="line">        <span class="built_in">fatal_error</span>(ErrorCode::OutOfMemory, </span><br><span class="line">                    <span class="string">&quot;Failed to allocate &quot;</span> + std::<span class="built_in">to_string</span>(size) + <span class="string">&quot; bytes&quot;</span>);</span><br><span class="line">        <span class="comment">// ✅ 无警告：编译器知道上面不返回</span></span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> ptr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="5-注意事项"><a href="#5-注意事项" class="headerlink" title="5.注意事项"></a>5.注意事项</h1><h2 id="（1）函数必须真的不返回"><a href="#（1）函数必须真的不返回" class="headerlink" title="（1）函数必须真的不返回"></a>（1）函数必须真的不返回</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ❌ 未定义行为（UB）：函数可能会返回</span></span><br><span class="line">[[noreturn]] <span class="function"><span class="type">void</span> <span class="title">bad_exit</span><span class="params">(<span class="type">bool</span> flag)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (flag) &#123;</span><br><span class="line">        <span class="keyword">throw</span> std::<span class="built_in">runtime_error</span>(<span class="string">&quot;error&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// flag 为 false 时，函数会&quot;返回&quot; → 未定义行为！</span></span><br><span class="line">    <span class="comment">// 程序可能崩溃、产生随机结果</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ✅ 正确：确保所有路径都不返回</span></span><br><span class="line">[[noreturn]] <span class="function"><span class="type">void</span> <span class="title">good_exit</span><span class="params">(<span class="type">bool</span> flag)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (flag) &#123;</span><br><span class="line">        <span class="keyword">throw</span> std::<span class="built_in">runtime_error</span>(<span class="string">&quot;error&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    std::<span class="built_in">abort</span>();  <span class="comment">// 兜底，保证不返回</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="（2）所有分支都必须不返回"><a href="#（2）所有分支都必须不返回" class="headerlink" title="（2）所有分支都必须不返回"></a>（2）所有分支都必须不返回</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ❌ 危险：default 分支没有处理</span></span><br><span class="line">[[noreturn]] <span class="function"><span class="type">void</span> <span class="title">handle_error</span><span class="params">(<span class="type">int</span> code)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> (code) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>: <span class="keyword">throw</span> std::<span class="built_in">runtime_error</span>(<span class="string">&quot;error 1&quot;</span>);</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>: <span class="keyword">throw</span> std::<span class="built_in">logic_error</span>(<span class="string">&quot;error 2&quot;</span>);</span><br><span class="line">        <span class="comment">// default 分支缺失 → 未定义行为！</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ✅ 安全：所有分支都有处理</span></span><br><span class="line">[[noreturn]] <span class="function"><span class="type">void</span> <span class="title">handle_error</span><span class="params">(<span class="type">int</span> code)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> (code) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>: <span class="keyword">throw</span> std::<span class="built_in">runtime_error</span>(<span class="string">&quot;error 1&quot;</span>);</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>: <span class="keyword">throw</span> std::<span class="built_in">logic_error</span>(<span class="string">&quot;error 2&quot;</span>);</span><br><span class="line">        <span class="keyword">default</span>: <span class="keyword">throw</span> std::<span class="built_in">runtime_error</span>(<span class="string">&quot;unknown error&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="（3）声明和定义都要加"><a href="#（3）声明和定义都要加" class="headerlink" title="（3）声明和定义都要加"></a>（3）声明和定义都要加</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// header.h</span></span><br><span class="line">[[noreturn]] <span class="function"><span class="type">void</span> <span class="title">fatal_error</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* msg)</span></span>;  <span class="comment">// ✅ 声明要加</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// source.cpp</span></span><br><span class="line">[[noreturn]] <span class="function"><span class="type">void</span> <span class="title">fatal_error</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* msg)</span> </span>&#123;  <span class="comment">// ✅ 定义也要加</span></span><br><span class="line">    std::cerr &lt;&lt; msg &lt;&lt; std::endl;</span><br><span class="line">    std::<span class="built_in">abort</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="咸鱼 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="咸鱼 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>咸鱼
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://xianyubuxian-txy.github.io/2026/01/26/C++/C++%E7%89%B9%E6%80%A7/C++11%E7%89%B9%E6%80%A7/noreturn-%E5%B1%9E%E6%80%A7/" title="[[noreturn]]属性">https://xianyubuxian-txy.github.io/2026/01/26/C++/C++特性/C++11特性/noreturn-属性/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/01/26/C++/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/1-%E7%94%A8%E6%88%B7%E6%9C%8D%E5%8A%A1%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/" rel="prev" title="1.用户服务项目开发日志">
+                  <i class="fa fa-angle-left"></i> 1.用户服务项目开发日志
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/01/26/C++/%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/C-%E5%9B%9B%E5%A4%A7%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/" rel="next" title="C++四大类型转换">
+                  C++四大类型转换 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="waline"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">咸鱼</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">229k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">12:44</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/xianyubuxian-TXY" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<script class="next-config" data-name="waline" type="application/json">{"lang":"zh-cn","enable":true,"serverURL":"https://waline-beta-black.vercel.app","cssUrl":"https://unpkg.com/@waline/client@v2/dist/waline.css","commentCount":true,"pageview":false,"placeholder":"请文明评论呀","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"visitor":true,"comment_count":true,"requiredFields":[],"libUrl":"//unpkg.com/@waline/client@v2/dist/waline.js","el":"#waline","comment":true,"path":"/2026/01/26/C++/C++%E7%89%B9%E6%80%A7/C++11%E7%89%B9%E6%80%A7/noreturn-%E5%B1%9E%E6%80%A7/"}</script>
+<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css">
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.waline.el).then(() =>
+    NexT.utils.getScript(CONFIG.waline.libUrl, { condition: window.Waline })
+  ).then(() => 
+    Waline.init(Object.assign({}, CONFIG.waline,{ el: document.querySelector(CONFIG.waline.el) }))
+  );
+});
+</script>
+
+</body>
+</html>
