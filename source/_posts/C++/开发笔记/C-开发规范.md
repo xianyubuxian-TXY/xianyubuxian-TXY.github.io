@@ -14,7 +14,7 @@ categories:
 ![](https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260118211230598.png)
 
 ## 2.使用示例
-###（1）常量：constexpr > const > #define
+### （1）常量：constexpr > const > #define
 ```cpp
 // ✅ 首选：constexpr（编译期常量）
 constexpr int kMaxSize = 100;
@@ -774,7 +774,7 @@ auto user = UserBuilder()
 ### （1）表格汇总
 ![](https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260118205735765.png)
 
-####（2）使用示例
+#### （2）使用示例
 #### <1>大括号风格
 ```cpp
 // ✅ K&R 风格（推荐）：左括号不换行

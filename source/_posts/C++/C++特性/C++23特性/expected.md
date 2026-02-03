@@ -72,3 +72,28 @@ int main() {
     return 0;
 }
 ```
+
+## 4.自定义错误类型（更丰富的错误信息）
+```cpp
+// 自定义错误类型（包含错误码和消息）
+struct ServiceError {
+    ErrorCode code;
+    std::string message;
+    
+    static ServiceError UserNotFound(const std::string& msg = "用户不存在") {
+        return {ErrorCode::UserNotFound, msg};
+    }
+    
+    static ServiceError DatabaseError(const std::string& msg = "数据库错误") {
+        return {ErrorCode::DatabaseError, msg};
+    }
+};
+
+// 使用
+std::expected<User, ServiceError> GetUser(int64_t id) {
+    if (id <= 0) {
+        return std::unexpected(ServiceError::UserNotFound("无效的用户ID"));
+    }
+    // ...
+}
+```
