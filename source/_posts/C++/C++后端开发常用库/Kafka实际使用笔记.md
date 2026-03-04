@@ -9,6 +9,734 @@ categories:
 	- Kafka
 ---
 
+# 一、实战技巧
+## 1.msg_opaque 的使用
+
+### （1）msg_opaque 传递函数指针
+```cpp
+//@param msg_opaque 用户自定义指针，会在投递回调中返回
+virtual ErrorCode produce(Topic *topic,
+                          int32_t partition,
+                          int msgflags,
+                          void *payload,
+                          size_t len,
+                          const std::string *key,
+                          void *msg_opaque) = 0;
+```
+**注意**：
+- 这里传递的函数指针不是“回调函数”，是需要我们在函数中手动调用的
+- RdKafka 只有一种设置回调函数的方式 ——> 通过 Conf::set() 设置，Producer::create() 只接收 Conf 对象
+
+#### <1>为什么用 msg_opaque 传递函数指针？
+```cpp
+┌─────────────────────────────────────────────────────────────────────┐
+│  问题：dr_cb 是全局唯一的，但每条消息可能需要不同的回调逻辑          │
+└─────────────────────────────────────────────────────────────────────┘
+
+    消息A ──→ 发送成功后：更新数据库
+    消息B ──→ 发送成功后：通知用户  
+    消息C ──→ 不需要回调
+                    │
+                    ▼
+        ┌─────────────────────┐
+        │  dr_cb（全局唯一）   │  ← 它怎么知道每条消息该做什么？
+        └─────────────────────┘
+                    │
+                    ▼
+        答案：通过 msg_opaque 携带每条消息的"专属回调"
+```
+**注意**：
+- librdkafka 是 C 库的 C++ 封装，保留了 C 风格的 void* 回调机制。
+```cpp
+// ❌ 理想中的 API（不存在）
+producer->produce(topic, payload, [](bool ok) {
+    // 每条消息直接传 lambda
+});
+
+// ✅ 实际的 API（C 风格设计）
+producer->produce(topic, ..., msg_opaque);  // 只能传 void* 指针
+
+```
+
+#### <2>工作原理图解
+- 虽然produce不支持lambda表达式，但可以自己封装Produce支持lambda
+```cpp
+                        produce() 调用时
+┌──────────────────────────────────────────────────────────────────┐
+│                                                                  │
+│   // 用户代码                                                     │
+│   producer->Produce("topic", "msg1", [](bool ok, auto& err) {    │
+│       UpdateDatabase();  // 消息1的专属逻辑                       │
+│   });                                                            │
+│                                                                  │
+│   producer->Produce("topic", "msg2", [](bool ok, auto& err) {    │
+│       NotifyUser();      // 消息2的专属逻辑                       │
+│   });                                                            │
+│                                                                  │
+└──────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌──────────────────────────────────────────────────────────────────┐
+│   // Produce 内部实现                                             │
+│                                                                  │
+│   auto* cb = new ProduceCallback(std::move(callback));           │
+│   producer_->produce(..., cb);  // cb 作为 msg_opaque 传入       │
+│                                                                  │
+└──────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+                        dr_cb() 回调时
+┌──────────────────────────────────────────────────────────────────┐
+│                                                                  │
+│   void dr_cb(Message& msg) {                                     │
+│       auto* cb = static_cast<ProduceCallback*>(msg.msg_opaque());│
+│       (*cb)(success, error);  // 执行这条消息专属的回调           │
+│       delete cb;                                                 │
+│   }                                                              │
+│                                                                  │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+## 2.producer的封装
+### （1）kafka_producer.h
+```cpp
+#pragma once
+
+
+#include <librdkafka/rdkafkacpp.h>
+#include <memory>
+#include <string>
+#include <functional>
+#include <atomic>
+#include <unordered_map>
+#include "config/config.h"
+#include "common/result.h"
+
+
+namespace user_service{
+
+using ProduceCallback=std::function<void(bool success, const std::string& error)>;
+
+class KafkaProducer{
+public:
+    explicit KafkaProducer(const KafkaConfig& config);
+    ~KafkaProducer();
+
+    // 禁止拷贝
+    KafkaProducer(const KafkaProducer&) = delete;
+    KafkaProducer& operator=(const KafkaProducer&) = delete;
+
+    // ==================== 发送消息 ====================
+    // 异步发送（fire-and-forget：发射后不管）
+    Result<void> Send(const std::string& topic, 
+        const std::string& key,
+        const std::string& message) noexcept;
+
+    // 异步发送（带回调）
+    // produce本身是C API，不支持lambda，但通过封装后可以支持lamdba
+    Result<void> SendAsync(const std::string& topic,
+                const std::string& key,
+                const std::string& message,
+                ProduceCallback callback) noexcept;
+
+    // ==================== 管理方法 ====================
+    // 
+
+    /// @brief 等待所有消息发送完成
+    /// @param timeout_ms 等待时间，默认5000ms
+    /// @return 返回消息队列中剩余还未发送的消息数量
+    Result<int> Flush(int timeout_ms = 5000) noexcept;
+    
+    // 
+
+    /// @brief 触发回调处理（需要定期调用，或在单独线程中调用）
+    /// @param timeout_ms 阻塞时间，默认“非阻塞”
+    /// @return 返回处理的事件数量
+    int Poll(int timeout_ms = 0);   // 几乎不会失败,没必要用Result
+
+    // 获取待发送队列长度
+    int OutQueueLength() const;
+
+    // 是否健康
+    bool IsHealthy() const noexcept { return healthy_.load(); }
+
+    // 统计信息
+    struct Stats {
+        uint64_t messages_sent = 0;
+        uint64_t messages_failed = 0;
+        uint64_t bytes_sent = 0;
+    };
+    Stats GetStats() const noexcept;
+
+
+private:
+    class DeliveryCallback;
+
+    std::unique_ptr<RdKafka::Producer> producer_;
+    std::unique_ptr<RdKafka::Conf> config_;
+    std::unique_ptr<DeliveryCallback> delivery_cb_;
+
+    std::atomic<bool> healthy_{false};
+    mutable std::atomic<uint64_t> messages_sent_{0};
+    mutable std::atomic<uint64_t> messages_failed_{0};
+    mutable std::atomic<uint64_t> bytes_sent_{0};
+};
+
+}
+```
+
+### （2）kafka_producer.cpp
+```cpp
+#include "kafka_producer.h"
+#include "detail/detail.h"
+#include "common/logger.h"
+#include "common/error_codes.h"
+
+namespace user_service{
+
+KafkaProducer::KafkaProducer(const KafkaConfig& config){
+    try{
+        // 1.设置配置
+        config_=KafkaConfBuilder()
+                .ApplyForProducer(config)
+                .SetCallBack("dr_cb",delivery_cb_.get())
+                .Build();
+        
+        // 2.生成producer
+        std::string errstr;
+        producer_.reset(RdKafka::Producer::create(config_.get(),errstr));
+        if(!producer_){
+            throw std::runtime_error("创建 Kafka Producer 失败: " + errstr);
+        }
+        healthy_ = true;
+        LOG_INFO("[Kafka] Producer 初始化成功, brokers={}", config.brokers);
+    }catch(const std::exception& e){
+        // 捕捉KafkaConfBuilder()构造配置过程的错误信息
+        throw;
+    }
+}
+
+KafkaProducer::~KafkaProducer(){
+    if (producer_) {
+        // 等待所有消息发送完成
+        LOG_INFO("[Kafka] Producer 关闭中，等待消息发送完成...");
+        Flush(10000);
+        LOG_INFO("[Kafka] Producer 已关闭");
+    }
+}
+
+Result<void> KafkaProducer::Send(const std::string& topic, 
+    const std::string& key,
+    const std::string& message){
+
+    // 健康检查
+    if (!healthy_) {
+        LOG_WARN("[Kafka] Producer 不健康，消息丢弃");
+        return Result<void>::Fail(ErrorCode::Internal,"服务器内部异常");
+    }
+
+    RdKafka::ErrorCode err = producer_->produce(
+        topic,                                    // topic
+        RdKafka::Topic::PARTITION_UA,            // 自动分区
+        RdKafka::Producer::RK_MSG_COPY,          // 复制消息
+        const_cast<char*>(message.c_str()),      // payload
+        message.size(),                           // payload size
+        key.empty() ? nullptr : key.c_str(),     // key
+        key.size(),                               // key size
+        0,                                        // timestamp (0=使用当前时间)
+        nullptr                                   // opaque (回调参数)
+    );
+
+    if(err!=RdKafka::ERR_NO_ERROR){
+        if(err==RdKafka::ERR__QUEUE_FULL){ // 发送队列满了
+            LOG_INFO("[Kafka] 队列满，等待后重试");
+            producer_->poll(100);
+            // 重试一次
+            err = producer_->produce(
+                topic, RdKafka::Topic::PARTITION_UA, RdKafka::Producer::RK_MSG_COPY,
+                const_cast<char*>(message.c_str()), message.size(),
+                key.empty() ? nullptr : key.c_str(), key.size(), 0, nullptr
+            );
+        }
+
+        // 还是没有成功
+        if (err != RdKafka::ERR_NO_ERROR) {
+            LOG_ERROR("[Kafka] 发送失败: topic={}, error={}", 
+                         topic, RdKafka::err2str(err));
+            messages_failed_++;
+            
+            return Result<void>::Fail(ErrorCode::Internal,"内部服务器异常");
+        }
+
+    }
+
+    // 触发回调
+    producer_->poll(0);
+    return Result<void>::Ok();
+
+}
+
+Result<void> KafkaProducer::SendAsync(const std::string& topic,
+    const std::string& key,
+    const std::string& message,
+    ProduceCallback callback){
+    
+    // 健康检查
+    if (!healthy_) {
+        LOG_WARN("[Kafka] Producer 不健康，消息丢弃");
+        return Result<void>::Fail(ErrorCode::Internal,"服务器内部异常");
+    }
+
+    // 在堆上分配回调，由 delivery callback 释放
+    // 同时可以将lambda表达式转为 void *
+    auto* cb= new ProduceCallback(std::move(callback));
+
+    RdKafka::ErrorCode err = producer_->produce(
+        topic,
+        RdKafka::Topic::PARTITION_UA,
+        RdKafka::Producer::RK_MSG_COPY,
+        const_cast<char*>(message.c_str()), message.size(),
+        key.empty() ? nullptr : key.c_str(), key.size(),
+        0,
+        cb  // opaque 参数，传递给回调
+    );
+
+    if(err!=RdKafka::ERR_NO_ERROR){
+        if(err==RdKafka::ERR__QUEUE_FULL){ // 发送队列满了
+            LOG_INFO("[Kafka] 队列满，等待后重试");
+            producer_->poll(100);
+            // 重试一次
+            err = producer_->produce(
+                topic, RdKafka::Topic::PARTITION_UA, RdKafka::Producer::RK_MSG_COPY,
+                const_cast<char*>(message.c_str()), message.size(),
+                key.empty() ? nullptr : key.c_str(), key.size(), 0, nullptr
+            );
+        }
+
+        // 还是没有成功
+        if (err != RdKafka::ERR_NO_ERROR) {
+            LOG_ERROR("[Kafka] 发送失败: topic={}, error={}", 
+                         topic, RdKafka::err2str(err));
+            messages_failed_++;
+            
+            return Result<void>::Fail(ErrorCode::Internal,"内部服务器异常");
+        }
+
+    }
+
+    // 触发回调
+    producer_->poll(0);
+    return Result<void>::Ok();
+}
+
+
+// 等待所有消息发送完成（默认等待5s）
+Result<int> KafkaProducer::Flush(int timeout_ms){
+    if (!producer_) {
+        return Result<int>::Fail(ErrorCode::Internal, "Producer not initialized");
+    }
+
+    // 等待消息发送
+    RdKafka::ErrorCode err=producer_->flush(timeout_ms);
+    
+    // 获取消息队列中剩余消息数量
+    int remaining=producer_->outq_len();
+
+    if (err == RdKafka::ERR__TIMED_OUT) {
+        // 超时：不算错误，返回剩余消息数，让调用方决定如何处理
+        return Result<int>::Ok(remaining);
+    }
+
+    if (err != RdKafka::ERR_NO_ERROR) {
+        // 其他真正的错误
+        LOG_WARN("Flush failed: " + RdKafka::err2str(err));
+        return Result<int>::Fail(ErrorCode::Internal,"内部服务器异常");
+    }
+
+    // 成功，队列已清空
+    return Result<int>::Ok(0);
+}
+
+// 触发回调处理（默认“非阻塞”）（需要定期调用，或在单独线程中调用）
+int KafkaProducer::Poll(int timeout_ms){
+    return producer_ ? producer_->poll(timeout_ms) : 0;
+}
+
+// 获取待发送队列长度
+int KafkaProducer::OutQueueLength() const{
+    return producer_ ? producer_->outq_len() : 0;
+}
+
+KafkaProducer::Stats KafkaProducer::GetStats() const{
+    return Stats{
+        messages_sent_.load(),
+        messages_failed_.load(),
+        bytes_sent_.load()
+    };
+}
+
+}
+```
+
+### （3）kafka_callbacks.h
+```cpp
+#pragma once
+#include <librdkafka/rdkafkacpp.h>
+#include "common/logger.h"
+#include "kafka/kafka_producer.h"
+namespace user_service{
+
+class KafkaProducer::DeliveryCallback: public RdKafka::DeliveryReportCb{
+public:
+    void dr_cb(RdKafka::Message &message) override{
+        if(message.err()){
+            LOG_ERROR("[Kafka] 消息投递失败: topic={}, partition={}, error={}",
+                message.topic_name(), 
+                message.partition(),
+                message.errstr());
+            producer_->messages_failed_++;
+        
+            // 如果有回调，执行回调
+            if(message.msg_opaque()){
+                auto* cb=static_cast<ProduceCallback*>(message.msg_opaque());
+                (*cb)(false,message.errstr());
+                delete cb;
+            }
+        }else{
+            LOG_TRACE("[Kafka] 消息投递成功: topic={}, partition={}, offset={}",
+                message.topic_name(),
+                message.partition(),
+                message.offset());
+            producer_->messages_sent_++;
+            producer_->bytes_sent_ += message.len();
+            
+            if (message.msg_opaque()) {
+                auto* cb = static_cast<ProduceCallback*>(message.msg_opaque());
+                (*cb)(true, "");
+                delete cb;
+            }
+        }
+    }
+private:
+    KafkaProducer* producer_;
+};
+}
+```
+
+### （4）kafka_conf_builder.h
+```cpp
+// ============ Kafka Producer 配置 ============
+struct KafkaProducerConfig {
+    std::optional<std::string> acks;                  // 消息发送确认级别，可选0/1/all(-1)，控可靠性
+    std::optional<bool> enable_idempotence;           // 是否启用幂等性，保证消息仅投递一次
+    std::optional<int> retries;                       // 发送失败最大重试次数，0为不重试
+    std::optional<int> retry_backoff_ms;              // 重试退避间隔(ms)，避免频繁重试压垮broker
+    std::optional<int> delivery_timeout_ms;           // 消息投递总超时(ms)，含传输/重试所有耗时
+    std::optional<int> batch_size;                    // 批量发送批次大小(字节)，达阈值立即发送
+    std::optional<int> linger_ms;                     // 批量等待最大延迟(ms)，超时强制发送批次
+    std::optional<std::string> compression_codec;     // 消息压缩算法，可选none/gzip/snappy/lz4/zstd
+    std::optional<int> queue_buffering_max_messages;  // 生产者本地队列最大消息数，满则阻塞/丢弃
+    std::optional<int> queue_buffering_max_kbytes;    // 生产者本地队列最大容量(KB)，满则阻塞/丢弃
+
+    std::string ToString() const;
+};
+
+// ============ Kafka Consumer 配置 ============
+struct KafkaConsumerConfig {
+    std::optional<std::string> group_id;
+    std::optional<std::string> auto_offset_reset;
+    std::optional<bool> enable_auto_commit;
+    std::optional<int> max_poll_records;
+    std::optional<int> session_timeout_ms;
+    std::optional<int> heartbeat_interval_ms;
+
+    std::string ToString() const;
+};
+
+// ============ Kafka 网络配置 ============
+struct KafkaNetworkConfig {
+    std::optional<int> socket_timeout_ms;
+    std::optional<int> reconnect_backoff_ms;
+    std::optional<int> reconnect_backoff_max_ms;
+
+    std::string ToString() const;
+};
+
+
+// ============ Kafka 主配置 ============
+struct KafkaConfig {
+    std::string brokers = "localhost:9092";
+    std::string user_events="user-events";
+    std::string client_id= "user-service";
+    
+    KafkaProducerConfig producer;
+    KafkaConsumerConfig consumer;
+    KafkaNetworkConfig network;
+
+    std::string ToString() const;
+};
+```
+
+```cpp
+#pragma once
+#include <librdkafka/rdkafkacpp.h>
+#include <memory>
+#include <stdexcept>
+#include <string>
+#include <vector>
+#include <sstream>
+#include <type_traits>
+#include <utility>
+
+#include "config/config.h"
+
+namespace user_service{
+
+/**
+ * @brief Kafka 配置构建器（Builder 模式）
+ * 
+ * @example Producer 配置示例
+ * @code
+ * // 方式1: 使用完整配置结构
+ * auto conf = KafkaConfBuilder()
+ *     .ApplyForProducer(kafka_config)
+ *     .SetCallBack("dr_cb", &delivery_cb)      // 设置投递回调
+ *     .SetCallBack("event_cb", &event_cb)      // 设置事件回调
+ *     .Build();
+ * 
+ * // 方式2: 手动设置各项参数
+ * auto conf = KafkaConfBuilder()
+ *     .Set("bootstrap.servers", "localhost:9092")
+ *     .Set("client.id", "user-service-producer")
+ *     .Set("acks", "all")
+ *     .Set("enable.idempotence", "true")
+ *     .Set("retries", "3")
+ *     .Set("compression.codec", "snappy")
+ *     .Build();
+ * 
+ * // 创建 Producer
+ * std::string errstr;
+ * auto producer = std::unique_ptr<RdKafka::Producer>(
+ *     RdKafka::Producer::create(conf.get(), errstr)
+ * );
+ * @endcode
+ * 
+ * @example Consumer 配置示例
+ * @code
+ * auto conf = KafkaConfBuilder()
+ *     .ApplyForConsumer(kafka_config)
+ *     .Set("group.id", "user-event-consumer-group")
+ *     .SetCallBack("rebalance_cb", &rebalance_cb)
+ *     .Build();
+ * 
+ * // 创建 Consumer
+ * std::string errstr;
+ * auto consumer = std::unique_ptr<RdKafka::KafkaConsumer>(
+ *     RdKafka::KafkaConsumer::create(conf.get(), errstr)
+ * );
+ * @endcode
+ * 
+ * @example 错误处理示例
+ * @code
+ * KafkaConfBuilder builder;
+ * builder.Set("bootstrap.servers", "localhost:9092")
+ *        .Set("invalid.key", "value");  // 无效配置
+ * 
+ * if (builder.HasErrors()) {
+ *     for (const auto& err : builder.GetErrors()) {
+ *         LOG_ERROR("Config error: {}", err);
+ *     }
+ *     return;
+ * }
+ * 
+ * // 或者直接 Build()，会抛出异常
+ * try {
+ *     auto conf = builder.Build();
+ * } catch (const std::runtime_error& e) {
+ *     LOG_ERROR("Build failed: {}", e.what());
+ * }
+ * @endcode
+ * 
+ * @example 配合配置文件使用
+ * @code
+ * // config.yaml:
+ * // kafka:
+ * //   brokers: "kafka:9092"
+ * //   client_id: "user-service"
+ * //   producer:
+ * //     acks: "all"
+ * //     enable_idempotence: true
+ * //     retries: 3
+ * //   topics:
+ * //     user_events: "user-events"
+ * 
+ * auto config = Config::LoadFromFile("config.yaml");
+ * auto conf = KafkaConfBuilder()
+ *     .ApplyForProducer(config.kafka)
+ *     .Build();
+ * @endcode
+ */
+
+//RdKafka::Conf构造器
+class KafkaConfBuilder{
+public:
+    KafkaConfBuilder(RdKafka::Conf::ConfType conf_type = RdKafka::Conf::CONF_GLOBAL) {
+        conf_.reset(RdKafka::Conf::create(conf_type));
+
+        if(!conf_){
+            throw std::runtime_error("Failed to create RdKafka::Conf object");
+        }
+    }
+
+    // 基础设置方法
+    KafkaConfBuilder& Set(const std::string& key, const std::string& value) {
+        // 空指针保护
+        if (!conf_) {
+            errors_.push_back("Conf object is null, cannot set key: " + key);
+            return *this;
+        }
+
+        std::string errstr;
+        if (conf_->set(key, value, errstr) != RdKafka::Conf::CONF_OK) {
+            errors_.push_back("Failed to set " + key + ": " + errstr);
+        }
+        return *this;
+    }
+
+    // 设置回调
+    template<typename T>
+    KafkaConfBuilder& SetCallBack(const std::string& key, T* cb) {
+        // 空指针保护
+        if (!conf_) {
+            errors_.push_back("Conf object is null, cannot set key: " + key);
+            return *this;
+        }
+
+        // 静态断言约束回调类型，提前拦截错误
+        static_assert(
+            std::is_base_of<RdKafka::DeliveryReportCb, T>::value ||
+            std::is_base_of<RdKafka::EventCb, T>::value ||
+            std::is_base_of<RdKafka::RebalanceCb, T>::value ||
+            std::is_base_of<RdKafka::OffsetCommitCb, T>::value ||
+            std::is_base_of<RdKafka::PartitionerCb, T>::value ||
+            std::is_base_of<RdKafka::ConsumeCb, T>::value   ||
+            std::is_base_of<RdKafka::OAuthBearerTokenRefreshCb, T>::value   ||
+            std::is_base_of<RdKafka::SslCertificateVerifyCb, T>::value  ||
+            std::is_base_of<RdKafka::SocketCb, T>::value    ||
+            std::is_base_of<RdKafka::OpenCb, T>::value  ||
+            std::is_base_of<RdKafka::PartitionerKeyPointerCb, T>::value,
+            "T must inherit from RdKafka callback base class (e.g. DeliveryReportCb, ErrorCb)"
+        );
+
+        // 空回调指针检查
+        if (!cb) {
+            errors_.push_back("Callback pointer is null for key: " + key);
+            return *this;
+        }
+
+        std::string errstr;
+        if (conf_->set(key, cb, errstr) != RdKafka::Conf::CONF_OK) {
+            errors_.push_back("Failed to set callback " + key + ": " + errstr);
+        }
+        return *this;
+    }
+
+    // 应用 Producer 配置
+    KafkaConfBuilder& ApplyProducerConfig(const KafkaProducerConfig& config) {
+        if (config.acks) Set("acks", *config.acks);
+        if (config.enable_idempotence) Set("enable.idempotence", *config.enable_idempotence ? "true" : "false");
+        if (config.retries) Set("retries", std::to_string(*config.retries));
+        if (config.retry_backoff_ms) Set("retry.backoff.ms", std::to_string(*config.retry_backoff_ms));
+        if (config.delivery_timeout_ms) Set("delivery.timeout.ms", std::to_string(*config.delivery_timeout_ms));
+        if (config.batch_size) Set("batch.size", std::to_string(*config.batch_size));
+        if (config.linger_ms) Set("queue.buffering.max.ms", std::to_string(*config.linger_ms));
+        if (config.compression_codec) Set("compression.codec", *config.compression_codec);
+        if (config.queue_buffering_max_messages) Set("queue.buffering.max.messages", std::to_string(*config.queue_buffering_max_messages));
+        if (config.queue_buffering_max_kbytes) Set("queue.buffering.max.kbytes", std::to_string(*config.queue_buffering_max_kbytes));
+        return *this;
+    }
+
+    // 应用 Consumer 配置
+    KafkaConfBuilder& ApplyConsumerConfig(const KafkaConsumerConfig& config) {
+        if (config.group_id) Set("group.id", *config.group_id);
+        if (config.auto_offset_reset) Set("auto.offset.reset", *config.auto_offset_reset);
+        if (config.enable_auto_commit) Set("enable.auto.commit", *config.enable_auto_commit ? "true" : "false");
+        if (config.max_poll_records) Set("max.poll.records", std::to_string(*config.max_poll_records));
+        if (config.session_timeout_ms) Set("session.timeout.ms", std::to_string(*config.session_timeout_ms));
+        if (config.heartbeat_interval_ms) Set("heartbeat.interval.ms", std::to_string(*config.heartbeat_interval_ms));
+        return *this;
+    }
+
+    // 应用 Network 配置
+    KafkaConfBuilder& ApplyNetworkConfig(const KafkaNetworkConfig& config) {
+        if (config.socket_timeout_ms) Set("socket.timeout.ms", std::to_string(*config.socket_timeout_ms));
+        if (config.reconnect_backoff_ms) Set("reconnect.backoff.ms", std::to_string(*config.reconnect_backoff_ms));
+        if (config.reconnect_backoff_max_ms) Set("reconnect.backoff.max.ms", std::to_string(*config.reconnect_backoff_max_ms));
+        return *this;
+    }
+
+    // 应用完整配置（用于 Producer）
+    KafkaConfBuilder& ApplyForProducer(const KafkaConfig& config) {
+        Set("bootstrap.servers", config.brokers);
+        Set("client.id", config.client_id);
+        ApplyProducerConfig(config.producer);
+        ApplyNetworkConfig(config.network);
+        return *this;
+    }
+
+    // 应用完整配置（用于 Consumer）
+    KafkaConfBuilder& ApplyForConsumer(const KafkaConfig& config) {
+        Set("bootstrap.servers", config.brokers);
+        Set("client.id", config.client_id);
+        ApplyConsumerConfig(config.consumer);
+        ApplyNetworkConfig(config.network);
+        return *this;
+    }
+
+    // 构建
+    std::unique_ptr<RdKafka::Conf> Build() {
+        // 防止重复 Build
+        if (build_called_) {
+            throw std::runtime_error("KafkaConfBuilder::Build() called multiple times (conf ownership moved)");
+        }
+
+        if (!errors_.empty()) {
+            std::ostringstream oss;
+            oss << "KafkaConfBuilder errors:\n";
+            for (const auto& err : errors_) {
+                oss << "  - " << err << "\n";
+            }
+            throw std::runtime_error(oss.str());
+        }
+        
+        if (!conf_) {
+            throw std::runtime_error("KafkaConfBuilder: Conf object is null");
+        }
+
+        build_called_ = true;
+        return std::move(conf_);
+    }
+
+    // 检查是否有错误
+    bool HasErrors() const { return !errors_.empty(); }
+    const std::vector<std::string>& GetErrors() const { return errors_; }
+
+    //explicit：只允许在条件判断中使用（if/while/!/&&/||），禁止意外的隐式转换到其他类型。
+    explicit operator bool() const{
+        return conf_!=nullptr;
+    }
+
+private: 
+    std::unique_ptr<RdKafka::Conf> conf_;
+    std::vector<std::string> errors_;
+    bool build_called_ = false;  // 标记是否已调用 Build
+};
+
+}
+```
+
+
+
 # 一、特殊情况的应对策略
 ## 1.Producer侧“消息队列”满的处理策略
 实际开发中，队列满（ERR__QUEUE_FULL）的处理取决于业务对可靠性 vs 性能的权衡
