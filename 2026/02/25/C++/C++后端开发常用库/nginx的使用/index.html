@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"xianyubuxian-txy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":"flat"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="一、nginx简介 1.什么是nginx  * 高性能的 HTTP 服务器 和 反向代理服务器  * 支持 TCP&#x2F;UDP 代理（stream 模块）  * 特点：高并发、低内存、热部署、高可用  2.核心功能   （1）Nginx的反向代理  * 客户端对目标服务器是无感知的，客户端将请求发送到反向代理服务器，反向代理服务器再将请求发送到目标服务器，获取响应数据后返回给客户端 ——&gt; 只暴露了反">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nginx的使用">
+<meta property="og:url" content="https://xianyubuxian-txy.github.io/2026/02/25/C++/C++%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%BA%93/nginx%E7%9A%84%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Xianyu">
+<meta property="og:description" content="一、nginx简介 1.什么是nginx  * 高性能的 HTTP 服务器 和 反向代理服务器  * 支持 TCP&#x2F;UDP 代理（stream 模块）  * 特点：高并发、低内存、热部署、高可用  2.核心功能   （1）Nginx的反向代理  * 客户端对目标服务器是无感知的，客户端将请求发送到反向代理服务器，反向代理服务器再将请求发送到目标服务器，获取响应数据后返回给客户端 ——&gt; 只暴露了反">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260225182757597.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260308210527953.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260308214526431.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260308214553989.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260308214627045.png">
+<meta property="article:published_time" content="2026-02-25T10:24:41.000Z">
+<meta property="article:modified_time" content="2026-03-08T13:46:46.654Z">
+<meta property="article:author" content="咸鱼">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260225182757597.png">
+
+
+<link rel="canonical" href="https://xianyubuxian-txy.github.io/2026/02/25/C++/C++%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%BA%93/nginx%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://xianyubuxian-txy.github.io/2026/02/25/C++/C++%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%BA%93/nginx%E7%9A%84%E4%BD%BF%E7%94%A8/","path":"2026/02/25/C++/C++后端开发常用库/nginx的使用/","title":"nginx的使用"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>nginx的使用 | Xianyu</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+<link rel="dns-prefetch" href="https://waline-beta-black.vercel.app">
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Xianyu</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81nginx%E7%AE%80%E4%BB%8B"><span class="nav-text">一、nginx简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AFnginx"><span class="nav-text">1.什么是nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD"><span class="nav-text">2.核心功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89Nginx%E7%9A%84%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86"><span class="nav-text">（1）Nginx的反向代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89Nginx%E7%9A%84%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="nav-text">（2）Nginx的负载均衡</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Nginx%E7%9A%84%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-text">3.Nginx的反向代理 + 负载均衡 工作流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-text">（1）工作流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E8%BF%9E%E6%8E%A5%E6%B1%A0%E5%A4%8D%E7%94%A8%EF%BC%88keepalive%EF%BC%89"><span class="nav-text">（2）连接池复用（keepalive）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%AE%89%E8%A3%85%E4%B8%8E%E5%90%AF%E5%8A%A8"><span class="nav-text">二、安装与启动</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Ubuntu%E5%AE%89%E8%A3%85"><span class="nav-text">1.Ubuntu安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%9C%8D%E5%8A%A1%E7%AE%A1%E7%90%86"><span class="nav-text">2.服务管理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E9%85%8D%E7%BD%AE"><span class="nav-text">三、配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%BD%8D%E7%BD%AE"><span class="nav-text">1.配置文件位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E9%85%8D%E7%BD%AE%E5%B1%82%E7%BA%A7%E7%BB%93%E6%9E%84"><span class="nav-text">2.配置层级结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-TCP-UDP-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1-Stream"><span class="nav-text">3.TCP&#x2F;UDP 负载均衡 (Stream)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E9%85%8D%E7%BD%AE"><span class="nav-text">（1）配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90"><span class="nav-text">（2）配置参数解析</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81Nginx%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%E4%B8%8E%E8%B0%83%E4%BC%98"><span class="nav-text">四、Nginx配置详解与调优</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Nginx-%E6%9E%B6%E6%9E%84%E6%A6%82%E8%BF%B0"><span class="nav-text">1.Nginx 架构概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%A0%B8%E5%BF%83%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="nav-text">2.核心配置文件结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3"><span class="nav-text">3.全局配置参数详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89Worker-%E7%9B%B8%E5%85%B3"><span class="nav-text">（1）Worker 相关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89Worker-%E8%BF%9B%E7%A8%8B%E6%95%B0%E8%AE%BE%E7%BD%AE%E5%8E%9F%E5%88%99"><span class="nav-text">（2）Worker 进程数设置原则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Events-%E5%9D%97%E8%AF%A6%E8%A7%A3"><span class="nav-text">4.Events 块详解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Stream-%E5%9D%97%E8%AF%A6%E8%A7%A3%EF%BC%88TCP-%E5%9B%9B%E5%B1%82%E4%BB%A3%E7%90%86%EF%BC%89"><span class="nav-text">5.Stream 块详解（TCP 四层代理）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE"><span class="nav-text">（1）基础配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89Upstream-%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3"><span class="nav-text">（2）Upstream 参数详解</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="咸鱼"
+      src="/images/xianyu.jpg">
+  <p class="site-author-name" itemprop="name">咸鱼</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">75</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">92</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xianyubuxian-TXY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xianyubuxian-TXY" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xianyubuxian-txy.github.io/2026/02/25/C++/C++%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%BA%93/nginx%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xianyu.jpg">
+      <meta itemprop="name" content="咸鱼">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Xianyu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="nginx的使用 | Xianyu">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          nginx的使用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-02-25 18:24:41" itemprop="dateCreated datePublished" datetime="2026-02-25T18:24:41+08:00">2026-02-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-03-08 21:46:46" itemprop="dateModified" datetime="2026-03-08T21:46:46+08:00">2026-03-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/C-%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">C++后端开发库</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/C-%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%BA%93/nginx/" itemprop="url" rel="index"><span itemprop="name">nginx</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/C-%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%BA%93/nginx/nginx%E7%9A%84%E4%BD%BF%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">nginx的使用</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Waline：</span>
+  
+    <a title="waline" href="/2026/02/25/C++/C++%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%BA%93/nginx%E7%9A%84%E4%BD%BF%E7%94%A8/#waline" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" data-path="/2026/02/25/C++/C++%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%BA%93/nginx%E7%9A%84%E4%BD%BF%E7%94%A8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>10 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="一、nginx简介"><a href="#一、nginx简介" class="headerlink" title="一、nginx简介"></a>一、nginx简介</h1><h2 id="1-什么是nginx"><a href="#1-什么是nginx" class="headerlink" title="1.什么是nginx"></a>1.什么是nginx</h2><ul>
+<li>高性能的 HTTP 服务器 和 反向代理服务器</li>
+<li>支持 TCP&#x2F;UDP 代理（stream 模块）</li>
+<li>特点：高并发、低内存、热部署、高可用</li>
+</ul>
+<h2 id="2-核心功能"><a href="#2-核心功能" class="headerlink" title="2.核心功能"></a>2.核心功能</h2><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260225182757597.png"></p>
+<h3 id="（1）Nginx的反向代理"><a href="#（1）Nginx的反向代理" class="headerlink" title="（1）Nginx的反向代理"></a>（1）Nginx的反向代理</h3><ul>
+<li>客户端对目标服务器是无感知的，客户端将请求发送到反向代理服务器，反向代理服务器再将请求发送到目标服务器，获取响应数据后返回给客户端 ——&gt; 只暴露了反向代理服务器的IP地址，而隐藏了真实服务器的IP地址<br><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260308210527953.png"></li>
+</ul>
+<h3 id="（2）Nginx的负载均衡"><a href="#（2）Nginx的负载均衡" class="headerlink" title="（2）Nginx的负载均衡"></a>（2）Nginx的负载均衡</h3><ul>
+<li>在“Nginx的反向代理”我们知道：客户端请求先发送到反向代理服务器，在由反向代理服务器发送到目标服务器</li>
+<li>而负载均衡就是让反向代理服务器通过指定的负载均衡策略，将请求合理的分发到不同目标服务器上，避免某个目标服务器接收过多请求而导致超载，而其它服务器却因为请求太少而利用率太低</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────────────────────────────────────────────────────────────────┐</span><br><span class="line">│                      负载均衡（反向代理的升级版）                         │</span><br><span class="line">│                                                                         │</span><br><span class="line">│   客户端                    Nginx                   多台目标服务器       │</span><br><span class="line">│     │                        │                                          │</span><br><span class="line">│     │                        │          ┌──→ Server A (处理 <span class="number">30</span>%)        │</span><br><span class="line">│     │ ──────请求──────────→  │ ─────────┼──→ Server B (处理 <span class="number">30</span>%)        │</span><br><span class="line">│     │                        │          └──→ Server C (处理 <span class="number">40</span>%)        │</span><br><span class="line">│     │                    负载均衡策略                                    │</span><br><span class="line">│                                                                         │</span><br><span class="line">│   ✅ 请求合理分发到多台服务器                                            │</span><br><span class="line">│   ✅ 避免单点过载                                                        │</span><br><span class="line">│   ✅ 提高整体利用率                                                      │</span><br><span class="line">└─────────────────────────────────────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-Nginx的反向代理-负载均衡-工作流程"><a href="#3-Nginx的反向代理-负载均衡-工作流程" class="headerlink" title="3.Nginx的反向代理 + 负载均衡 工作流程"></a>3.Nginx的反向代理 + 负载均衡 工作流程</h2><h3 id="（1）工作流程"><a href="#（1）工作流程" class="headerlink" title="（1）工作流程"></a>（1）工作流程</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">1. Master 进程：读取配置 → <span class="built_in">bind</span>+listen → fork Worker 进程（数量=auto/配置）</span><br><span class="line"></span><br><span class="line">2. Worker 进程：继承 listen_fd → 注册到 epoll → 进入单线程事件循环</span><br><span class="line"></span><br><span class="line">3. 客户端新连接到来：Worker 抢占 → accept → 新 fd 注册到 epoll</span><br><span class="line"></span><br><span class="line">4. 连接事件发生：epoll_wait 返回 → 同一线程用非阻塞I/O处理 </span><br><span class="line">   ├─ 读取客户端请求</span><br><span class="line">   ├─ 根据负载均衡策略选择后端</span><br><span class="line">   ├─ 非阻塞连接后端 + 转发请求 （可以：连接池复用）</span><br><span class="line">   ├─ 非阻塞读取后端响应</span><br><span class="line">   └─ 非阻塞返回给客户端</span><br><span class="line"></span><br><span class="line">5. 关键点：Worker全程单线程 + 非阻塞 I/O + 事件驱动，无需线程池！</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Nginx 采用的是<strong>多 Reactor 多进程模型</strong></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────────────────────────────────────────────────────────────────┐</span><br><span class="line">│                    Nginx 的 Reactor 架构                                │</span><br><span class="line">├─────────────────────────────────────────────────────────────────────────┤</span><br><span class="line">│                                                                         │</span><br><span class="line">│   ┌─────────────────┐                                                   │</span><br><span class="line">│   │  Master Process │  ◄── 不处理网络 IO，只负责管理                      │</span><br><span class="line">│   │                 │      • 读取配置                                    │</span><br><span class="line">│   │                 │      • 管理 Worker                                 │</span><br><span class="line">│   │                 │      • 热重载 / 平滑升级                            │</span><br><span class="line">│   └────────┬────────┘                                                   │</span><br><span class="line">│            │ fork                                                       │</span><br><span class="line">│            ▼                                                            │</span><br><span class="line">│   ┌─────────────────────────────────────────────────────────────┐      │</span><br><span class="line">│   │                    Worker Processes                          │      │</span><br><span class="line">│   │                                                              │      │</span><br><span class="line">│   │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       │      │</span><br><span class="line">│   │  │   Worker 1   │  │   Worker 2   │  │   Worker N   │       │      │</span><br><span class="line">│   │  │              │  │              │  │              │       │      │</span><br><span class="line">│   │  │ ┌──────────┐ │  │ ┌──────────┐ │  │ ┌──────────┐ │       │      │</span><br><span class="line">│   │  │ │  Reactor │ │  │ │  Reactor │ │  │ │  Reactor │ │       │      │</span><br><span class="line">│   │  │ │  (epoll) │ │  │ │  (epoll) │ │  │ │  (epoll) │ │       │      │</span><br><span class="line">│   │  │ └──────────┘ │  │ └──────────┘ │  │ └──────────┘ │       │      │</span><br><span class="line">│   │  │              │  │              │  │              │       │      │</span><br><span class="line">│   │  │ 事件循环:     │  │ 事件循环:     │  │ 事件循环:     │       │      │</span><br><span class="line">│   │  │ • 监听事件    │  │ • 监听事件    │  │ • 监听事件    │       │      │</span><br><span class="line">│   │  │ • 接受连接    │  │ • 接受连接    │  │ • 接受连接    │       │      │</span><br><span class="line">│   │  │ • 读写数据    │  │ • 读写数据    │  │ • 读写数据    │       │      │</span><br><span class="line">│   │  │ • 处理请求    │  │ • 处理请求    │  │ • 处理请求    │       │      │</span><br><span class="line">│   │  └──────────────┘  └──────────────┘  └──────────────┘       │      │</span><br><span class="line">│   │                                                              │      │</span><br><span class="line">│   │  每个 Worker = 一个独立的 Reactor（单线程事件循环）             │      │</span><br><span class="line">│   └──────────────────────────────────────────────────────────────┘      │</span><br><span class="line">│                                                                         │</span><br><span class="line">└─────────────────────────────────────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<h3 id="（2）连接池复用（keepalive）"><a href="#（2）连接池复用（keepalive）" class="headerlink" title="（2）连接池复用（keepalive）"></a>（2）连接池复用（keepalive）</h3><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260308214526431.png"><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260308214553989.png"><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260308214627045.png"></p>
+<h1 id="二、安装与启动"><a href="#二、安装与启动" class="headerlink" title="二、安装与启动"></a>二、安装与启动</h1><h2 id="1-Ubuntu安装"><a href="#1-Ubuntu安装" class="headerlink" title="1.Ubuntu安装"></a>1.Ubuntu安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 基础安装</span></span><br><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="built_in">sudo</span> apt install nginx -y</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装 stream 模块（TCP/UDP 负载均衡必需）</span></span><br><span class="line"><span class="built_in">sudo</span> apt install libnginx-mod-stream -y</span><br><span class="line"></span><br><span class="line"><span class="comment"># 验证安装</span></span><br><span class="line">nginx -v</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-服务管理"><a href="#2-服务管理" class="headerlink" title="2.服务管理"></a>2.服务管理</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># systemctl 方式</span></span><br><span class="line"><span class="built_in">sudo</span> systemctl start nginx      <span class="comment"># 启动</span></span><br><span class="line"><span class="built_in">sudo</span> systemctl stop nginx       <span class="comment"># 停止</span></span><br><span class="line"><span class="built_in">sudo</span> systemctl restart nginx    <span class="comment"># 重启</span></span><br><span class="line"><span class="built_in">sudo</span> systemctl reload nginx     <span class="comment"># 热重载配置（推荐）</span></span><br><span class="line"><span class="built_in">sudo</span> systemctl status nginx     <span class="comment"># 查看状态</span></span><br><span class="line"><span class="built_in">sudo</span> systemctl <span class="built_in">enable</span> nginx     <span class="comment"># 开机自启</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># nginx 命令方式</span></span><br><span class="line"><span class="built_in">sudo</span> nginx                      <span class="comment"># 启动</span></span><br><span class="line"><span class="built_in">sudo</span> nginx -s stop              <span class="comment"># 快速停止</span></span><br><span class="line"><span class="built_in">sudo</span> nginx -s quit              <span class="comment"># 优雅停止</span></span><br><span class="line"><span class="built_in">sudo</span> nginx -s reload            <span class="comment"># 热重载</span></span><br><span class="line"><span class="built_in">sudo</span> nginx -t                   <span class="comment"># 测试配置</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="三、配置"><a href="#三、配置" class="headerlink" title="三、配置"></a>三、配置</h1><h2 id="1-配置文件位置"><a href="#1-配置文件位置" class="headerlink" title="1.配置文件位置"></a>1.配置文件位置</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/etc/nginx/nginx.conf           <span class="comment"># 主配置文件</span></span><br><span class="line">/etc/nginx/conf.d/*.conf        <span class="comment"># 额外配置（自动加载）</span></span><br><span class="line">/etc/nginx/sites-available/     <span class="comment"># 站点配置（可用）</span></span><br><span class="line">/etc/nginx/sites-enabled/       <span class="comment"># 站点配置（已启用，软链接）</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-配置层级结构"><a href="#2-配置层级结构" class="headerlink" title="2.配置层级结构"></a>2.配置层级结构</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"># 全局块 - 影响整体运行</span><br><span class="line">user nginx;                          # 运行用户</span><br><span class="line">worker_processes <span class="keyword">auto</span>;               # Worker 进程数（<span class="keyword">auto</span>=CPU核心数）</span><br><span class="line">error_log /var/log/nginx/error.log;  # 错误日志</span><br><span class="line">pid /run/nginx.pid;                  # PID 文件</span><br><span class="line"></span><br><span class="line"><span class="meta"># events 块 - 网络连接配置</span></span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections <span class="number">1024</span>;         # 单个 Worker 最大连接数</span><br><span class="line">    use epoll;                       # 事件驱动模型（Linux 推荐）</span><br><span class="line">    multi_accept on;                 # 同时接受多个连接</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta"># http 块 - HTTP 服务配置</span></span><br><span class="line">http &#123;</span><br><span class="line">    include /etc/nginx/mime.types;</span><br><span class="line">    default_type application/octet-stream;</span><br><span class="line">    </span><br><span class="line">    # 日志格式</span><br><span class="line">    log_format main <span class="string">&#x27;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#x27;</span></span><br><span class="line">                    <span class="string">&#x27;$status $body_bytes_sent &quot;$http_referer&quot; &#x27;</span></span><br><span class="line">                    <span class="string">&#x27;&quot;$http_user_agent&quot;&#x27;</span>;</span><br><span class="line">    </span><br><span class="line">    access_log /var/log/nginx/access.log main;</span><br><span class="line">    </span><br><span class="line">    sendfile on;</span><br><span class="line">    keepalive_timeout <span class="number">65</span>;</span><br><span class="line">    </span><br><span class="line">    # 引入其他配置</span><br><span class="line">    include /etc/nginx/conf.d<span class="comment">/*.conf;</span></span><br><span class="line"><span class="comment">    </span></span><br><span class="line"><span class="comment">    # server 块 - 虚拟主机配置</span></span><br><span class="line"><span class="comment">    server &#123;</span></span><br><span class="line"><span class="comment">        listen 80;</span></span><br><span class="line"><span class="comment">        server_name localhost;</span></span><br><span class="line"><span class="comment">        </span></span><br><span class="line"><span class="comment">        # location 块 - 路由匹配</span></span><br><span class="line"><span class="comment">        location / &#123;</span></span><br><span class="line"><span class="comment">            root /usr/share/nginx/html;</span></span><br><span class="line"><span class="comment">            index index.html;</span></span><br><span class="line"><span class="comment">        &#125;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"># stream 块 - TCP/UDP 代理配置</span></span><br><span class="line"><span class="comment">stream &#123;</span></span><br><span class="line"><span class="comment">    upstream backend &#123;</span></span><br><span class="line"><span class="comment">        server 127.0.0.1:6000;</span></span><br><span class="line"><span class="comment">        server 127.0.0.1:6001;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">    </span></span><br><span class="line"><span class="comment">    server &#123;</span></span><br><span class="line"><span class="comment">        listen 8000;</span></span><br><span class="line"><span class="comment">        proxy_pass backend;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-TCP-UDP-负载均衡-Stream"><a href="#3-TCP-UDP-负载均衡-Stream" class="headerlink" title="3.TCP&#x2F;UDP 负载均衡 (Stream)"></a>3.TCP&#x2F;UDP 负载均衡 (Stream)</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">客户端请求</span><br><span class="line">    │</span><br><span class="line">    ▼</span><br><span class="line">┌─────────────────────────────────┐</span><br><span class="line">│     Nginx Stream (Port 8000)    │</span><br><span class="line">│  ┌───────────────────────────┐  │</span><br><span class="line">│  │    least_conn 算法        │  │</span><br><span class="line">│  │  选择连接数最少的后端      │  │</span><br><span class="line">│  └───────────────────────────┘  │</span><br><span class="line">└─────────────────┬───────────────┘</span><br><span class="line">                  │</span><br><span class="line">    ┌─────────────┼─────────────┐</span><br><span class="line">    ▼             ▼             ▼</span><br><span class="line">┌───────┐   ┌───────┐   ┌───────┐</span><br><span class="line">│ :6000 │   │ :6001 │   │ :6002 │</span><br><span class="line">│ 连接:5│   │ 连接:3│   │ 连接:8│</span><br><span class="line">└───────┘   └───────┘   └───────┘</span><br><span class="line">                ▲</span><br><span class="line">                │</span><br><span class="line">           新连接分配到这里</span><br><span class="line">          （当前连接数最少）</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="（1）配置"><a href="#（1）配置" class="headerlink" title="（1）配置"></a>（1）配置</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">stream &#123;</span><br><span class="line">    # 聊天服务器集群</span><br><span class="line">    upstream chat_cluster &#123;</span><br><span class="line">        least_conn;  # 最少连接策略</span><br><span class="line">        </span><br><span class="line">        server <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6000</span> weight=<span class="number">1</span> max_fails=<span class="number">3</span> fail_timeout=<span class="number">30</span>s;</span><br><span class="line">        server <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6001</span> weight=<span class="number">1</span> max_fails=<span class="number">3</span> fail_timeout=<span class="number">30</span>s;</span><br><span class="line">        server <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6002</span> weight=<span class="number">1</span> max_fails=<span class="number">3</span> fail_timeout=<span class="number">30</span>s;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    # 数据库代理</span><br><span class="line">    upstream mysql_cluster &#123;</span><br><span class="line">        server <span class="number">192.168</span><span class="number">.1</span><span class="number">.101</span>:<span class="number">3306</span> weight=<span class="number">5</span>;</span><br><span class="line">        server <span class="number">192.168</span><span class="number">.1</span><span class="number">.102</span>:<span class="number">3306</span> weight=<span class="number">5</span>;</span><br><span class="line">        server <span class="number">192.168</span><span class="number">.1</span><span class="number">.103</span>:<span class="number">3306</span> backup;  # 备用服务器</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    # 聊天服务入口</span><br><span class="line">    server &#123;</span><br><span class="line">        listen <span class="number">8000</span>;</span><br><span class="line">        proxy_pass chat_cluster;</span><br><span class="line">        proxy_connect_timeout <span class="number">1</span>s;</span><br><span class="line">        proxy_timeout <span class="number">600</span>s;</span><br><span class="line">        tcp_nodelay on;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    # MySQL 代理入口</span><br><span class="line">    server &#123;</span><br><span class="line">        listen <span class="number">3307</span>;</span><br><span class="line">        proxy_pass mysql_cluster;</span><br><span class="line">        proxy_connect_timeout <span class="number">5</span>s;</span><br><span class="line">        proxy_timeout <span class="number">300</span>s;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="（2）配置参数解析"><a href="#（2）配置参数解析" class="headerlink" title="（2）配置参数解析"></a>（2）配置参数解析</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"># =====================================================</span><br><span class="line"># TCP/UDP 负载均衡模块 (Layer <span class="number">4</span>)</span><br><span class="line"># 工作在传输层，转发原始 TCP/UDP 数据包</span><br><span class="line"># 需要安装: sudo apt install libnginx-mod-stream</span><br><span class="line"># =====================================================</span><br><span class="line">stream &#123;</span><br><span class="line"></span><br><span class="line">    # ==================== 上游服务器集群定义 ====================</span><br><span class="line">    </span><br><span class="line">    # 聊天服务器集群</span><br><span class="line">    upstream chat_cluster &#123;</span><br><span class="line">        # -------- 负载均衡策略 --------</span><br><span class="line">        # least_conn: 最少连接数策略，新连接分配给当前连接数最少的服务器</span><br><span class="line">        # 其他可选策略:</span><br><span class="line">        #   (默认)轮询: 不写任何策略，按顺序轮流分配</span><br><span class="line">        <span class="meta">#   hash $remote_addr: IP哈希，同一IP始终访问同一后端</span></span><br><span class="line">        <span class="meta">#   random: 随机选择</span></span><br><span class="line">        least_conn;</span><br><span class="line">        </span><br><span class="line">        # -------- 后端服务器列表 --------</span><br><span class="line">        # 格式: server &lt;地址&gt;:&lt;端口&gt; [参数];</span><br><span class="line">        #</span><br><span class="line">        <span class="meta"># weight=1        权重，默认1，数值越大分配请求越多</span></span><br><span class="line">        # max_fails=<span class="number">3</span>     最大失败次数，超过后标记为不可用</span><br><span class="line">        # fail_timeout=<span class="number">30</span>s 失败超时时间:</span><br><span class="line">        #                   <span class="number">1</span>) 达到 max_fails 后，暂停服务 <span class="number">30</span> 秒</span><br><span class="line">        #                   <span class="number">2</span>) <span class="number">30</span> 秒内失败次数的统计窗口</span><br><span class="line">        <span class="meta"># backup          备用服务器，仅当所有主服务器不可用时启用</span></span><br><span class="line">        <span class="meta"># down            标记服务器永久不可用（维护时使用）</span></span><br><span class="line">        </span><br><span class="line">        server <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6000</span> weight=<span class="number">1</span> max_fails=<span class="number">3</span> fail_timeout=<span class="number">30</span>s;</span><br><span class="line">        server <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6001</span> weight=<span class="number">1</span> max_fails=<span class="number">3</span> fail_timeout=<span class="number">30</span>s;</span><br><span class="line">        server <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6002</span> weight=<span class="number">1</span> max_fails=<span class="number">3</span> fail_timeout=<span class="number">30</span>s;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    # 数据库代理集群</span><br><span class="line">    upstream mysql_cluster &#123;</span><br><span class="line">        <span class="meta"># weight=5: 权重为5（相对值，用于多服务器间比例分配）</span></span><br><span class="line">        server <span class="number">192.168</span><span class="number">.1</span><span class="number">.101</span>:<span class="number">3306</span> weight=<span class="number">5</span>;</span><br><span class="line">        server <span class="number">192.168</span><span class="number">.1</span><span class="number">.102</span>:<span class="number">3306</span> weight=<span class="number">5</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="meta"># backup: 备用服务器</span></span><br><span class="line">        # 正常情况不参与负载，仅当上面所有服务器都故障时才启用</span><br><span class="line">        server <span class="number">192.168</span><span class="number">.1</span><span class="number">.103</span>:<span class="number">3306</span> backup;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    # ==================== 监听服务配置 ====================</span><br><span class="line">    </span><br><span class="line">    # 聊天服务入口（对外暴露的端口）</span><br><span class="line">    server &#123;</span><br><span class="line">        <span class="meta"># listen: 监听端口</span></span><br><span class="line">        # 可选参数:</span><br><span class="line">        <span class="meta">#   udp          - 监听 UDP（默认 TCP）</span></span><br><span class="line">        <span class="meta">#   ssl          - 启用 SSL/TLS</span></span><br><span class="line">        <span class="meta">#   backlog=N    - 连接队列大小</span></span><br><span class="line">        #   so_keepalive - 启用 TCP keepalive</span><br><span class="line">        listen <span class="number">8000</span>;</span><br><span class="line">        </span><br><span class="line">        # proxy_pass: 转发目标（上游集群名称）</span><br><span class="line">        proxy_pass chat_cluster;</span><br><span class="line">        </span><br><span class="line">        # proxy_connect_timeout: 与后端建立连接的超时时间</span><br><span class="line">        # 超过此时间连接失败，尝试下一个后端服务器</span><br><span class="line">        proxy_connect_timeout <span class="number">1</span>s;</span><br><span class="line">        </span><br><span class="line">        # proxy_timeout: 连接空闲超时时间</span><br><span class="line">        # 客户端和后端之间无数据传输超过此时间，连接将被关闭</span><br><span class="line">        # 聊天服务设置较长（<span class="number">600</span>s=<span class="number">10</span>分钟），允许长连接</span><br><span class="line">        proxy_timeout <span class="number">600</span>s;</span><br><span class="line">        </span><br><span class="line">        # tcp_nodelay: 禁用 Nagle 算法</span><br><span class="line">        <span class="meta"># on  - 立即发送小数据包，降低延迟（适合实时聊天）</span></span><br><span class="line">        <span class="meta"># off - 合并小数据包后发送，提高吞吐量</span></span><br><span class="line">        tcp_nodelay on;</span><br><span class="line">        </span><br><span class="line">        # -------- 其他可选配置 --------</span><br><span class="line">        # proxy_buffer_size <span class="number">16</span>k;     # 代理缓冲区大小</span><br><span class="line">        # proxy_bind $remote_addr;   # 绑定客户端IP（透传真实IP）</span><br><span class="line">        # proxy_protocol on;         # 启用 PROXY protocol</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    # MySQL 代理入口</span><br><span class="line">    server &#123;</span><br><span class="line">        listen <span class="number">3307</span>;</span><br><span class="line">        proxy_pass mysql_cluster;</span><br><span class="line">        </span><br><span class="line">        # 数据库连接超时可以稍长</span><br><span class="line">        proxy_connect_timeout <span class="number">5</span>s;</span><br><span class="line">        </span><br><span class="line">        # 数据库查询超时（<span class="number">5</span>分钟）</span><br><span class="line">        # 需要根据最长 SQL 查询时间调整</span><br><span class="line">        proxy_timeout <span class="number">300</span>s;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="四、Nginx配置详解与调优"><a href="#四、Nginx配置详解与调优" class="headerlink" title="四、Nginx配置详解与调优"></a>四、Nginx配置详解与调优</h1><h2 id="1-Nginx-架构概述"><a href="#1-Nginx-架构概述" class="headerlink" title="1.Nginx 架构概述"></a>1.Nginx 架构概述</h2><ul>
+<li>Nginx 采用的是<strong>多 Reactor 多进程模型</strong></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────────────────────────────────────────────────────────────────┐</span><br><span class="line">│                    Nginx 的 Reactor 架构                                │</span><br><span class="line">├─────────────────────────────────────────────────────────────────────────┤</span><br><span class="line">│                                                                         │</span><br><span class="line">│   ┌─────────────────┐                                                   │</span><br><span class="line">│   │  Master Process │  ◄── 不处理网络 IO，只负责管理                      │</span><br><span class="line">│   │                 │      • 读取配置                                    │</span><br><span class="line">│   │                 │      • 管理 Worker                                 │</span><br><span class="line">│   │                 │      • 热重载 / 平滑升级                            │</span><br><span class="line">│   └────────┬────────┘                                                   │</span><br><span class="line">│            │ fork                                                       │</span><br><span class="line">│            ▼                                                            │</span><br><span class="line">│   ┌─────────────────────────────────────────────────────────────┐      │</span><br><span class="line">│   │                    Worker Processes                          │      │</span><br><span class="line">│   │                                                              │      │</span><br><span class="line">│   │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       │      │</span><br><span class="line">│   │  │   Worker 1   │  │   Worker 2   │  │   Worker N   │       │      │</span><br><span class="line">│   │  │              │  │              │  │              │       │      │</span><br><span class="line">│   │  │ ┌──────────┐ │  │ ┌──────────┐ │  │ ┌──────────┐ │       │      │</span><br><span class="line">│   │  │ │  Reactor │ │  │ │  Reactor │ │  │ │  Reactor │ │       │      │</span><br><span class="line">│   │  │ │  (epoll) │ │  │ │  (epoll) │ │  │ │  (epoll) │ │       │      │</span><br><span class="line">│   │  │ └──────────┘ │  │ └──────────┘ │  │ └──────────┘ │       │      │</span><br><span class="line">│   │  │              │  │              │  │              │       │      │</span><br><span class="line">│   │  │ 事件循环:     │  │ 事件循环:     │  │ 事件循环:     │       │      │</span><br><span class="line">│   │  │ • 监听事件    │  │ • 监听事件    │  │ • 监听事件    │       │      │</span><br><span class="line">│   │  │ • 接受连接    │  │ • 接受连接    │  │ • 接受连接    │       │      │</span><br><span class="line">│   │  │ • 读写数据    │  │ • 读写数据    │  │ • 读写数据    │       │      │</span><br><span class="line">│   │  │ • 处理请求    │  │ • 处理请求    │  │ • 处理请求    │       │      │</span><br><span class="line">│   │  └──────────────┘  └──────────────┘  └──────────────┘       │      │</span><br><span class="line">│   │                                                              │      │</span><br><span class="line">│   │  每个 Worker = 一个独立的 Reactor（单线程事件循环）             │      │</span><br><span class="line">│   └──────────────────────────────────────────────────────────────┘      │</span><br><span class="line">│                                                                         │</span><br><span class="line">└─────────────────────────────────────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-核心配置文件结构"><a href="#2-核心配置文件结构" class="headerlink" title="2.核心配置文件结构"></a>2.核心配置文件结构</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /etc/nginx/nginx.conf 完整结构</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ==================== 全局块 ====================</span></span><br><span class="line">user www-data;                      <span class="comment"># 运行用户</span></span><br><span class="line">worker_processes auto;              <span class="comment"># Worker 进程数</span></span><br><span class="line">pid /run/nginx.pid;                 <span class="comment"># PID 文件位置</span></span><br><span class="line">error_log /var/log/nginx/error.log; <span class="comment"># 错误日志</span></span><br><span class="line">worker_rlimit_nofile 100000;        <span class="comment"># Worker 文件描述符限制</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ==================== events 块 ====================</span></span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections 65535;       <span class="comment"># 单 Worker 最大连接数</span></span><br><span class="line">    use epoll;                      <span class="comment"># 事件驱动模型</span></span><br><span class="line">    multi_accept on;                <span class="comment"># 一次接受多个连接</span></span><br><span class="line">    accept_mutex off;               <span class="comment"># 关闭互斥锁（高并发建议关闭）</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># ==================== http 块（Web 服务）====================</span></span><br><span class="line">http &#123;</span><br><span class="line">    <span class="comment"># ... HTTP 相关配置</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># ==================== stream 块（TCP/UDP 代理）====================</span></span><br><span class="line">stream &#123;</span><br><span class="line">    <span class="comment"># ... TCP/UDP 四层代理配置</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-全局配置参数详解"><a href="#3-全局配置参数详解" class="headerlink" title="3.全局配置参数详解"></a>3.全局配置参数详解</h2><h3 id="（1）Worker-相关"><a href="#（1）Worker-相关" class="headerlink" title="（1）Worker 相关"></a>（1）Worker 相关</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># worker_processes - Worker 进程数</span></span><br><span class="line">worker_processes auto;          <span class="comment"># 自动检测 CPU 核数（推荐）</span></span><br><span class="line"><span class="comment"># worker_processes 8;           # 手动指定</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 说明：</span></span><br><span class="line"><span class="comment"># • auto = CPU 核心数</span></span><br><span class="line"><span class="comment"># • 每个 Worker 独立处理连接，互不影响</span></span><br><span class="line"><span class="comment"># • 过多会增加上下文切换开销</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># worker_rlimit_nofile - Worker 可打开的最大文件描述符</span></span><br><span class="line">worker_rlimit_nofile 100000;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算公式：</span></span><br><span class="line"><span class="comment"># worker_rlimit_nofile &gt;= worker_connections × 2</span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line"><span class="comment"># 为什么要 ×2？</span></span><br><span class="line"><span class="comment"># • 每个客户端连接 = 1 个 fd</span></span><br><span class="line"><span class="comment"># • 每个上游连接（代理后端）= 1 个 fd</span></span><br><span class="line"><span class="comment"># • 还需要预留给日志、共享内存等</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># worker_cpu_affinity - CPU 亲和性绑定</span></span><br><span class="line">worker_cpu_affinity auto;       <span class="comment"># 自动绑定（推荐）</span></span><br><span class="line"><span class="comment"># worker_cpu_affinity 0001 0010 0100 1000;  # 手动绑定 4 核</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 作用：</span></span><br><span class="line"><span class="comment"># • 减少 CPU 缓存失效</span></span><br><span class="line"><span class="comment"># • 减少跨核调度开销</span></span><br><span class="line"><span class="comment"># • 提高缓存命中率</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="（2）Worker-进程数设置原则"><a href="#（2）Worker-进程数设置原则" class="headerlink" title="（2）Worker 进程数设置原则"></a>（2）Worker 进程数设置原则</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────────────────────────────────────────────────────┐</span><br><span class="line">│                  Worker 进程数选择                           │</span><br><span class="line">├─────────────────────────────────────────────────────────────┤</span><br><span class="line">│                                                             │</span><br><span class="line">│   场景                          推荐值                       │</span><br><span class="line">│   ─────────────────────────────────────────────────────     │</span><br><span class="line">│   纯静态文件服务                 = CPU 核心数                 │</span><br><span class="line">│   反向代理（无计算）             = CPU 核心数                 │</span><br><span class="line">│   有 CPU 密集操作（压缩/加密）    = CPU 核心数                 │</span><br><span class="line">│   有大量磁盘 IO                  = CPU 核心数 × 1.5~2        │</span><br><span class="line">│                                                             │</span><br><span class="line">│   通用建议：使用 auto，让 Nginx 自动决定                      │</span><br><span class="line">│                                                             │</span><br><span class="line">└─────────────────────────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-Events-块详解"><a href="#4-Events-块详解" class="headerlink" title="4.Events 块详解"></a>4.Events 块详解</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">events &#123;</span><br><span class="line">    <span class="comment"># ========== 连接数配置 ==========</span></span><br><span class="line">    worker_connections 65535;</span><br><span class="line">    <span class="comment"># • 单个 Worker 的最大并发连接数</span></span><br><span class="line">    <span class="comment"># • 总并发 = worker_processes × worker_connections</span></span><br><span class="line">    <span class="comment"># • 示例：8 × 65535 = 524,280 理论最大并发</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># ========== 事件模型 ==========</span></span><br><span class="line">    use epoll;</span><br><span class="line">    <span class="comment"># • Linux 首选 epoll（高效）</span></span><br><span class="line">    <span class="comment"># • FreeBSD 使用 kqueue</span></span><br><span class="line">    <span class="comment"># • 不写则自动选择最优</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># ========== 连接接受策略 ==========</span></span><br><span class="line">    multi_accept on;</span><br><span class="line">    <span class="comment"># • on:  一次接受所有等待的连接（高并发推荐）</span></span><br><span class="line">    <span class="comment"># • off: 一次只接受一个连接</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># ========== 惊群问题 ==========</span></span><br><span class="line">    accept_mutex off;</span><br><span class="line">    <span class="comment"># • on:  Worker 轮流接受连接（低并发时均衡）</span></span><br><span class="line">    <span class="comment"># • off: 所有 Worker 同时接受（高并发推荐）</span></span><br><span class="line">    <span class="comment"># </span></span><br><span class="line">    <span class="comment"># Linux 3.9+ 内核有 SO_REUSEPORT，建议关闭 accept_mutex</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Events 参数关系图</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">               新连接到达</span><br><span class="line">                   │</span><br><span class="line">                   ▼</span><br><span class="line">        ┌─────────────────────┐</span><br><span class="line">        │   accept_mutex=off   │</span><br><span class="line">        │   所有 Worker 竞争    │</span><br><span class="line">        └──────────┬──────────┘</span><br><span class="line">                   │</span><br><span class="line">     ┌─────────────┼─────────────┐</span><br><span class="line">     ▼             ▼             ▼</span><br><span class="line">┌─────────┐   ┌─────────┐   ┌─────────┐</span><br><span class="line">│Worker 1 │   │Worker 2 │   │Worker 3 │</span><br><span class="line">│         │   │         │   │         │</span><br><span class="line">│ 65535   │   │ 65535   │   │ 65535   │</span><br><span class="line">│连接上限  │   │连接上限  │   │连接上限  │</span><br><span class="line">└─────────┘   └─────────┘   └─────────┘</span><br><span class="line">     │             │             │</span><br><span class="line">     └─────────────┼─────────────┘</span><br><span class="line">                   ▼</span><br><span class="line">        ┌─────────────────────┐</span><br><span class="line">        │   multi_accept=on    │</span><br><span class="line">        │   一次接受多个连接    │</span><br><span class="line">        └─────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-Stream-块详解（TCP-四层代理）"><a href="#5-Stream-块详解（TCP-四层代理）" class="headerlink" title="5.Stream 块详解（TCP 四层代理）"></a>5.Stream 块详解（TCP 四层代理）</h2><ul>
+<li>为什么叫四层代理？<ul>
+<li>工作在 OSI <strong>第 4 层（传输层）</strong>，只看 TCP&#x2F;IP，不解析应用协议</li>
+</ul>
+</li>
+</ul>
+<h3 id="（1）基础配置"><a href="#（1）基础配置" class="headerlink" title="（1）基础配置"></a>（1）基础配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">stream &#123;</span><br><span class="line">    <span class="comment"># ========== 日志格式 ==========</span></span><br><span class="line">    log_format tcp_log <span class="string">&#x27;$remote_addr [$time_local] &#x27;</span></span><br><span class="line">                       <span class="string">&#x27;$protocol $status $bytes_sent $bytes_received &#x27;</span></span><br><span class="line">                       <span class="string">&#x27;$session_time &quot;$upstream_addr&quot;&#x27;</span>;</span><br><span class="line">    </span><br><span class="line">    access_log /var/log/nginx/tcp_access.log tcp_log;</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># ========== upstream 后端组 ==========</span></span><br><span class="line">    upstream chat_backend &#123;</span><br><span class="line">        <span class="comment"># 负载均衡策略</span></span><br><span class="line">        least_conn;                     <span class="comment"># 最少连接数（长连接推荐）</span></span><br><span class="line">        <span class="comment"># hash $remote_addr consistent; # IP 哈希（会话保持）</span></span><br><span class="line">        <span class="comment"># round_robin;                  # 轮询（默认）</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 后端服务器</span></span><br><span class="line">        server 127.0.0.1:6000 weight=1 max_fails=3 fail_timeout=30s max_conns=20000;</span><br><span class="line">        server 127.0.0.1:6001 weight=1 max_fails=3 fail_timeout=30s max_conns=20000;</span><br><span class="line">        server 127.0.0.1:6002 weight=1 max_fails=3 fail_timeout=30s max_conns=20000;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># ========== server 监听配置 ==========</span></span><br><span class="line">    server &#123;</span><br><span class="line">        listen 8000;                    <span class="comment"># 监听端口</span></span><br><span class="line">        <span class="comment"># listen 8000 reuseport;        # 启用 SO_REUSEPORT（高并发推荐）</span></span><br><span class="line">        </span><br><span class="line">        proxy_pass chat_backend;        <span class="comment"># 代理到后端组</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 超时配置</span></span><br><span class="line">        proxy_connect_timeout 10s;      <span class="comment"># 连接后端超时</span></span><br><span class="line">        proxy_timeout 300s;             <span class="comment"># 数据传输超时（长连接设大些）</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 性能优化</span></span><br><span class="line">        tcp_nodelay on;                 <span class="comment"># 禁用 Nagle 算法</span></span><br><span class="line">        proxy_buffer_size 16k;          <span class="comment"># 代理缓冲区大小</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="（2）Upstream-参数详解"><a href="#（2）Upstream-参数详解" class="headerlink" title="（2）Upstream 参数详解"></a>（2）Upstream 参数详解</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">upstream chat_backend &#123;</span><br><span class="line">    <span class="comment"># ========== 负载均衡策略 ==========</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 1. 轮询（默认）</span></span><br><span class="line">    <span class="comment"># 按顺序分配请求</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 2. 权重轮询</span></span><br><span class="line">    <span class="comment"># server 127.0.0.1:6000 weight=3;  # 权重高，分配更多请求</span></span><br><span class="line">    <span class="comment"># server 127.0.0.1:6001 weight=1;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 3. 最少连接数（长连接推荐）</span></span><br><span class="line">    least_conn;</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 4. IP 哈希（会话保持）</span></span><br><span class="line">    <span class="comment"># hash $remote_addr consistent;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># ========== 服务器参数 ==========</span></span><br><span class="line">    server 127.0.0.1:6000</span><br><span class="line">        weight=1              <span class="comment"># 权重（默认 1）</span></span><br><span class="line">        max_fails=3           <span class="comment"># 最大失败次数</span></span><br><span class="line">        fail_timeout=30s      <span class="comment"># 失败后暂停时间 &amp; 失败计数重置时间</span></span><br><span class="line">        max_conns=20000       <span class="comment"># 单服务器最大连接数</span></span><br><span class="line">        backup               <span class="comment"># 备份服务器（主服务器全挂时启用）</span></span><br><span class="line">        down;                <span class="comment"># 标记为下线（不参与负载均衡）</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="咸鱼 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="咸鱼 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>咸鱼
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://xianyubuxian-txy.github.io/2026/02/25/C++/C++%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%BA%93/nginx%E7%9A%84%E4%BD%BF%E7%94%A8/" title="nginx的使用">https://xianyubuxian-txy.github.io/2026/02/25/C++/C++后端开发常用库/nginx的使用/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/02/12/%E7%BC%96%E7%A8%8B%E9%A2%98/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E5%AD%97%E7%AC%A6%E4%B8%B2/3.%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/" rel="prev" title="3.最长回文子串">
+                  <i class="fa fa-angle-left"></i> 3.最长回文子串
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/02/26/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0/" rel="next" title="性能调优实战笔记">
+                  性能调优实战笔记 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="waline"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">咸鱼</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">282k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">15:41</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/xianyubuxian-TXY" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<script class="next-config" data-name="waline" type="application/json">{"lang":"zh-cn","enable":true,"serverURL":"https://waline-beta-black.vercel.app","cssUrl":"https://unpkg.com/@waline/client@v2/dist/waline.css","commentCount":true,"pageview":false,"placeholder":"请文明评论呀","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"visitor":true,"comment_count":true,"requiredFields":[],"libUrl":"//unpkg.com/@waline/client@v2/dist/waline.js","el":"#waline","comment":true,"path":"/2026/02/25/C++/C++%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%BA%93/nginx%E7%9A%84%E4%BD%BF%E7%94%A8/"}</script>
+<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css">
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.waline.el).then(() =>
+    NexT.utils.getScript(CONFIG.waline.libUrl, { condition: window.Waline })
+  ).then(() => 
+    Waline.init(Object.assign({}, CONFIG.waline,{ el: document.querySelector(CONFIG.waline.el) }))
+  );
+});
+</script>
+
+</body>
+</html>

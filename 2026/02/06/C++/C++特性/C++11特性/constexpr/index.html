@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"xianyubuxian-txy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":"flat"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="一、constexpr介绍    1.constexpr 核心定义  * constexpr 是 C++11 引入的关键字，核心作用是强制表达式 &#x2F; 对象在编译期计算 &#x2F; 初始化，生成 “编译期常量”，而非运行期常量 * 表示编译期常量表达式，要求值在编译时就能确定。     * 编译期计算的优势： * 减少运行时开销        * 支持编译期分支、类型推导        * 可用于模板参数、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="constexpr">
+<meta property="og:url" content="https://xianyubuxian-txy.github.io/2026/02/06/C++/C++%E7%89%B9%E6%80%A7/C++11%E7%89%B9%E6%80%A7/constexpr/index.html">
+<meta property="og:site_name" content="Xianyu">
+<meta property="og:description" content="一、constexpr介绍    1.constexpr 核心定义  * constexpr 是 C++11 引入的关键字，核心作用是强制表达式 &#x2F; 对象在编译期计算 &#x2F; 初始化，生成 “编译期常量”，而非运行期常量 * 表示编译期常量表达式，要求值在编译时就能确定。     * 编译期计算的优势： * 减少运行时开销        * 支持编译期分支、类型推导        * 可用于模板参数、">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260206103428911.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260206104020760.png">
+<meta property="article:published_time" content="2026-02-06T02:16:09.000Z">
+<meta property="article:modified_time" content="2026-02-06T02:51:02.162Z">
+<meta property="article:author" content="咸鱼">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260206103428911.png">
+
+
+<link rel="canonical" href="https://xianyubuxian-txy.github.io/2026/02/06/C++/C++%E7%89%B9%E6%80%A7/C++11%E7%89%B9%E6%80%A7/constexpr/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://xianyubuxian-txy.github.io/2026/02/06/C++/C++%E7%89%B9%E6%80%A7/C++11%E7%89%B9%E6%80%A7/constexpr/","path":"2026/02/06/C++/C++特性/C++11特性/constexpr/","title":"constexpr"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>constexpr | Xianyu</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+<link rel="dns-prefetch" href="https://waline-beta-black.vercel.app">
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Xianyu</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81constexpr%E4%BB%8B%E7%BB%8D"><span class="nav-text">一、constexpr介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-constexpr-%E6%A0%B8%E5%BF%83%E5%AE%9A%E4%B9%89"><span class="nav-text">1.constexpr 核心定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%EF%BC%88%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8-constexpr%EF%BC%89"><span class="nav-text">2. 典型应用场景（为什么要用 constexpr）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81constexpr-%E4%B8%8E-const-%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8C%BA%E5%88%AB"><span class="nav-text">二、constexpr 与 const 的核心区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81constexpr-%E5%87%BD%E6%95%B0"><span class="nav-text">三、constexpr 函数</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="咸鱼"
+      src="/images/xianyu.jpg">
+  <p class="site-author-name" itemprop="name">咸鱼</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">75</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">92</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xianyubuxian-TXY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xianyubuxian-TXY" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xianyubuxian-txy.github.io/2026/02/06/C++/C++%E7%89%B9%E6%80%A7/C++11%E7%89%B9%E6%80%A7/constexpr/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xianyu.jpg">
+      <meta itemprop="name" content="咸鱼">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Xianyu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="constexpr | Xianyu">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          constexpr
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-02-06 10:16:09 / 修改时间：10:51:02" itemprop="dateCreated datePublished" datetime="2026-02-06T10:16:09+08:00">2026-02-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/C-%E7%89%B9%E6%80%A7/" itemprop="url" rel="index"><span itemprop="name">C++特性</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/C-%E7%89%B9%E6%80%A7/C-11%E7%89%B9%E6%80%A7/" itemprop="url" rel="index"><span itemprop="name">C++11特性</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/C-%E7%89%B9%E6%80%A7/C-11%E7%89%B9%E6%80%A7/constexpr/" itemprop="url" rel="index"><span itemprop="name">constexpr</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Waline：</span>
+  
+    <a title="waline" href="/2026/02/06/C++/C++%E7%89%B9%E6%80%A7/C++11%E7%89%B9%E6%80%A7/constexpr/#waline" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" data-path="/2026/02/06/C++/C++%E7%89%B9%E6%80%A7/C++11%E7%89%B9%E6%80%A7/constexpr/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>866</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="一、constexpr介绍"><a href="#一、constexpr介绍" class="headerlink" title="一、constexpr介绍"></a>一、constexpr介绍</h1><hr>
+<h2 id="1-constexpr-核心定义"><a href="#1-constexpr-核心定义" class="headerlink" title="1.constexpr 核心定义"></a>1.constexpr 核心定义</h2><ul>
+<li>constexpr 是 C++11 引入的关键字，核心作用是<strong>强制表达式 &#x2F; 对象在编译期计算 &#x2F; 初始化</strong>，生成 “<strong>编译期常量</strong>”，而非运行期常量<ul>
+<li>表示<strong>编译期常量表达式</strong>，要求<strong>值在编译时就能确定</strong>。</li>
+<li>编译期计算的优势：<ul>
+<li>减少运行时开销</li>
+<li>支持编译期分支、类型推导</li>
+<li>可用于模板参数、数组大小</li>
+<li>等 <strong>“必须编译期确定” 的场景</strong>。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">int</span> <span class="title">square</span><span class="params">(<span class="type">int</span> x)</span> </span>&#123; <span class="keyword">return</span> x * x; &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">int</span> a = <span class="number">10</span>;           <span class="comment">// ✅ 编译期确定</span></span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">int</span> b = <span class="built_in">square</span>(<span class="number">5</span>);    <span class="comment">// ✅ 编译期计算，b = 25</span></span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">int</span> c = a + b;        <span class="comment">// ✅ 编译期计算，c = 35</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-典型应用场景（为什么要用-constexpr）"><a href="#2-典型应用场景（为什么要用-constexpr）" class="headerlink" title="2. 典型应用场景（为什么要用 constexpr）"></a>2. 典型应用场景（为什么要用 constexpr）</h2><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260206103428911.png"></p>
+<h1 id="二、constexpr-与-const-的核心区别"><a href="#二、constexpr-与-const-的核心区别" class="headerlink" title="二、constexpr 与 const 的核心区别"></a>二、constexpr 与 const 的核心区别</h1><ul>
+<li>很多人误以为 constexpr 是 const 的“升级版”，但<strong>二者设计目标完全不同</strong>：</li>
+<li><strong>一句话总结区别</strong>:<ul>
+<li><strong>const</strong>：告诉程序“这个变量<strong>只读</strong>，不许改”（运行时约束）；</li>
+<li><strong>constexpr</strong>：告诉编译器“<strong>这个值必须在编译期算出来</strong>，我要拿它当常量用”（编译期约束）。<br><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260206104020760.png"></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ============================== 核心目标差异 ==============================</span></span><br><span class="line"><span class="comment">// constexpr: 编译期常量</span></span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">int</span> SIZE = <span class="number">100</span>;      <span class="comment">// 编译器在编译时就确定值为 100</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// const: 运行期只读</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">getValue</span><span class="params">()</span></span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> READONLY = <span class="built_in">getValue</span>();  <span class="comment">// 运行时才知道值，但之后不可修改</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// ============================== 是否编译期确定 ==============================</span></span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">int</span> a = <span class="number">10</span>;          <span class="comment">// ✅ 必须编译期确定</span></span><br><span class="line"><span class="comment">// constexpr int b = rand();   // ❌ 编译错误！编译器强制检查</span></span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> c = <span class="number">10</span>;              <span class="comment">// ✅ 编译期常量</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> d = <span class="built_in">rand</span>();          <span class="comment">// ✅ 运行期只读变量（也合法）</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// ============================== 可推导性 ==============================</span></span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">int</span> x = <span class="number">5</span> + <span class="number">3</span>;       <span class="comment">// 编译器知道 x = 8，可优化</span></span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> y = <span class="built_in">someFunc</span>();      <span class="comment">// 编译器只知道 y 只读</span></span><br><span class="line">                               <span class="comment">// 不知道具体值，无法优化</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// ============================== 反向兼容 ==============================</span></span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">int</span> ce = <span class="number">42</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> c1 = ce;             <span class="comment">// ✅ constexpr → const 可以</span></span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> c2 = <span class="number">42</span>;</span><br><span class="line"><span class="comment">// constexpr int ce2 = c2;     // ❌ const → constexpr 不行</span></span><br><span class="line">                                <span class="comment">// 即使 c2 实际是编译期常量！</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 原因：编译器对 const 变量不做&quot;编译期常量&quot;保证</span></span><br><span class="line"><span class="comment">//       它可能是运行期初始化的</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="三、constexpr-函数"><a href="#三、constexpr-函数" class="headerlink" title="三、constexpr 函数"></a>三、constexpr 函数</h1><ul>
+<li><strong>热点函数</strong>用 constexpr，把计算提前到编译期，降低运行时开销</li>
+<li><strong>constexpr 不是“性能银弹”</strong>：<ul>
+<li>只有频繁调用的小函数&#x2F;常量用 constexpr 才有意义</li>
+<li>复杂函数编译期计算会增加编译时间</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ==================== 场景：频繁调用的小函数 ====================</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ❌ 普通函数：每次运行时计算</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">power_runtime</span><span class="params">(<span class="type">int</span> base, <span class="type">int</span> exp)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> result = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; exp; ++i) result *= base;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ✅ constexpr 函数：编译期参数时直接内嵌结果</span></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">int</span> <span class="title">power_constexpr</span><span class="params">(<span class="type">int</span> base, <span class="type">int</span> exp)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> result = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; exp; ++i) result *= base;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 场景1：常量参数 → 编译期计算（零运行时开销）</span></span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">int</span> SIZE = <span class="built_in">power_constexpr</span>(<span class="number">2</span>, <span class="number">10</span>);  <span class="comment">// 编译期 = 1024</span></span><br><span class="line">    <span class="type">int</span> arr[SIZE];  <span class="comment">// 数组大小编译期确定</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 场景2：循环中使用常量</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1000000</span>; ++i) &#123;</span><br><span class="line">        <span class="comment">// ❌ 每次循环都计算</span></span><br><span class="line">        <span class="comment">// int val = power_runtime(2, 16);</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// ✅ 编译期已算好，直接用 65536</span></span><br><span class="line">        <span class="keyword">constexpr</span> <span class="type">int</span> val = <span class="built_in">power_constexpr</span>(<span class="number">2</span>, <span class="number">16</span>);</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ==================== ❌ 不适合：复杂/大型函数 ====================</span></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> std::string <span class="title">processData</span><span class="params">(<span class="comment">/* 大量参数 */</span>)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 复杂逻辑...</span></span><br><span class="line">    <span class="comment">// 编译期计算会导致：</span></span><br><span class="line">    <span class="comment">// 1. 编译时间大幅增加</span></span><br><span class="line">    <span class="comment">// 2. 编译器内存占用增加</span></span><br><span class="line">    <span class="comment">// 3. 可能超出编译器递归/计算限制</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ==================== ❌ 不适合：运行时才知道的参数 ====================</span></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">int</span> <span class="title">compute</span><span class="params">(<span class="type">int</span> x)</span> </span>&#123; <span class="keyword">return</span> x * x; &#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> userInput;</span><br><span class="line">std::cin &gt;&gt; userInput;</span><br><span class="line"><span class="type">int</span> result = <span class="built_in">compute</span>(userInput);  <span class="comment">// 运行时计算，constexpr 没意义</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ==================== ✅ 适合场景 ====================</span></span><br><span class="line"><span class="comment">// 1. 小型、频繁调用的计算函数</span></span><br><span class="line"><span class="comment">// 2. 配置常量、数组大小</span></span><br><span class="line"><span class="comment">// 3. 编译期查找表</span></span><br><span class="line"><span class="comment">// 4. 模板元编程辅助函数</span></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="咸鱼 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="咸鱼 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>咸鱼
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://xianyubuxian-txy.github.io/2026/02/06/C++/C++%E7%89%B9%E6%80%A7/C++11%E7%89%B9%E6%80%A7/constexpr/" title="constexpr">https://xianyubuxian-txy.github.io/2026/02/06/C++/C++特性/C++11特性/constexpr/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/01/29/C++/%E5%90%8E%E7%AB%AF%E4%B8%9A%E5%8A%A1%E6%A6%82%E5%BF%B5/token%E7%9A%84%E4%BD%BF%E7%94%A8/" rel="prev" title="Token的使用">
+                  <i class="fa fa-angle-left"></i> Token的使用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/02/06/C++/C++%E7%89%B9%E6%80%A7/C++98%E5%9F%BA%E7%A1%80%E7%89%B9%E6%80%A7/mutable/" rel="next" title="mutable">
+                  mutable <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="waline"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">咸鱼</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">282k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">15:41</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/xianyubuxian-TXY" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<script class="next-config" data-name="waline" type="application/json">{"lang":"zh-cn","enable":true,"serverURL":"https://waline-beta-black.vercel.app","cssUrl":"https://unpkg.com/@waline/client@v2/dist/waline.css","commentCount":true,"pageview":false,"placeholder":"请文明评论呀","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"visitor":true,"comment_count":true,"requiredFields":[],"libUrl":"//unpkg.com/@waline/client@v2/dist/waline.js","el":"#waline","comment":true,"path":"/2026/02/06/C++/C++%E7%89%B9%E6%80%A7/C++11%E7%89%B9%E6%80%A7/constexpr/"}</script>
+<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css">
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.waline.el).then(() =>
+    NexT.utils.getScript(CONFIG.waline.libUrl, { condition: window.Waline })
+  ).then(() => 
+    Waline.init(Object.assign({}, CONFIG.waline,{ el: document.querySelector(CONFIG.waline.el) }))
+  );
+});
+</script>
+
+</body>
+</html>

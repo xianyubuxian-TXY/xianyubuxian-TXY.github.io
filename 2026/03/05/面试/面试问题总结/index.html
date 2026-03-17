@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"xianyubuxian-txy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":"flat"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="岗位要求 1.腾讯后端开发   一、项目相关问题 1.集群聊天服务器 （1）性能指标是如何测试得到的 5W+ 并发长连接，连接稳定性 100% 是如何测试出来的？  * 因为我的项目是自定义 TCP+JSON 协议，所以我并没有使用wrk&#x2F;ab等通用工具，而是在AI辅助下编写测试脚脚本进行性能测试  * 为达到 5w+并发，需要进行负载均衡 和 性能调优  1）负载均衡方面  * 使用Nginx实">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面试问题总结">
+<meta property="og:url" content="https://xianyubuxian-txy.github.io/2026/03/05/%E9%9D%A2%E8%AF%95/%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="Xianyu">
+<meta property="og:description" content="岗位要求 1.腾讯后端开发   一、项目相关问题 1.集群聊天服务器 （1）性能指标是如何测试得到的 5W+ 并发长连接，连接稳定性 100% 是如何测试出来的？  * 因为我的项目是自定义 TCP+JSON 协议，所以我并没有使用wrk&#x2F;ab等通用工具，而是在AI辅助下编写测试脚脚本进行性能测试  * 为达到 5w+并发，需要进行负载均衡 和 性能调优  1）负载均衡方面  * 使用Nginx实">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260307223514017.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260308221210660.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260310151747560.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260310151900753.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260310153733766.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260310155459988.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260310160327076.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260310160912000.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260310162308051.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260310162411428.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260310164037432.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260310164055003.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260310164134235.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260305111210403.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260305111231939.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260309164607973.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260309163752455.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260309164040822.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260309164127302.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260309164546925.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260309171827931.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260309171138071.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260309171243564.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260305111610059.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260305112825260.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260305113157460.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260305133338300.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260305115526861.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260305120020774.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260305130441650.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260305125922121.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260305125947121.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260305131022089.png">
+<meta property="article:published_time" content="2026-03-05T03:05:11.000Z">
+<meta property="article:modified_time" content="2026-03-10T09:11:09.567Z">
+<meta property="article:author" content="咸鱼">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260307223514017.png">
+
+
+<link rel="canonical" href="https://xianyubuxian-txy.github.io/2026/03/05/%E9%9D%A2%E8%AF%95/%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://xianyubuxian-txy.github.io/2026/03/05/%E9%9D%A2%E8%AF%95/%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/","path":"2026/03/05/面试/面试问题总结/","title":"面试问题总结"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>面试问题总结 | Xianyu</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+<link rel="dns-prefetch" href="https://waline-beta-black.vercel.app">
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Xianyu</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B2%97%E4%BD%8D%E8%A6%81%E6%B1%82"><span class="nav-text">岗位要求</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%85%BE%E8%AE%AF%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91"><span class="nav-text">1.腾讯后端开发</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E9%A1%B9%E7%9B%AE%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98"><span class="nav-text">一、项目相关问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%9B%86%E7%BE%A4%E8%81%8A%E5%A4%A9%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-text">1.集群聊天服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E6%98%AF%E5%A6%82%E4%BD%95%E6%B5%8B%E8%AF%95%E5%BE%97%E5%88%B0%E7%9A%84"><span class="nav-text">（1）性能指标是如何测试得到的</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5W-%E5%B9%B6%E5%8F%91%E9%95%BF%E8%BF%9E%E6%8E%A5%EF%BC%8C%E8%BF%9E%E6%8E%A5%E7%A8%B3%E5%AE%9A%E6%80%A7-100-%E6%98%AF%E5%A6%82%E4%BD%95%E6%B5%8B%E8%AF%95%E5%87%BA%E6%9D%A5%E7%9A%84%EF%BC%9F"><span class="nav-text">&lt;1&gt;5W+ 并发长连接，连接稳定性 100% 是如何测试出来的？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1%EF%BC%89%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E6%96%B9%E9%9D%A2"><span class="nav-text">1）负载均衡方面</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2%EF%BC%89%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98%E6%96%B9%E9%9D%A2"><span class="nav-text">2）性能调优方面</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3%EF%BC%89%E2%80%9D%E8%BF%9E%E6%8E%A5%E7%A8%B3%E5%AE%9A%E6%80%A7-100-%E2%80%9D-%E5%A6%82%E4%BD%95%E5%BE%97%E5%87%BA"><span class="nav-text">3）”连接稳定性 100%” 如何得出</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%99%BB%E5%BD%95-QPS-480-%EF%BC%8C%E6%B6%88%E6%81%AF%E5%BB%B6%E8%BF%9F-P99-30ms"><span class="nav-text">&lt;2&gt;登录 QPS 480+，消息延迟 P99 &lt; 30ms</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81Linux%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98"><span class="nav-text">二、Linux相关问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98"><span class="nav-text">1.操作系统相关问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89Linux%E8%BF%9B%E7%A8%8B%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4"><span class="nav-text">（1）Linux进程虚拟地址空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E9%AB%98%E7%BA%A7%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E6%96%87%E4%BB%B6-%E2%80%94%E2%80%94-%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6"><span class="nav-text">（2）高级语言程序文件 ——&gt; 可执行文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E7%9A%84%E8%A3%85%E5%85%A5%E4%B8%8E%E6%89%A7%E8%A1%8C%E5%85%A8%E8%BF%87%E7%A8%8B%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="nav-text">（3）可执行文件的装入与执行全过程（重点）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%8C%87%E4%BB%A4%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B%EF%BC%88%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%EF%BC%89"><span class="nav-text">&lt;1&gt;二进制指令执行过程（基础知识）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1%EF%BC%89%E5%8F%96%E6%8C%87"><span class="nav-text">1）取指</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2%EF%BC%89%E8%AF%91%E7%A0%81"><span class="nav-text">2）译码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3%EF%BC%89%E6%89%A7%E8%A1%8C"><span class="nav-text">3）执行</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4%EF%BC%89%E8%AE%BF%E5%AD%98"><span class="nav-text">4）访存</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5%EF%BC%89%E5%86%99%E5%9B%9E"><span class="nav-text">5）写回</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ELF%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6-%E6%A0%BC%E5%BC%8F%E8%A7%A3%E6%9E%90"><span class="nav-text">&lt;2&gt;ELF可执行目标文件 格式解析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E7%9A%84%E5%AD%98%E5%82%A8%E5%99%A8%E6%98%A0%E5%83%8F"><span class="nav-text">&lt;3&gt;可执行文件的存储器映像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E7%9A%84%E8%A3%85%E5%85%A5%E4%B8%8E%E6%89%A7%E8%A1%8C%E5%85%A8%E8%BF%87%E7%A8%8B"><span class="nav-text">&lt;4&gt;可执行文件的装入与执行全过程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#0%EF%BC%89%E6%98%A0%E5%B0%84%E5%85%B3%E7%B3%BB"><span class="nav-text">0）映射关系</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1%EF%BC%89%E5%85%A8%E6%99%AF%E6%A6%82%E8%A7%88"><span class="nav-text">1）全景概览</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2%EF%BC%89%E8%A7%A3%E6%9E%90ELF%E5%A4%B4%E6%96%87%E4%BB%B6"><span class="nav-text">2）解析ELF头文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3%EF%BC%89%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4%E2%80%94%E2%80%94VMA-%E4%B8%8E%E9%A1%B5%E8%A1%A8"><span class="nav-text">3）创建虚拟地址空间——VMA 与页表</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4%EF%BC%89%E5%8F%96%E6%8C%87%E4%B8%8E%E5%8F%96%E6%95%B0%E6%8D%AE%E2%80%94%E2%80%94CPU-%E5%A6%82%E4%BD%95%E7%BF%BB%E8%AF%91%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80"><span class="nav-text">4）取指与取数据——CPU 如何翻译虚拟地址</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89Linux-%E6%9C%80%E5%A4%9A%E5%8F%AF%E8%BF%90%E8%A1%8C%E5%A4%9A%E5%B0%91%E8%BF%9B%E7%A8%8B%EF%BC%9F"><span class="nav-text">（2）Linux 最多可运行多少进程？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%883%EF%BC%89Linux%E8%BF%9B%E7%A8%8B%E6%9C%80%E5%A4%A7%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4"><span class="nav-text">（3）Linux进程最大地址空间</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E7%BD%91%E7%BB%9C%E4%B8%8EIO"><span class="nav-text">三、网络与IO</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8Bepoll%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8"><span class="nav-text">1.介绍一下epoll多路复用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%880%EF%BC%89%E4%B8%80%E5%8F%A5%E9%9D%A2%E8%AF%95%E7%89%88"><span class="nav-text">（0）一句面试版</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E4%BB%80%E4%B9%88%E6%98%AFepoll%EF%BC%9F"><span class="nav-text">（1）什么是epoll？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89epoll%E7%9A%84%E6%A0%B8%E5%BF%83API%EF%BC%88%E4%B8%89%E4%B8%AA%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%EF%BC%89"><span class="nav-text">（2）epoll的核心API（三个系统调用）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%883%EF%BC%89epoll%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-text">（3）epoll的工作流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%884%EF%BC%89epoll%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F"><span class="nav-text">（4）epoll的两种工作模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#LT%EF%BC%88Level-Triggered%EF%BC%89%E2%80%94-%E6%B0%B4%E5%B9%B3%E8%A7%A6%E5%8F%91%EF%BC%88%E9%BB%98%E8%AE%A4%EF%BC%89"><span class="nav-text">&lt;1&gt;LT（Level Triggered）— 水平触发（默认）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ET%EF%BC%88Edge-Triggered%EF%BC%89%E2%80%94-%E8%BE%B9%E7%BC%98%E8%A7%A6%E5%8F%91"><span class="nav-text">&lt;2&gt;ET（Edge Triggered）— 边缘触发</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%885%EF%BC%89epoll%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="nav-text">（5）epoll的底层原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%886%EF%BC%89epoll-vs-select-vs-poll"><span class="nav-text">（6）epoll vs select vs poll</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%887%EF%BC%89%E9%9D%A2%E8%AF%95%E9%AB%98%E9%A2%91%E8%BF%BD%E9%97%AE"><span class="nav-text">（7）面试高频追问</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8BReactor%E6%A8%A1%E5%9E%8B"><span class="nav-text">2.介绍一下Reactor模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89Reactor%E6%A8%A1%E5%9E%8B%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-text">（1）Reactor模型是什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E5%B8%B8%E8%A7%81%E4%B8%89%E7%A7%8D%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="nav-text">（2）常见三种线程模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%883%EF%BC%89Reactor%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%EF%BC%88%E4%BB%A5epoll%E4%B8%BA%E4%BE%8B%EF%BC%89"><span class="nav-text">（3）Reactor的工作流程（以epoll为例）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E4%B8%8EProactor%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">（4）与Proactor的区别</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81C-%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98"><span class="nav-text">四、C++相关问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-C-%E5%90%84%E7%B1%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE"><span class="nav-text">1.C++各类型数据的存储位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-C-%E7%B1%BB%E7%9A%84%E4%B8%89%E5%A4%A7%E7%89%B9%E6%80%A7"><span class="nav-text">2.C++类的三大特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%B0%81%E8%A3%85"><span class="nav-text">（1）封装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E7%BB%A7%E6%89%BF"><span class="nav-text">（2）继承</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E9%87%8D%E7%BB%A7%E6%89%BF%E6%97%B6%E7%9A%84-vtable"><span class="nav-text">&lt;1&gt;多重继承时的 vtable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E7%BB%A7%E6%89%BF%E9%9C%80%E8%A6%81%E8%A7%A3%E5%86%B3%E7%9A%84%E4%B8%A4%E4%B8%AA%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98"><span class="nav-text">&lt;2&gt;多继承需要解决的两个关键问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1%EF%BC%89%E5%90%8D%E5%86%B2%E7%AA%81"><span class="nav-text">1）名冲突</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2%EF%BC%89%E9%87%8D%E5%A4%8D%E7%BB%A7%E6%89%BF%EF%BC%88%E8%8F%B1%E5%BD%A2%E7%BB%A7%E6%89%BF%EF%BC%89-%E2%80%94%E2%80%94-%E8%99%9A%E5%9F%BA%E7%B1%BB"><span class="nav-text">2）重复继承（菱形继承） —— 虚基类</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8B%93%E5%B1%95%EF%BC%9A%E5%8C%85%E5%90%AB%E8%99%9A%E5%9F%BA%E7%B1%BB%E7%9A%84%E7%B1%BB%E7%9A%84%E2%80%9C%E4%B8%A4%E4%B8%AA%E6%B3%A8%E6%84%8F%E7%82%B9%E2%80%9D"><span class="nav-text">拓展：包含虚基类的类的“两个注意点”</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E5%A4%9A%E6%80%81"><span class="nav-text">（3）多态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%F0%9F%8E%AF-%E9%9D%A2%E8%AF%95%E9%80%9F%E7%AD%94"><span class="nav-text">🎯 面试速答</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%99%9A%E5%87%BD%E6%95%B0%E7%9B%B8%E5%85%B3%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98"><span class="nav-text">3.虚函数相关面试问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8B%E8%99%9A%E5%87%BD%E6%95%B0%E3%80%81%E8%99%9A%E5%87%BD%E6%95%B0%E8%A1%A8%E3%80%81%E8%99%9A%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%EF%BC%8C%E4%BB%A5%E5%8F%8A%E4%B8%89%E8%80%85%E5%A6%82%E4%BD%95%E5%8D%8F%E4%BD%9C%E5%AE%9E%E7%8E%B0%E2%80%9D%E8%99%9A%E5%87%BD%E6%95%B0%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A%E2%80%9D"><span class="nav-text">（1）介绍一下虚函数、虚函数表、虚函数指针，以及三者如何协作实现”虚函数动态绑定”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89vptr%E5%88%9D%E5%A7%8B%E5%8C%96%E6%97%B6%E6%9C%BA"><span class="nav-text">（2）vptr初始化时机</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%9C%A8%E2%80%9C%E5%88%9D%E5%A7%8B%E5%8C%96%E5%88%97%E8%A1%A8%E4%B9%8B%E5%90%8E%E3%80%81%E5%87%BD%E6%95%B0%E4%BD%93%E4%B9%8B%E5%89%8D%E2%80%9D"><span class="nav-text">&lt;1&gt;为什么在“初始化列表之后、函数体之前”</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E2%80%9C%E5%85%88%E6%8C%87%E5%90%91%E7%88%B6%E7%B1%BB-vtable%EF%BC%8C%E5%86%8D%E6%8C%87%E5%90%91%E5%AD%90%E7%B1%BB-vtable%E2%80%9D"><span class="nav-text">&lt;2&gt;为什么“先指向父类 vtable，再指向子类 vtable”</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E4%B8%BA%E4%BB%80%E4%B9%88%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0%E5%BE%80%E5%BE%80%E6%98%AF%E8%99%9A%E5%87%BD%E6%95%B0%EF%BC%8C%E8%80%8C%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E4%B8%8D%E6%98%AF%EF%BC%9F"><span class="nav-text">（3）为什么析构函数往往是虚函数，而构造函数不是？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0%E5%BE%80%E5%BE%80%E6%98%AF%E8%99%9A%E5%87%BD%E6%95%B0"><span class="nav-text">&lt;1&gt;析构函数往往是虚函数</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1%EF%BC%89delete-%E6%93%8D%E4%BD%9C%E7%9A%84%E6%9C%AC%E8%B4%A8"><span class="nav-text">1）delete 操作的本质</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8B%93%E5%B1%951%EF%BC%9A%E5%AD%90%E7%B1%BB%E6%9E%90%E6%9E%84%E5%90%8E%E8%87%AA%E5%8A%A8%E8%B0%83%E7%94%A8%E7%88%B6%E7%B1%BB%E6%9E%90%E6%9E%84%E7%9A%84%E5%8E%9F%E7%90%86"><span class="nav-text">拓展1：子类析构后自动调用父类析构的原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8B%93%E5%B1%952%EF%BC%9A%E5%AD%90%E7%B1%BB%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0%E7%9A%84%E8%87%AA%E5%8A%A8%E9%87%8D%E5%86%99%E6%9C%BA%E5%88%B6"><span class="nav-text">拓展2：子类析构函数的自动重写机制</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E4%B8%8D%E8%83%BD%E4%BD%BF%E8%99%9A%E5%87%BD%E6%95%B0"><span class="nav-text">&lt;2&gt;构造函数不能使虚函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E8%99%9A%E5%87%BD%E6%95%B0%E3%80%81%E8%99%9A%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E3%80%81%E8%99%9A%E5%87%BD%E6%95%B0%E8%A1%A8%E5%88%86%E5%88%AB%E5%AD%98%E5%82%A8%E5%9C%A8%E4%BB%80%E4%B9%88%E5%8C%BA%E5%9F%9F%EF%BC%9F"><span class="nav-text">（4）虚函数、虚函数指针、虚函数表分别存储在什么区域？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%885%EF%BC%89%E7%BA%AF%E8%99%9A%E5%87%BD%E6%95%B0-%E6%8A%BD%E8%B1%A1%E7%B1%BB"><span class="nav-text">（5）纯虚函数 &amp; 抽象类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%886%EF%BC%89%E8%99%9A%E5%87%BD%E6%95%B0%E7%9A%84%E6%80%A7%E8%83%BD%E5%BC%80%E9%94%80"><span class="nav-text">（6）虚函数的性能开销</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E7%B1%BB%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%9A%E5%90%88-%E7%BB%84%E5%90%88%E5%85%B3%E7%B3%BB"><span class="nav-text">4.类之间的聚合&#x2F;组合关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-C-%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-text">5.C++关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89final-%E5%92%8C-override-%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-text">（1）final 和 override 关键字</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="咸鱼"
+      src="/images/xianyu.jpg">
+  <p class="site-author-name" itemprop="name">咸鱼</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">75</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">92</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xianyubuxian-TXY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xianyubuxian-TXY" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xianyubuxian-txy.github.io/2026/03/05/%E9%9D%A2%E8%AF%95/%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xianyu.jpg">
+      <meta itemprop="name" content="咸鱼">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Xianyu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="面试问题总结 | Xianyu">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          面试问题总结
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-03-05 11:05:11" itemprop="dateCreated datePublished" datetime="2026-03-05T11:05:11+08:00">2026-03-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-03-10 17:11:09" itemprop="dateModified" datetime="2026-03-10T17:11:09+08:00">2026-03-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9D%A2%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">面试</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9D%A2%E8%AF%95/%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/" itemprop="url" rel="index"><span itemprop="name">面试问题总结</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Waline：</span>
+  
+    <a title="waline" href="/2026/03/05/%E9%9D%A2%E8%AF%95/%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/#waline" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" data-path="/2026/03/05/%E9%9D%A2%E8%AF%95/%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>22 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="岗位要求"><a href="#岗位要求" class="headerlink" title="岗位要求"></a>岗位要求</h1><h2 id="1-腾讯后端开发"><a href="#1-腾讯后端开发" class="headerlink" title="1.腾讯后端开发"></a>1.腾讯后端开发</h2><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260307223514017.png"></p>
+<h1 id="一、项目相关问题"><a href="#一、项目相关问题" class="headerlink" title="一、项目相关问题"></a>一、项目相关问题</h1><h2 id="1-集群聊天服务器"><a href="#1-集群聊天服务器" class="headerlink" title="1.集群聊天服务器"></a>1.集群聊天服务器</h2><h3 id="（1）性能指标是如何测试得到的"><a href="#（1）性能指标是如何测试得到的" class="headerlink" title="（1）性能指标是如何测试得到的"></a>（1）性能指标是如何测试得到的</h3><h4 id="5W-并发长连接，连接稳定性-100-是如何测试出来的？"><a href="#5W-并发长连接，连接稳定性-100-是如何测试出来的？" class="headerlink" title="&lt;1&gt;5W+ 并发长连接，连接稳定性 100% 是如何测试出来的？"></a>&lt;1&gt;5W+ 并发长连接，连接稳定性 100% 是如何测试出来的？</h4><ul>
+<li>因为我的项目是自定义 TCP+JSON 协议，所以我并<strong>没有使用wrk&#x2F;ab等通用工具</strong>，而是在AI辅助下编写测试脚脚本进行性能测试</li>
+<li>为达到 <strong>5w+并发</strong>，需要进行<strong>负载均衡</strong> 和 <strong>性能调优</strong></li>
+</ul>
+<h5 id="1）负载均衡方面"><a href="#1）负载均衡方面" class="headerlink" title="1）负载均衡方面"></a>1）负载均衡方面</h5><ul>
+<li>使用<strong>Nginx实现负载均衡</strong>：因为Nginx反向代理时，需要同时与客户端、目标服务器建立TCP连接，为了达到5w+并发连接，需要进行一定的Nginx配置<ul>
+<li>首先：就是需要将“worker进程文件描述符限制”调大，避免建立TCP连接时没有文件描述符可用<ul>
+<li>参考：<a href="/2026/02/25/C++/C++%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%BA%93/nginx%E7%9A%84%E4%BD%BF%E7%94%A8/" title="nginx的使用">nginx的使用</a></li>
+</ul>
+</li>
+<li>其次：“事件模型”选择 epoll模型、设置“允许一次接受多个连接（worker_connections）”、“最少连接负载均衡策略(least_conn)”、“长连接超时（proxy_timeout）”等</li>
+</ul>
+</li>
+</ul>
+<h5 id="2）性能调优方面"><a href="#2）性能调优方面" class="headerlink" title="2）性能调优方面"></a>2）性能调优方面</h5><ul>
+<li>主要包括“系统性能调优”、池化技术调优</li>
+<li><strong>系统性能调优</strong>：<ul>
+<li>通过<strong>ulimit设置文件描述符限制</strong>到200000，避免多并发连接时文件描述符不足</li>
+<li>进行<strong>TCP参数优化</strong>：</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> sysctl -w net.core.somaxconn=65535                        <span class="comment"># 监听队列最大长度</span></span><br><span class="line"><span class="built_in">sudo</span> sysctl -w net.core.netdev_max_backlog=65535            <span class="comment"># 网卡接收队列最大长度</span></span><br><span class="line"><span class="built_in">sudo</span> sysctl -w net.ipv4.tcp_max_syn_backlog=65535            <span class="comment"># 半连接队列最大长度（SYN_RECV状态）</span></span><br><span class="line"><span class="built_in">sudo</span> sysctl -w net.ipv4.tcp_fin_timeout=10                    <span class="comment"># FIN_WAIT_2 状态超时时间（秒）</span></span><br><span class="line"><span class="built_in">sudo</span> sysctl -w net.ipv4.tcp_tw_reuse=1                        <span class="comment"># 允许复用 TIME_WAIT 状态的连接</span></span><br><span class="line"><span class="built_in">sudo</span> sysctl -w net.ipv4.ip_local_port_range=<span class="string">&quot;1024 65535&quot;</span>    <span class="comment"># 本地端口分配范围</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260308221210660.png"></p>
+<ul>
+<li><strong>池化技术调优</strong>：<ul>
+<li>将muduo线程池大小扩大一倍</li>
+<li>在配置文件中，将mysql连接池大小增加到150，增加最小空闲连接等</li>
+<li>增加mysql最大连接数，适配mysql连接池大小</li>
+</ul>
+</li>
+</ul>
+<h5 id="3）”连接稳定性-100-”-如何得出"><a href="#3）”连接稳定性-100-”-如何得出" class="headerlink" title="3）”连接稳定性 100%” 如何得出"></a>3）”连接稳定性 100%” 如何得出</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">稳定性 = 成功保持连接的数量 / 目标建立连接的数量</span><br><span class="line"></span><br><span class="line">具体做法：</span><br><span class="line">1. max_connection_test 建立 5W+ 个 TCP 长连接</span><br><span class="line">2. 每隔一段时间（比如5秒）发一次心跳包</span><br><span class="line">3. 统计在整个测试周期内（比如60秒）</span><br><span class="line">   连接没有被服务器主动断开的比例</span><br><span class="line"></span><br><span class="line">结果：5W+ 连接在测试周期内全部保持稳定，稳定性 100%</span><br></pre></td></tr></table></figure>
+
+<h4 id="登录-QPS-480-，消息延迟-P99-30ms"><a href="#登录-QPS-480-，消息延迟-P99-30ms" class="headerlink" title="&lt;2&gt;登录 QPS 480+，消息延迟 P99 &lt; 30ms"></a>&lt;2&gt;登录 QPS 480+，消息延迟 P99 &lt; 30ms</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">面试官：登录 QPS 480 和 P99 &lt; 30ms 是怎么测出来的？</span><br><span class="line"></span><br><span class="line">你：</span><br><span class="line">用自研的 C++ 压测客户端，模拟真实的登录和消息收发流程。</span><br><span class="line"></span><br><span class="line">登录 QPS 方面：</span><br><span class="line">100 并发持续发送登录请求，统计单位时间内成功次数。</span><br><span class="line"></span><br><span class="line">P99 延迟方面：</span><br><span class="line">10 个客户端各发 1000 条消息，记录每条消息从发出到</span><br><span class="line">收到服务器转发的时间戳，共 1000 个延迟样本。</span><br><span class="line">排序后取第 99% 分位，结果是 28ms，低于 30ms。</span><br><span class="line"></span><br><span class="line">关注 P99 而不是平均值，是因为平均值会掩盖</span><br><span class="line">高并发下的尾部延迟，P99 更能反映真实服务质量。</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="二、Linux相关问题"><a href="#二、Linux相关问题" class="headerlink" title="二、Linux相关问题"></a>二、Linux相关问题</h1><h2 id="1-操作系统相关问题"><a href="#1-操作系统相关问题" class="headerlink" title="1.操作系统相关问题"></a>1.操作系统相关问题</h2><h3 id="（1）Linux进程虚拟地址空间"><a href="#（1）Linux进程虚拟地址空间" class="headerlink" title="（1）Linux进程虚拟地址空间"></a>（1）Linux进程虚拟地址空间</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">高地址 <span class="number">0xFFFFFFFF</span> (<span class="number">32</span>位) / <span class="number">0x7FFFFFFFFFFF</span> (<span class="number">64</span>位)</span><br><span class="line">┌─────────────────────────────┐</span><br><span class="line">│         内核空间             │  ← 用户不可访问</span><br><span class="line">├─────────────────────────────┤ </span><br><span class="line">│          栈 (Stack)         │  ← 向下增长 ↓</span><br><span class="line">│             ↓               │     局部变量、函数参数、返回地址</span><br><span class="line">│            ...              │</span><br><span class="line">├─────────────────────────────┤</span><br><span class="line">│                             │</span><br><span class="line">│      （未分配区域）           │</span><br><span class="line">│                             │</span><br><span class="line">├─────────────────────────────┤</span><br><span class="line">│             ↑               │</span><br><span class="line">│          堆 (Heap)          │  ← 向上增长 ↑</span><br><span class="line">│                             │     malloc/<span class="keyword">new</span> 分配</span><br><span class="line">├─────────────────────────────┤</span><br><span class="line">│                             │</span><br><span class="line">│      可读写数据段            │  ← .data（已初始化全局/静态变量）</span><br><span class="line">│      (.data + .bss)         │     .bss（未初始化全局/静态变量）</span><br><span class="line">│                             │</span><br><span class="line">├─────────────────────────────┤</span><br><span class="line">│                             │</span><br><span class="line">│        只读段                │  ← .rodata（只读数据、字符串常量）</span><br><span class="line">│    (.text + .rodata)        │     .text（代码段、机器指令）</span><br><span class="line">│                             │</span><br><span class="line">├─────────────────────────────┤</span><br><span class="line">│         保留区               │  ← 防止空指针访问</span><br><span class="line">└─────────────────────────────┘</span><br><span class="line">低地址 <span class="number">0x00000000</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="（2）高级语言程序文件-——-可执行文件"><a href="#（2）高级语言程序文件-——-可执行文件" class="headerlink" title="（2）高级语言程序文件 ——&gt; 可执行文件"></a>（2）高级语言程序文件 ——&gt; 可执行文件</h3><p>要经历：<strong>预处理、编译、汇编、链接</strong> 四个阶段<br><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260310151747560.png"></p>
+<ul>
+<li>预处理：头文件展开<br><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260310151900753.png"></li>
+</ul>
+<h3 id="（3）可执行文件的装入与执行全过程（重点）"><a href="#（3）可执行文件的装入与执行全过程（重点）" class="headerlink" title="（3）可执行文件的装入与执行全过程（重点）"></a>（3）可执行文件的装入与执行全过程（重点）</h3><ul>
+<li>系统中要运行用户程序，就必须先将其<strong>装入内存中</strong></li>
+<li>需要明确：可执行文件内部已经是<strong>二进制数据了</strong></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># ELF文件头 + main函数入口片段</span><br><span class="line">7F 45 4C 46 02 01 01 00  00 00 00 00 00 00 00 00  |.ELF............|</span><br><span class="line">02 00 3E 00 01 00 00 00  78 10 40 00 00 00 00 00  |..&gt;.....x.@.....|</span><br><span class="line">40 00 00 00 00 00 00 00  F0 21 00 00 00 00 00 00  |@.......!.......|</span><br><span class="line">00 00 00 00 40 00 38 00  09 00 40 00 1E 00 1D 00  |....@.8...@.....|</span><br><span class="line">55 48 89 E5 48 83 EC 20  48 C7 45 F8 00 00 00 00  |UH..H.. H..E.....|</span><br><span class="line">48 C7 45 F0 00 00 00 00  48 89 7D E8 48 89 75 E0  |H..E.....H.&#125;..H.u.|</span><br><span class="line">31 C0 89 C2 0F 05 48 31  C0 48 83 C4 20 5D C3     |1.....H1.H.. ].|</span><br></pre></td></tr></table></figure>
+
+<h4 id="二进制指令执行过程（基础知识）"><a href="#二进制指令执行过程（基础知识）" class="headerlink" title="&lt;1&gt;二进制指令执行过程（基础知识）"></a>&lt;1&gt;二进制指令执行过程（基础知识）</h4><ul>
+<li>指令执行过程：<strong>取指、译码、执行、访存、写回</strong>（流水线加速）</li>
+</ul>
+<h5 id="1）取指"><a href="#1）取指" class="headerlink" title="1）取指"></a>1）取指</h5><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260310153733766.png"></p>
+<h5 id="2）译码"><a href="#2）译码" class="headerlink" title="2）译码"></a>2）译码</h5><ul>
+<li>把取指阶段拿到的「二进制指令码」翻译成CPU能理解的”操作命令”：<ul>
+<li>指令的二进制编码包含两部分核心信息：<strong>操作码（做什么） + 操作数（对谁做）</strong>；</li>
+<li>译码阶段会解析出：要执行的操作（比如加法、减法、移动数据）、操作数的来源（比如寄存器、内存地址、立即数）。</li>
+</ul>
+</li>
+</ul>
+<h5 id="3）执行"><a href="#3）执行" class="headerlink" title="3）执行"></a>3）执行</h5><ul>
+<li>执行译码阶段解析出的<strong>具体操作</strong>，是指令的”计算核心阶段”：<ul>
+<li>如果是算术运算（加减乘除）、逻辑运算（与或非）：由运算器完成计算；</li>
+<li>如果是数据移动（比如把A寄存器的值移到B寄存器）：直接在寄存器间传输；</li>
+<li>如果是控制操作（比如跳转）：修改程序计数器（PC）的值，改变指令执行顺序。</li>
+</ul>
+</li>
+</ul>
+<h5 id="4）访存"><a href="#4）访存" class="headerlink" title="4）访存"></a>4）访存</h5><ul>
+<li>与内存交互：读取<strong>内存中</strong>的数据，或<strong>把执行结果写入内存</strong>（<strong>不是所有指令都需要这一步</strong>）：<ul>
+<li>读内存：比如指令要求”把内存地址0x100的值加载到寄存器”，执行阶段算出地址后，访存阶段从内存取数；</li>
+<li>写内存：比如指令要求”把ALU的计算结果存入内存地址0x200”，访存阶段完成写入；</li>
+<li>无内存操作的指令（比如寄存器间的加法）：这一步会直接跳过，仅做”空操作”。</li>
+</ul>
+</li>
+</ul>
+<h5 id="5）写回"><a href="#5）写回" class="headerlink" title="5）写回"></a>5）写回</h5><ul>
+<li>把指令执行的最终结果<strong>写回CPU的寄存器</strong>（或特殊存储位置），供后续指令使用：<ul>
+<li>如果是算术运算：把ALU的结果写入目标寄存器；</li>
+<li>如果是读内存：把从内存取出的数据写入目标寄存器；</li>
+<li>写回是指令执行的”收尾”，确保结果被保存，后续指令能调用。</li>
+</ul>
+</li>
+</ul>
+<h4 id="ELF可执行目标文件-格式解析"><a href="#ELF可执行目标文件-格式解析" class="headerlink" title="&lt;2&gt;ELF可执行目标文件 格式解析"></a>&lt;2&gt;ELF可执行目标文件 格式解析</h4><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260310155459988.png"></p>
+<ul>
+<li>先明确：ELF可执行文件，本质是一个文件，存在磁盘中</li>
+<li><strong>ELF头</strong>： ELF头中的e_entry给出了程序的<strong>起始虚拟地址（入口点）</strong>（通常是_start,而不是main），即<strong>执行程序时第一条指令的地址</strong></li>
+<li><strong>程序头表</strong>：在后面我们会看到，ELF可执行文件的“只读（代码）段”、“可读写（数据）段”会被<strong>映射</strong>到进程的<strong>虚拟地址空间</strong>的“只读代码段”、“可读写数据段” ——&gt; 这个映射关系就是由“程序头表”记录<br><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260310160327076.png"></li>
+</ul>
+<h4 id="可执行文件的存储器映像"><a href="#可执行文件的存储器映像" class="headerlink" title="&lt;3&gt;可执行文件的存储器映像"></a>&lt;3&gt;可执行文件的存储器映像</h4><ul>
+<li>进程的“虚拟地址空间”布局大体固定但地址可随机化，而其中的“只读代码段”、“可读写数据段”则是从ELF可执行文件中装入</li>
+<li>注意：程序加载过程中，实际上并没有真正从磁盘上加载代码和数据到内存，而是仅仅创建了只读代码段和可读写数据段对应“VMA”、“页表” ——&gt; 只有在执行代码过程中发生了“缺页”异常时，才真正从磁盘加载代码和数据到主存。<br><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260310160912000.png"></li>
+</ul>
+<h4 id="可执行文件的装入与执行全过程"><a href="#可执行文件的装入与执行全过程" class="headerlink" title="&lt;4&gt;可执行文件的装入与执行全过程"></a>&lt;4&gt;可执行文件的装入与执行全过程</h4><h5 id="0）映射关系"><a href="#0）映射关系" class="headerlink" title="0）映射关系"></a>0）映射关系</h5><ul>
+<li><strong>虚拟地址空间</strong> ——&gt; <strong>ELF可执行文件空间</strong> （VMA：虚拟内存区域）</li>
+<li><strong>虚拟地址空间</strong> ——&gt;  <strong>物理地址（内存空间）</strong>（页表）</li>
+<li>进程中指令、数据的地址，都是<strong>虚拟地址</strong>，访问时，会通过<strong>页表</strong>获取其映射的<strong>物理地址（内存地址）</strong>，当发现没有相应映射时，就会发生<strong>缺页</strong>异常，需要从磁盘中加载对应的指令&#x2F;数据，那从磁盘的哪里加载呢？ ——&gt; 前面我们说过，虚拟地址空间的“只读代码段”、“可读写数据段”都要从ELF可执行文件中加载，所以会访问内存中的VMA，通过“虚拟地址空间”获取其映射的“ELF可执行文件空间”，进而从对应的ELF可执行文件中加载指令&#x2F;数据</li>
+</ul>
+<h5 id="1）全景概览"><a href="#1）全景概览" class="headerlink" title="1）全景概览"></a>1）全景概览</h5><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260310162308051.png"></p>
+<ul>
+<li>可执行文件载入到运行过程：<ul>
+<li><strong>1.解析ELF文件头</strong>：从“ELF头”中解析出“起始虚拟地址”，存入到“程序计数器PC”中；从“程序头表”中解析出“ELF文件空间”与“虚拟地址空间”的映射（“只读代码段”、“可读写数据段”）</li>
+<li><strong>2.创建虚拟地址空间</strong>：创建“VMA”，记录“虚拟地址空间”到“ELF文件空间”的映射关系；创建“页表”，记录“物理空间（内存空间）”到“虚拟地址空间”的映射关系<ul>
+<li>注意：此时只是建立了映射关系，但还没有将“代码”、“数据”加载到内存中</li>
+</ul>
+</li>
+<li>3.<strong>执行指令</strong>：<ul>
+<li><strong>取指</strong>：“程序计数器PC”中记录了下一条指令的地址，初始时已经被设置为了“起始虚拟地址”，程序执行时，会访问PC中记录指令地址获取指令 ——&gt; 因为记录的是“虚拟地址”，所以会访问“页表”（有快表就先访问快表）获取其对应的“物理地址”，如果不存在，则发生<strong>缺页异常</strong>，进而访问“VMA”，获取“虚拟地址”对应的“ELF可执行文件地址”，从磁盘文件将指令加载到内存中，然后填写页表映射；</li>
+<li><strong>译码、执行</strong></li>
+<li><strong>访存</strong>：译码后的指令中的数据地址也是“虚拟地址”，“获取内存数据”、“将执行结果写回内存”都要经历类似“取指”的过程</li>
+<li><strong>写回</strong>：把指令执行的最终结果写回CPU的寄存器（或特殊存储位置），供后续指令使用</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="2）解析ELF头文件"><a href="#2）解析ELF头文件" class="headerlink" title="2）解析ELF头文件"></a>2）解析ELF头文件</h5><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260310162411428.png"></p>
+<h5 id="3）创建虚拟地址空间——VMA-与页表"><a href="#3）创建虚拟地址空间——VMA-与页表" class="headerlink" title="3）创建虚拟地址空间——VMA 与页表"></a>3）创建虚拟地址空间——VMA 与页表</h5><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260310164037432.png"><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260310164055003.png"></p>
+<h5 id="4）取指与取数据——CPU-如何翻译虚拟地址"><a href="#4）取指与取数据——CPU-如何翻译虚拟地址" class="headerlink" title="4）取指与取数据——CPU 如何翻译虚拟地址"></a>4）取指与取数据——CPU 如何翻译虚拟地址</h5><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260310164134235.png"></p>
+<h3 id="（2）Linux-最多可运行多少进程？"><a href="#（2）Linux-最多可运行多少进程？" class="headerlink" title="（2）Linux 最多可运行多少进程？"></a>（2）Linux 最多可运行多少进程？</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">面试官您好，这个问题需要从多个层面来回答：</span><br><span class="line"></span><br><span class="line">【理论上限】</span><br><span class="line">- 32位系统：PID最大32768，约3万个进程</span><br><span class="line">- 64位系统：PID可配置到4194304，约400万个进程</span><br><span class="line"></span><br><span class="line">【实际限制因素】</span><br><span class="line">1. 系统级：pid_max、threads-max</span><br><span class="line">2. 用户级：<span class="built_in">ulimit</span> -u 配置的 <span class="built_in">nproc</span></span><br><span class="line">3. 硬件级：物理内存（每个进程至少占用数百KB）</span><br><span class="line"></span><br><span class="line">【关键点】</span><br><span class="line">- Linux中进程和线程共享同一ID空间</span><br><span class="line">- 实际可运行数 = min(所有限制因素)</span><br><span class="line">- 普通系统通常运行几百个进程，服务器可达数千个</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260305111210403.png"><br><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260305111231939.png"></p>
+<h3 id="（3）Linux进程最大地址空间"><a href="#（3）Linux进程最大地址空间" class="headerlink" title="（3）Linux进程最大地址空间"></a>（3）Linux进程最大地址空间</h3><ul>
+<li>进程的地址空间分为： <strong>虚拟地址空间</strong> 和 <strong>物理地址空间</strong></li>
+<li>我们编写代码时，使用的内存地址是“虚拟地址空间”，通过页表映射到“物理地址空间”，代码执行时，会通过“页表”访问数据，</li>
+</ul>
+<h1 id="三、网络与IO"><a href="#三、网络与IO" class="headerlink" title="三、网络与IO"></a>三、网络与IO</h1><h2 id="1-介绍一下epoll多路复用"><a href="#1-介绍一下epoll多路复用" class="headerlink" title="1.介绍一下epoll多路复用"></a>1.介绍一下epoll多路复用</h2><h3 id="（0）一句面试版"><a href="#（0）一句面试版" class="headerlink" title="（0）一句面试版"></a>（0）一句面试版</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">epoll 是 Linux 下高性能 I/O 多路复用机制。它通过 epoll_create(1)/epoll_create1 创建实例，用 epoll_ctl 管理关注的 fd 及事件，用 epoll_wait 获取就绪事件。底层是“红黑树管理关注集合 + 就绪链表管理活跃 fd + 回调通知”，避免了 select/poll 每次轮询全量遍历。触发模式有 LT（默认，易用）和 ET（高效但必须非阻塞并读到 EAGAIN）</span><br></pre></td></tr></table></figure>
+
+<h3 id="（1）什么是epoll？"><a href="#（1）什么是epoll？" class="headerlink" title="（1）什么是epoll？"></a>（1）什么是epoll？</h3><ul>
+<li>epoll 是 Linux 内核提供的一种<strong>高效的 I&#x2F;O 多路复用机制</strong>，用于监控多个文件描述符（fd）上的 I&#x2F;O 事件。</li>
+<li>它是 select 和 poll 的增强版本，能够在大量并发连接中高效工作。</li>
+</ul>
+<h3 id="（2）epoll的核心API（三个系统调用）"><a href="#（2）epoll的核心API（三个系统调用）" class="headerlink" title="（2）epoll的核心API（三个系统调用）"></a>（2）epoll的核心API（三个系统调用）</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1.epoll把用户关心的文件描述符上的事件放在一个“内核事件表”中</span></span><br><span class="line"><span class="comment">//   - epoll_create 用来创建唯一标识epoll“内核事件表”的文件描述符</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">epoll_create</span><span class="params">(<span class="type">int</span> size)</span></span>;  <span class="comment">// size 参数已被忽略，但必须 &gt; 0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 2.操作epoll的内核事件表，将用户关心的文件描述符从内核事件表中“注册/修改/删除”</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">epoll_ctl</span><span class="params">(<span class="type">int</span> epfd, <span class="type">int</span> op, <span class="type">int</span> fd, <span class="keyword">struct</span> epoll_event *event)</span></span>;</span><br><span class="line"><span class="comment">//   op: EPOLL_CTL_ADD / EPOLL_CTL_MOD / EPOLL_CTL_DEL</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. 在超时时间内等待内核事件表上的事件发生，函数成功时返回就绪的文件描述符个数</span></span><br><span class="line"><span class="comment">//  - 出参 epoll_event数组中存储了发生事件的epoll_event,从中可提取fd</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">epoll_wait</span><span class="params">(<span class="type">int</span> epfd, <span class="keyword">struct</span> epoll_event *events, <span class="type">int</span> maxevents, <span class="type">int</span> timeout)</span></span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>epoll_wait 不一定阻塞<ul>
+<li>timeout &#x3D; -1：一直阻塞</li>
+<li>timeout &#x3D; 0：立即返回（非阻塞轮询）</li>
+<li>timeout &gt; 0：最多阻塞 timeout 毫秒</li>
+</ul>
+</li>
+</ul>
+<h3 id="（3）epoll的工作流程"><a href="#（3）epoll的工作流程" class="headerlink" title="（3）epoll的工作流程"></a>（3）epoll的工作流程</h3><ul>
+<li>通过epoll_create创建唯一标识epoll内核事件表的文件描述符</li>
+<li>创建要监听的文件描述符的epoll_event进行绑定，并设置监听的事件（读事件&#x2F;写事件&#x2F;异常事件等）</li>
+<li>通过epoll_ctl向epoll内核事件表中注册要监听的文件描述符对应的epoll_event</li>
+<li>调用epoll_wait等待内核事件表上事件的发生，根据返回的“就绪文件描述符”数量，从出参epoll_event数组中取出文件描述符一次进行处理</li>
+</ul>
+<h3 id="（4）epoll的两种工作模式"><a href="#（4）epoll的两种工作模式" class="headerlink" title="（4）epoll的两种工作模式"></a>（4）epoll的两种工作模式</h3><h4 id="LT（Level-Triggered）—-水平触发（默认）"><a href="#LT（Level-Triggered）—-水平触发（默认）" class="headerlink" title="&lt;1&gt;LT（Level Triggered）— 水平触发（默认）"></a>&lt;1&gt;LT（Level Triggered）— 水平触发（默认）</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 只要缓冲区有数据可读，每次 epoll_wait 都会通知</span></span><br><span class="line">event.events = EPOLLIN;  <span class="comment">// 默认 LT 模式</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>缓冲区<strong>有数据就一直通知</strong></li>
+<li>可以不一次性读完，下次还会通知</li>
+<li><strong>编程简单，不容易丢数据</strong></li>
+<li><strong>性能较低</strong></li>
+</ul>
+<h4 id="ET（Edge-Triggered）—-边缘触发"><a href="#ET（Edge-Triggered）—-边缘触发" class="headerlink" title="&lt;2&gt;ET（Edge Triggered）— 边缘触发"></a>&lt;2&gt;ET（Edge Triggered）— 边缘触发</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 只有状态变化时才通知（从无数据 → 有数据）</span></span><br><span class="line">event.events = EPOLLIN | EPOLLET;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>只在<strong>状态变化时通知一次</strong></li>
+<li><strong>必须一次性读完所有数据（必须循环读&#x2F;写（以及 accept）直到返回 EAGAIN，否则可能丢后续通知。）</strong>（循环读到 EAGAIN）</li>
+<li><strong>必须配合非阻塞 I&#x2F;O</strong> 使用</li>
+<li><strong>性能更高</strong>，减少了 epoll_wait 的调用次数</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ET 模式下的典型读取方式</span></span><br><span class="line"><span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">    <span class="type">int</span> n = <span class="built_in">read</span>(fd, buf, <span class="built_in">sizeof</span>(buf));</span><br><span class="line">    <span class="keyword">if</span> (n == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (errno == EAGAIN) <span class="keyword">break</span>;  <span class="comment">// 数据读完了</span></span><br><span class="line">        <span class="built_in">perror</span>(<span class="string">&quot;read error&quot;</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (n == <span class="number">0</span>) &#123; <span class="comment">/* 连接关闭 */</span> <span class="keyword">break</span>; &#125;</span><br><span class="line">    <span class="comment">// 处理数据...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260309164607973.png"></p>
+<h3 id="（5）epoll的底层原理"><a href="#（5）epoll的底层原理" class="headerlink" title="（5）epoll的底层原理"></a>（5）epoll的底层原理</h3><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260309163752455.png"></p>
+<h3 id="（6）epoll-vs-select-vs-poll"><a href="#（6）epoll-vs-select-vs-poll" class="headerlink" title="（6）epoll vs select vs poll"></a>（6）epoll vs select vs poll</h3><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260309164040822.png"></p>
+<h3 id="（7）面试高频追问"><a href="#（7）面试高频追问" class="headerlink" title="（7）面试高频追问"></a>（7）面试高频追问</h3><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260309164127302.png"><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260309164546925.png"></p>
+<h2 id="2-介绍一下Reactor模型"><a href="#2-介绍一下Reactor模型" class="headerlink" title="2.介绍一下Reactor模型"></a>2.介绍一下Reactor模型</h2><h3 id="（1）Reactor模型是什么"><a href="#（1）Reactor模型是什么" class="headerlink" title="（1）Reactor模型是什么"></a>（1）Reactor模型是什么</h3><ul>
+<li><strong>Reactor 是一种事件驱动的网络编程模型。</strong><ul>
+<li><strong>事件驱动</strong>：程序不是按固定顺序一直往下执行，而是先“等事件”，事件发生后再执行对应处理逻辑。<br>核心思想是：</li>
+<li>用 <strong>select&#x2F;poll&#x2F;epoll</strong> 统一监听大量连接的 I&#x2F;O 事件</li>
+<li>哪个<strong>连接就绪</strong>，就把事件分发给对应的 工作线程 去处理</li>
+</ul>
+</li>
+</ul>
+<h3 id="（2）常见三种线程模型"><a href="#（2）常见三种线程模型" class="headerlink" title="（2）常见三种线程模型"></a>（2）常见三种线程模型</h3><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260309171827931.png"></p>
+<h3 id="（3）Reactor的工作流程（以epoll为例）"><a href="#（3）Reactor的工作流程（以epoll为例）" class="headerlink" title="（3）Reactor的工作流程（以epoll为例）"></a>（3）Reactor的工作流程（以epoll为例）</h3><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260309171138071.png"></p>
+<h3 id="（4）与Proactor的区别"><a href="#（4）与Proactor的区别" class="headerlink" title="（4）与Proactor的区别"></a>（4）与Proactor的区别</h3><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260309171243564.png"></p>
+<ul>
+<li>Reactor：通知你“可以读&#x2F;写了”，read&#x2F;write 由应用自己做</li>
+<li>Proactor：通知你“读&#x2F;写已经完成了”，I&#x2F;O 操作由内核&#x2F;系统异步完成后回调</li>
+</ul>
+<h1 id="四、C-相关问题"><a href="#四、C-相关问题" class="headerlink" title="四、C++相关问题"></a>四、C++相关问题</h1><h2 id="1-C-各类型数据的存储位置"><a href="#1-C-各类型数据的存储位置" class="headerlink" title="1.C++各类型数据的存储位置"></a>1.C++各类型数据的存储位置</h2><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260305111610059.png"></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">高地址</span><br><span class="line">┌─────────────────────────────────────────────────┐</span><br><span class="line">│                内核空间                          │</span><br><span class="line">├─────────────────────────────────────────────────┤</span><br><span class="line">│              栈 (Stack) ↓                       │</span><br><span class="line">│  • 局部变量、函数参数                            │</span><br><span class="line">│  • 局部对象（含 vptr）                          │</span><br><span class="line">│  • <span class="type">const</span> 局部变量                               │</span><br><span class="line">├─────────────────────────────────────────────────┤</span><br><span class="line">│            （未分配区域）                        │</span><br><span class="line">├─────────────────────────────────────────────────┤</span><br><span class="line">│              堆 (Heap) ↑                        │</span><br><span class="line">│  • <span class="keyword">new</span>/malloc 分配的内存                        │</span><br><span class="line">│  • 动态对象（含 vptr）                          │</span><br><span class="line">├─────────────────────────────────────────────────┤</span><br><span class="line">│              .bss 段                            │</span><br><span class="line">│  • 未初始化的全局/静态变量                       │</span><br><span class="line">├─────────────────────────────────────────────────┤</span><br><span class="line">│              .data 段                           │</span><br><span class="line">│  • 已初始化的全局/静态变量                       │</span><br><span class="line">│  • 静态成员变量                                 │</span><br><span class="line">├─────────────────────────────────────────────────┤</span><br><span class="line">│              .rodata 段                         │</span><br><span class="line">│  • 字符串常量                                   │</span><br><span class="line">│  • <span class="type">const</span> 全局变量                               │</span><br><span class="line">│  • ⭐ 虚函数表 (vtable)                         │</span><br><span class="line">│  • typeinfo                                    │</span><br><span class="line">├─────────────────────────────────────────────────┤</span><br><span class="line">│              .text 段                           │</span><br><span class="line">│  • 函数代码（包括虚函数）                        │</span><br><span class="line">│  • 成员函数代码                                 │</span><br><span class="line">├─────────────────────────────────────────────────┤</span><br><span class="line">│              保留区                              │</span><br><span class="line">└─────────────────────────────────────────────────┘</span><br><span class="line">低地址</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-C-类的三大特性"><a href="#2-C-类的三大特性" class="headerlink" title="2.C++类的三大特性"></a>2.C++类的三大特性</h2><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260305112825260.png"><br><strong>💡 三者关系</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">封装 → 是基础（类的基本概念）</span><br><span class="line">继承 → 建立在封装之上（复用封装好的类）</span><br><span class="line">多态 → 建立在继承之上（通过继承+虚函数实现）</span><br></pre></td></tr></table></figure>
+
+<h3 id="（1）封装"><a href="#（1）封装" class="headerlink" title="（1）封装"></a>（1）封装</h3><ul>
+<li><strong>将数据和操作数据的方法绑定在一起，对外隐藏实现细节，只暴露接口。</strong></li>
+<li><strong>优点</strong>：<ul>
+<li>保护数据安全（不能随意修改 balance）</li>
+<li>降低耦合度</li>
+<li>便于修改内部实现而不影响外部</li>
+</ul>
+</li>
+</ul>
+<h3 id="（2）继承"><a href="#（2）继承" class="headerlink" title="（2）继承"></a>（2）继承</h3><ul>
+<li><strong>子类继承父类的属性和方法，实现代码复用。</strong><br><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260305113157460.png"></li>
+</ul>
+<h4 id="多重继承时的-vtable"><a href="#多重继承时的-vtable" class="headerlink" title="&lt;1&gt;多重继承时的 vtable"></a>&lt;1&gt;多重继承时的 vtable</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123; <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">fa</span><span class="params">()</span></span>; &#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span> &#123; <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">fb</span><span class="params">()</span></span>; &#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">C</span> : <span class="keyword">public</span> A, <span class="keyword">public</span> B &#123; &#125;;  <span class="comment">// C 有两个 vptr！</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="多继承需要解决的两个关键问题"><a href="#多继承需要解决的两个关键问题" class="headerlink" title="&lt;2&gt;多继承需要解决的两个关键问题"></a>&lt;2&gt;多继承需要解决的两个关键问题</h4><h5 id="1）名冲突"><a href="#1）名冲突" class="headerlink" title="1）名冲突"></a>1）名冲突</h5><ul>
+<li>在多继承中，当多个基类中包含同名的成员时，在派生类中就会出现<strong>名冲突</strong></li>
+<li>解决方法：<strong>基类名受限访问</strong></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;A::func()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line">    <span class="type">int</span> value = <span class="number">10</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;B::func()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line">    <span class="type">int</span> value = <span class="number">20</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">C</span> : <span class="keyword">public</span> A, <span class="keyword">public</span> B &#123;</span><br><span class="line">    <span class="comment">// 继承了 A::func()、A::value</span></span><br><span class="line">    <span class="comment">// 继承了 B::func()、B::value</span></span><br><span class="line">    <span class="comment">// 名冲突！</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    C c;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// ❌ 编译错误：二义性</span></span><br><span class="line">    <span class="comment">// c.func();      // error: ambiguous</span></span><br><span class="line">    <span class="comment">// c.value = 5;   // error: ambiguous</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;A::func()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line">    <span class="type">int</span> value = <span class="number">10</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;B::func()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line">    <span class="type">int</span> value = <span class="number">20</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">C</span> : <span class="keyword">public</span> A, <span class="keyword">public</span> B &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 方法1：在派生类中用作用域解析符调用</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">callBoth</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        A::<span class="built_in">func</span>();  <span class="comment">// 明确调用 A 的版本</span></span><br><span class="line">        B::<span class="built_in">func</span>();  <span class="comment">// 明确调用 B 的版本</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 方法2：在派生类中定义自己的版本（隐藏基类版本）</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;C::func() - 调用自己的实现&quot;</span> &lt;&lt; endl;</span><br><span class="line">        <span class="comment">// 如需调用基类，仍可用 A::func() 或 B::func()</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    C c;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// ✅ 使用基类名受限访问</span></span><br><span class="line">    c.A::<span class="built_in">func</span>();      <span class="comment">// 输出: A::func()</span></span><br><span class="line">    c.B::<span class="built_in">func</span>();      <span class="comment">// 输出: B::func()</span></span><br><span class="line">    </span><br><span class="line">    c.A::value = <span class="number">100</span>;</span><br><span class="line">    c.B::value = <span class="number">200</span>;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;A::value = &quot;</span> &lt;&lt; c.A::value &lt;&lt; endl;  <span class="comment">// 100</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;B::value = &quot;</span> &lt;&lt; c.B::value &lt;&lt; endl;  <span class="comment">// 200</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// ✅ 调用派生类自己的方法</span></span><br><span class="line">    c.<span class="built_in">func</span>();         <span class="comment">// 输出: C::func() - 调用自己的实现</span></span><br><span class="line">    c.<span class="built_in">callBoth</span>();     <span class="comment">// 输出: A::func()  B::func()</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="2）重复继承（菱形继承）-——-虚基类"><a href="#2）重复继承（菱形继承）-——-虚基类" class="headerlink" title="2）重复继承（菱形继承） —— 虚基类"></a>2）重复继承（菱形继承） —— 虚基类</h5><ul>
+<li>在多继承中，如果继承的类有公共的基类，则会出现<strong>重复继承</strong> ——&gt; 公共基类中的数据成员在多继承的派生类中有多个拷贝</li>
+<li>解决方案：<strong>虚基类</strong></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span>&#123;</span><br><span class="line">    <span class="type">int</span> x;</span><br><span class="line">    ......</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span>: <span class="keyword">public</span> A &#123;......&#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">C</span>: <span class="keyword">public</span> A &#123;......&#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">D</span>: <span class="keyword">public</span> B,<span class="keyword">public</span> C&#123;</span><br><span class="line">    ......</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">()</span></span>&#123;</span><br><span class="line">        ...B::x... <span class="comment">// 访问从B继承来的x</span></span><br><span class="line">        ...C::x... <span class="comment">// 访问从C继承来的x</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">......</span><br><span class="line">D d;    <span class="comment">// d有两个x</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>通常情况下，我们需要把这两个x合并为一个x，此时，应把类A定义为类B和类C的<strong>虚基类</strong>，这样定义后，类D就只有一个成员x了</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">B</span>: <span class="keyword">virtual</span> <span class="keyword">public</span> A &#123;......&#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">C</span>: <span class="keyword">virtual</span> <span class="keyword">public</span> A &#123;......&#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">D</span>: <span class="keyword">public</span> B,<span class="keyword">public</span> C&#123;</span><br><span class="line">    ......</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">()</span></span>&#123;</span><br><span class="line">        ...x...	<span class="comment">// 访问从B和C继承来的公共x</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">......</span><br><span class="line">D d;    <span class="comment">// d只有一个x</span></span><br></pre></td></tr></table></figure>
+
+
+<h5 id="拓展：包含虚基类的类的“两个注意点”"><a href="#拓展：包含虚基类的类的“两个注意点”" class="headerlink" title="拓展：包含虚基类的类的“两个注意点”"></a>拓展：包含虚基类的类的“两个注意点”</h5><ul>
+<li>虚基类的构造函数由该类的构造函数直接调用</li>
+<li>虚基类的构造函数优先于非虚基类的构造函数执行<br><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260305133338300.png"></li>
+</ul>
+<h3 id="（3）多态"><a href="#（3）多态" class="headerlink" title="（3）多态"></a>（3）多态</h3><ul>
+<li><strong>同一接口，不同实现。分为编译时多态和运行时多态。</strong><ul>
+<li><strong>编译时多态（静态多态）</strong>：函数重载 &amp; 模板</li>
+<li><strong>运行时多态（动态多态）</strong>：通过虚函数实现</li>
+</ul>
+</li>
+<li><strong>动态多态</strong>：基类通过virtual定义虚函数后，子类继承该基类并override虚函数，再通过<strong>基类指针&#x2F;引用</strong> 指向&#x2F;引用 <strong>子类对象</strong></li>
+</ul>
+<h3 id="🎯-面试速答"><a href="#🎯-面试速答" class="headerlink" title="🎯 面试速答"></a>🎯 面试速答</h3><ul>
+<li><strong>封装</strong>：将数据和方法绑定，通过”访问控制符”隐藏实现细节，只暴露必要接口。</li>
+<li><strong>继承</strong>：子类继承父类的属性和方法，实现代码复用和层次结构。</li>
+<li><strong>多态</strong>：同一接口不同实现。编译时多态通过”函数重载&#x2F;模板”实现；运行时多态通过”虚函数和继承”实现，基类指针可调用派生类方法。</li>
+</ul>
+<h2 id="3-虚函数相关面试问题"><a href="#3-虚函数相关面试问题" class="headerlink" title="3.虚函数相关面试问题"></a>3.虚函数相关面试问题</h2><h3 id="（1）介绍一下虚函数、虚函数表、虚函数指针，以及三者如何协作实现”虚函数动态绑定”"><a href="#（1）介绍一下虚函数、虚函数表、虚函数指针，以及三者如何协作实现”虚函数动态绑定”" class="headerlink" title="（1）介绍一下虚函数、虚函数表、虚函数指针，以及三者如何协作实现”虚函数动态绑定”"></a>（1）介绍一下虚函数、虚函数表、虚函数指针，以及三者如何协作实现”虚函数动态绑定”</h3><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260305115526861.png"></p>
+<ul>
+<li><strong>虚函数</strong>： virtual定义的成员函数</li>
+<li><strong>虚函数表</strong>：对于每一个类，如果它有虚函数（<strong>包括从基类继承来的</strong>），则编译程序将会为其创建一个虚函数表（vtbl），表中记录了该类中所有虚函数的入口地址<ul>
+<li>虚函数表存储在<strong>只读数据段 .rodata</strong>中</li>
+</ul>
+</li>
+<li><strong>虚函数表指针</strong>：当创建一个包含虚函数的类的对象时，在所创建对象的内存空间中有一个隐藏的指针（vptr）指向该对象所属类的虚函数表。<ul>
+<li><strong>vptr初始化时机</strong>： 在构造函数执行时设置（先指向父类 vtable，再指向子类 vtable）</li>
+</ul>
+</li>
+<li><strong>虚函数动态绑定的实现方式</strong>：<ul>
+<li>基类通过virtual定义成员函数，子类继承该基类后，由于包含虚函数（包括从基类继承来的），故程序会在 <strong>.rodata</strong> 段为该类创建一个<strong>虚函数表</strong>，为该类的所有对象共用。</li>
+<li>子类的虚函数表中，最开始存储的是<strong>父类的虚函数的入口地址</strong>，当子类override该虚函数后，虚函数表中对应位置将改为存储<strong>子类override后的虚函数的入口地址</strong></li>
+<li>当通过<strong>引用&#x2F;指针</strong>访问类的虚函数时，将会利用它们引用或指向的对象内存空间中的<strong>虚函数表指针</strong>从<strong>虚函数表</strong>中获取相应虚函数的入口地址来调用相应的函数</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260305120020774.png"></p>
+<h3 id="（2）vptr初始化时机"><a href="#（2）vptr初始化时机" class="headerlink" title="（2）vptr初始化时机"></a>（2）vptr初始化时机</h3><ul>
+<li>在“构造函数”的<strong>初始化列表之后、函数体之前</strong>被隐式设置。</li>
+<li><strong>先指向父类 vtable，再指向子类 vtable</strong></li>
+</ul>
+<h4 id="为什么在“初始化列表之后、函数体之前”"><a href="#为什么在“初始化列表之后、函数体之前”" class="headerlink" title="&lt;1&gt;为什么在“初始化列表之后、函数体之前”"></a>&lt;1&gt;为什么在“初始化列表之后、函数体之前”</h4><ul>
+<li>在构造函数中可能调用虚函数</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Base</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Base</span>() &#123; </span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Base 构造&quot;</span> &lt;&lt; endl;</span><br><span class="line">        <span class="keyword">this</span>-&gt;<span class="built_in">show</span>();  <span class="comment">// 调用哪个版本？</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Base::show&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Derived</span> : <span class="keyword">public</span> Base &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Derived</span>() &#123; </span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Derived 构造&quot;</span> &lt;&lt; endl;</span><br><span class="line">        <span class="keyword">this</span>-&gt;<span class="built_in">show</span>();  <span class="comment">// 调用哪个版本？</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">show</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Derived::show&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Derived d;</span><br></pre></td></tr></table></figure>
+
+<h4 id="为什么“先指向父类-vtable，再指向子类-vtable”"><a href="#为什么“先指向父类-vtable，再指向子类-vtable”" class="headerlink" title="&lt;2&gt;为什么“先指向父类 vtable，再指向子类 vtable”"></a>&lt;2&gt;为什么“先指向父类 vtable，再指向子类 vtable”</h4><ul>
+<li>因为构造 Derived 对象（子类对象）时，先执行 Base 构造函数（此时 vptr 指向 Base::vtable），再执行 Derived 构造函数（vptr 更新为 Derived::vtable）。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">创建 Derived 对象 d：</span><br><span class="line"></span><br><span class="line">时间线 ──────────────────────────────────────────────────────────►</span><br><span class="line"></span><br><span class="line">     ┌─────────────────────────────────────────────────────────┐</span><br><span class="line">     │ <span class="number">1.</span> 分配内存                                             │</span><br><span class="line">     │    vptr = 未初始化                                      │</span><br><span class="line">     └─────────────────────────────────────────────────────────┘</span><br><span class="line">                              ↓</span><br><span class="line">     ┌─────────────────────────────────────────────────────────┐</span><br><span class="line">     │ <span class="number">2.</span> 进入 Base::<span class="built_in">Base</span>()                                    │</span><br><span class="line">     │    vptr = &amp;Base::vtable  ←── 设置为父类的 vtable        │</span><br><span class="line">     │    执行 Base 构造函数体                                  │</span><br><span class="line">     │    调用 <span class="keyword">this</span>-&gt;<span class="built_in">show</span>() → Base::<span class="built_in">show</span>() ✓                  │</span><br><span class="line">     └─────────────────────────────────────────────────────────┘</span><br><span class="line">                              ↓</span><br><span class="line">     ┌─────────────────────────────────────────────────────────┐</span><br><span class="line">     │ <span class="number">3.</span> 进入 Derived::<span class="built_in">Derived</span>()                              │</span><br><span class="line">     │    vptr = &amp;Derived::vtable  ←── 更新为子类的 vtable     │</span><br><span class="line">     │    执行 Derived 构造函数体                               │</span><br><span class="line">     │    调用 <span class="keyword">this</span>-&gt;<span class="built_in">show</span>() → Derived::<span class="built_in">show</span>() ✓               │</span><br><span class="line">     └─────────────────────────────────────────────────────────┘</span><br><span class="line">                              ↓</span><br><span class="line">     ┌─────────────────────────────────────────────────────────┐</span><br><span class="line">     │ <span class="number">4.</span> 构造完成                                             │</span><br><span class="line">     │    vptr = &amp;Derived::vtable （最终状态）                  │</span><br><span class="line">     └─────────────────────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<h3 id="（3）为什么析构函数往往是虚函数，而构造函数不是？"><a href="#（3）为什么析构函数往往是虚函数，而构造函数不是？" class="headerlink" title="（3）为什么析构函数往往是虚函数，而构造函数不是？"></a>（3）为什么析构函数往往是虚函数，而构造函数不是？</h3><h4 id="析构函数往往是虚函数"><a href="#析构函数往往是虚函数" class="headerlink" title="&lt;1&gt;析构函数往往是虚函数"></a>&lt;1&gt;析构函数往往是虚函数</h4><h5 id="1）delete-操作的本质"><a href="#1）delete-操作的本质" class="headerlink" title="1）delete 操作的本质"></a>1）delete 操作的本质</h5><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> p;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 等价于：</span></span><br><span class="line">p-&gt;~???();           <span class="comment">// 第一步：调用析构函数（调用哪个？）</span></span><br><span class="line"><span class="function"><span class="keyword">operator</span> <span class="title">delete</span><span class="params">(p)</span></span>;  <span class="comment">// 第二步：释放内存</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>非虚析构</strong>：delete p 时，编译器根据指针类型 Base* 在编译期直接生成调用 Base::~Base() 的代码，不会查虚函数表。</li>
+<li><strong>虚析构</strong>：析构函数地址存入 vtable，delete p 时通过 vptr → vtable → 析构函数地址，运行时找到对象实际类型的析构函数（Derived::~Derived()）进行调用，然后自动调用父类的析构函数。</li>
+<li>这就是为什么<strong>有继承关系且可能通过基类指针删除对象时，往往使用虚析构函数</strong></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">【非虚析构】                           【虚析构】</span><br><span class="line"></span><br><span class="line"><span class="keyword">delete</span> p;                              <span class="keyword">delete</span> p;</span><br><span class="line">    │                                      │</span><br><span class="line">    ▼                                      ▼</span><br><span class="line">编译期确定                              运行期查表</span><br><span class="line">调用 Base::~<span class="built_in">Base</span>()                          │</span><br><span class="line">    │                                      ▼</span><br><span class="line">    │                               ┌──────────────────┐</span><br><span class="line">    │                               │ <span class="number">1.</span> 取 vptr       │</span><br><span class="line">    │                               │ <span class="number">2.</span> vptr → vtable │</span><br><span class="line">    │                               │ <span class="number">3.</span> vtable[<span class="number">0</span>]     │</span><br><span class="line">    │                               │    → ~Derived    │</span><br><span class="line">    │                               └──────────────────┘</span><br><span class="line">    │                                      │</span><br><span class="line">    ▼                                      ▼</span><br><span class="line">~<span class="built_in">Base</span>() 执行                         ~<span class="built_in">Derived</span>() 执行</span><br><span class="line">    │                                      │</span><br><span class="line">    ▼                                      ▼</span><br><span class="line"><span class="function"><span class="keyword">operator</span> <span class="title">delete</span><span class="params">(p)</span>                   然后自动调用 ~<span class="title">Base</span><span class="params">()</span></span></span><br><span class="line"><span class="function">                                           │</span></span><br><span class="line"><span class="function">                                           ▼</span></span><br><span class="line"><span class="function">                                    <span class="keyword">operator</span> <span class="title">delete</span><span class="params">(p)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">结果：Derived::data 泄漏！           结果：正确释放所有资源 ✓</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="拓展1：子类析构后自动调用父类析构的原理"><a href="#拓展1：子类析构后自动调用父类析构的原理" class="headerlink" title="拓展1：子类析构后自动调用父类析构的原理"></a>拓展1：子类析构后自动调用父类析构的原理</h5><ul>
+<li><strong>📌 关键澄清</strong>：<strong>这个行为与”虚”无关！</strong> 无论析构函数是否为虚函数，子类析构后都会自动调用父类析构。<br><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260305130441650.png"></li>
+</ul>
+<h5 id="拓展2：子类析构函数的自动重写机制"><a href="#拓展2：子类析构函数的自动重写机制" class="headerlink" title="拓展2：子类析构函数的自动重写机制"></a>拓展2：子类析构函数的自动重写机制</h5><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Base</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">virtual</span> ~<span class="built_in">Base</span>() &#123; cout &lt;&lt; <span class="string">&quot;~Base&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Derived</span> : <span class="keyword">public</span> Base &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ~<span class="built_in">Derived</span>() &#123; cout &lt;&lt; <span class="string">&quot;~Derived&quot;</span> &lt;&lt; endl; &#125;  <span class="comment">// 自动成为虚函数，自动重写</span></span><br><span class="line">    <span class="comment">// 等价于：virtual ~Derived() override &#123; ... &#125;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260305125922121.png"><br><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260305125947121.png"></p>
+<h4 id="构造函数不能使虚函数"><a href="#构造函数不能使虚函数" class="headerlink" title="&lt;2&gt;构造函数不能使虚函数"></a>&lt;2&gt;构造函数不能使虚函数</h4><ul>
+<li>在创建对象时，会自动调用构造函数，如果将构造函数设置为虚函数，则会通过虚函数表指针去虚函数表中获取函数入口地址并执行，但一个对象的<strong>虚函数表指针</strong>是在构造函数中进行初始化的（指向虚函数表），也就意味着将用“未初始化的虚函数表指针（还未执行对应虚函数表）”去虚造构造入口地址，进而导致错误</li>
+</ul>
+<h3 id="（4）虚函数、虚函数指针、虚函数表分别存储在什么区域？"><a href="#（4）虚函数、虚函数指针、虚函数表分别存储在什么区域？" class="headerlink" title="（4）虚函数、虚函数指针、虚函数表分别存储在什么区域？"></a>（4）虚函数、虚函数指针、虚函数表分别存储在什么区域？</h3><p><img src="https://cdn.jsdelivr.net/gh/xianyubuxian-TXY/hexo-images/images/20260305131022089.png"></p>
+<h3 id="（5）纯虚函数-抽象类"><a href="#（5）纯虚函数-抽象类" class="headerlink" title="（5）纯虚函数 &amp; 抽象类"></a>（5）纯虚函数 &amp; 抽象类</h3><ul>
+<li><strong>抽象类</strong>：含有纯虚函数的类<ul>
+<li><strong>抽象类不能实例化，子类必须实现纯虚函数</strong></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Shape</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">draw</span><span class="params">()</span> </span>= <span class="number">0</span>;  <span class="comment">// 纯虚函数</span></span><br><span class="line">    <span class="keyword">virtual</span> ~<span class="built_in">Shape</span>() = <span class="keyword">default</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// Shape 不能实例化，子类必须实现 draw()</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="（6）虚函数的性能开销"><a href="#（6）虚函数的性能开销" class="headerlink" title="（6）虚函数的性能开销"></a>（6）虚函数的性能开销</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">虚函数调用比普通函数多一次内存寻址（vptr → vtable → func），约 10-20% 性能差异。</span><br><span class="line">现代 CPU 分支预测可缓解部分开销。</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-类之间的聚合-组合关系"><a href="#4-类之间的聚合-组合关系" class="headerlink" title="4.类之间的聚合&#x2F;组合关系"></a>4.类之间的聚合&#x2F;组合关系</h2><ul>
+<li><strong>聚合关系</strong>：类似于一个公司，公司员工聚在公司一起工作，公司解散了，员工仍存在，可以去其它公司，不依赖于公司而存在,可以独立存在</li>
+<li><strong>组合关系</strong>：类似于人与器官，器官依赖于人这个整体，人死了，器官也就死了</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span>&#123;</span><br><span class="line">    ......</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span>&#123;    <span class="comment">// B与A是聚合关系</span></span><br><span class="line">    A *pm;	<span class="comment">// 指向成员对象</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">B</span>(A *p) &#123;pm=p;&#125;		<span class="comment">// 外部创建，然后传入</span></span><br><span class="line">    ~<span class="built_in">B</span>() &#123;pm=<span class="literal">nullptr</span>;&#125;	<span class="comment">// 由外部释放资源，这里只是不再指向传入的对象</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">C</span>&#123;</span><br><span class="line">    A *pm;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">C</span>() &#123;pm=<span class="keyword">new</span> A;&#125;		<span class="comment">// 由内部创建</span></span><br><span class="line">    ~<span class="built_in">C</span>()&#123;<span class="keyword">delete</span> pm;&#125;	<span class="comment">// 成员对象随组合类对象消亡</span></span><br><span class="line">&#125;;</span><br><span class="line">......</span><br><span class="line">A *pa=<span class="keyword">new</span> A;        <span class="comment">// 创建一个A类对象</span></span><br><span class="line">B *pb=<span class="keyword">new</span> <span class="built_in">B</span>(pa);    <span class="comment">// 创建一个聚合类对象，其成员对象由“外部传入”</span></span><br><span class="line">C *pc=<span class="keyword">new</span> <span class="built_in">C</span>();        <span class="comment">// 创建一个组合类对象，其成员对象在组合类对象“内部创建”</span></span><br><span class="line">......</span><br><span class="line"><span class="keyword">delete</span> pb;        <span class="comment">// 聚合类对象消亡了，其成员对象不再指向pa，且pa并没有消亡，仍可以在其它地方使用</span></span><br><span class="line"><span class="keyword">delete</span> pc;        <span class="comment">// 组合类对象与其成员对象都消亡</span></span><br><span class="line"><span class="keyword">delete</span> pa；        <span class="comment">// 聚合类对象原来的成员对象消亡</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="5-C-关键字"><a href="#5-C-关键字" class="headerlink" title="5.C++关键字"></a>5.C++关键字</h2><h3 id="（1）final-和-override-关键字"><a href="#（1）final-和-override-关键字" class="headerlink" title="（1）final 和 override 关键字"></a>（1）final 和 override 关键字</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Base</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">func</span><span class="params">()</span> <span class="keyword">final</span></span>;  <span class="comment">// 禁止子类重写</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Derived</span> : <span class="keyword">public</span> Base <span class="keyword">final</span> &#123;  <span class="comment">// 禁止继续继承</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">()</span> <span class="keyword">override</span></span>;  <span class="comment">// 编译器检查是否真的重写</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="咸鱼 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="咸鱼 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>咸鱼
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://xianyubuxian-txy.github.io/2026/03/05/%E9%9D%A2%E8%AF%95/%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/" title="面试问题总结">https://xianyubuxian-txy.github.io/2026/03/05/面试/面试问题总结/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/03/05/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/%E5%86%85%E5%AD%98%E8%B0%83%E4%BC%98/" rel="prev" title="内存调优">
+                  <i class="fa fa-angle-left"></i> 内存调优
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/03/05/%E7%BC%96%E7%A8%8B%E9%A2%98/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E5%AD%97%E7%AC%A6%E4%B8%B2/4.%E7%BC%96%E8%BE%91%E8%B7%9D%E7%A6%BB/" rel="next" title="4.编辑距离">
+                  4.编辑距离 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="waline"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">咸鱼</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">282k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">15:41</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/xianyubuxian-TXY" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<script class="next-config" data-name="waline" type="application/json">{"lang":"zh-cn","enable":true,"serverURL":"https://waline-beta-black.vercel.app","cssUrl":"https://unpkg.com/@waline/client@v2/dist/waline.css","commentCount":true,"pageview":false,"placeholder":"请文明评论呀","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"visitor":true,"comment_count":true,"requiredFields":[],"libUrl":"//unpkg.com/@waline/client@v2/dist/waline.js","el":"#waline","comment":true,"path":"/2026/03/05/%E9%9D%A2%E8%AF%95/%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/"}</script>
+<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css">
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.waline.el).then(() =>
+    NexT.utils.getScript(CONFIG.waline.libUrl, { condition: window.Waline })
+  ).then(() => 
+    Waline.init(Object.assign({}, CONFIG.waline,{ el: document.querySelector(CONFIG.waline.el) }))
+  );
+});
+</script>
+
+</body>
+</html>
